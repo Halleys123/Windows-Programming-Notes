@@ -1,6 +1,6 @@
 ---
 tags:
-  - "#meta/glossary"
+  - '#meta/glossary'
 ---
 
 1. WYSIWYG (What You See Is What You Get) - On-screen layout matches the final rendered/printed output. ^787461
@@ -9,4 +9,4 @@ tags:
 4. [[Windows NT and Windows 98#^911722|Pre-emptive multitasking]] - OS scheduler can interrupt one task/thread and run another.
 5. [[Windows NT and Windows 98#^4ef346|Thread affinity mask]] - Optional scheduler control to pin a thread to selected core(s).
 6. Pictograph - A pictorial symbol for a word or phrase. Pictographs were used as the earliest known form of writing, examples having been discovered in Egypt and Mesopotamia from before 3000 BC. ^536d62
-7. Diacritics -  ^8709bf
+7. Diacritics - Marks added to letters to change pronunciation or meaning (examples: e, n, c with accent variants in many languages). ^8709bf

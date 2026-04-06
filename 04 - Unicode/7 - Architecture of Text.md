@@ -3,8 +3,8 @@ tags:
   - architecture/data_serialization
 ---
 
->[!info]
->Four pillar architecture helps to better remember what are Unicode, ASCII, ANSI, Code Pages, Wide Characters and how are they related.
+> [!info]
+> Four pillar architecture helps to better remember what are Unicode, ASCII, ANSI, Code Pages, Wide Characters and how are they related.
 
 ## The 4 Pillars of Text Architecture
 
@@ -14,7 +14,7 @@ This is just a mathematical concept. It is a giant list published by a world org
 
 - [[1 - Early Character Encodings & The Rise of ASCII#ASCII|ASCII:]] The original dictionary (128 items).
 - [[5 - Unicode|Unicode:]] The modern, universal dictionary (149,000+ items).
-    - _Example:_ Unicode dictates that the ID for the letter 'A' is `U+0041`.
+  - _Example:_ Unicode dictates that the ID for the letter 'A' is `U+0041`.
 
 ### Pillar 2: The Translation Rulebook (Character Encodings)
 
@@ -36,6 +36,6 @@ This is the physical bucket the C++ compiler carves out of your RAM to hold the 
 
 ### Pillar 4: The Disk Storage (Serialization)
 
-This is how the OS writes the buckets from RAM onto the physical hard drive while using some encoding algorithm from [[#Pillar 2 The Translation Rulebook (Character Encodings)|Pillar 2]].
+This is how the OS writes the buckets from RAM onto the physical hard drive while using some encoding algorithm from [[#Pillar 2: The Translation Rulebook (Character Encodings)|Pillar 2]].
 
 - As we discussed, a modern OS almost always takes the data from Pillar 3 and serializes it into a **UTF-8 File** on the hard drive, because it is the safest universal bridge between different computers.

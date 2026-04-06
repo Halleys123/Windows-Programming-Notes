@@ -1,14 +1,15 @@
 ---
 tags:
-  - "#architecture/system_files"
+  - '#architecture/system_files'
 ---
+
 # Headers
 
 1. [[#WINDEF.h]]
-2. [[#`WINNT.H` Architecture & Unicode Foundation|WINNT.h]]
-3. [[#`WINBASE.H` The Kernel Services (Engine Room)|WINBASE.h]]
-4. [[#`WINUSER.H` The User Interface Manager|WINUSER.h]]
-5. [[#`WINGDI.H` The Graphics Device Interface|WINGDI.h]]
+2. [[#`WINNT.H`: Architecture & Unicode Foundation|WINNT.h]]
+3. [[#`WINBASE.H`: The Kernel Services (Engine Room)|WINBASE.h]]
+4. [[#`WINUSER.H`: The User Interface Manager|WINUSER.h]]
+5. [[#`WINGDI.H`: The Graphics Device Interface|WINGDI.h]]
 
 ## WINDEF.h
 
@@ -24,11 +25,11 @@ tags:
 
 These are the absolute foundation of Windows memory management and messaging.
 
-|Windows Type|Standard C Equivalent|Size|Description|
-|---|---|---|---|
-|**`BYTE`**|`unsigned char`|8 bits|The smallest addressable unit of data.|
-|**`WORD`**|`unsigned short`|16 bits|Historically represented a 16-bit processor's "word" size.|
-|**`DWORD`**|`unsigned long`|32 bits|"Double Word." Crucial for 32-bit memory addresses and colors.|
+| Windows Type | Standard C Equivalent | Size    | Description                                                    |
+| ------------ | --------------------- | ------- | -------------------------------------------------------------- |
+| **`BYTE`**   | `unsigned char`       | 8 bits  | The smallest addressable unit of data.                         |
+| **`WORD`**   | `unsigned short`      | 16 bits | Historically represented a 16-bit processor's "word" size.     |
+| **`DWORD`**  | `unsigned long`       | 32 bits | "Double Word." Crucial for 32-bit memory addresses and colors. |
 
 #### 2. The Handles (Opaque Pointers)
 
@@ -41,7 +42,7 @@ A "Handle" is Windows' way of giving you an ID tag for an object without letting
 
 Because the original C language did not have a native boolean type (until C99), Windows had to invent its own.
 
-- **`BOOL`**: Actually `typedef`'d as a standard `int`.    
+- **`BOOL`**: Actually `typedef`'d as a standard `int`.
 - **`TRUE`**: Defined as `1`.
 - **`FALSE`**: Defined as `0`.
 
@@ -55,11 +56,11 @@ Because the original C language did not have a native boolean type (until C99), 
 
 #### Key Components Reference
 
-|Category|Component|Description|
-|---|---|---|
-|**Text & Strings**|`TCHAR` & `_T()`|Macros that automatically switch your text between 8-bit `char` (ANSI) and 16-bit `wchar_t` (Unicode) depending on your compiler settings.|
-|**Hardware State**|`CONTEXT`|A structure that holds the exact, freeze-framed state of the CPU's physical registers (EAX, EBX, etc.) during a thread Context Switch.|
-|**Security**|Security Descriptors|Low-level structures used to check if a specific user/process has permission to open a file or kill a task.|
+| Category           | Component            | Description                                                                                                                                |
+| ------------------ | -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
+| **Text & Strings** | `TCHAR` & `_T()`     | Macros that automatically switch your text between 8-bit `char` (ANSI) and 16-bit `wchar_t` (Unicode) depending on your compiler settings. |
+| **Hardware State** | `CONTEXT`            | A structure that holds the exact, freeze-framed state of the CPU's physical registers (EAX, EBX, etc.) during a thread Context Switch.     |
+| **Security**       | Security Descriptors | Low-level structures used to check if a specific user/process has permission to open a file or kill a task.                                |
 
 ## `WINBASE.H`: The Kernel Services (Engine Room)
 
@@ -71,12 +72,12 @@ Because the original C language did not have a native boolean type (until C99), 
 
 #### Key Components Reference
 
-| Category          | Component                                                                                                                                     | Description                                                                                                                  |
-| ----------------- | --------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
-| **Execution**     | `CreateProcess` / `CreateThread` [[Windows NT and Windows 98#Concurrency and Parallelism in Windows\|Details on Concurrency and Parallelism]] | Functions to launch new programs or split your current program into multiple concurrent tasks.                               |
-| **File I/O**      | `CreateFile` / `ReadFile`                                                                                                                     | Functions to interact with the hard drive. _(Note: `CreateFile` is used to open existing files as well as create new ones)._ |
-| **Memory**        | `HeapAlloc` / `GlobalAlloc`                                                                                                                   | Functions for dynamically requesting chunks of RAM from the Operating System.                                                |
-| **Timing & Sync** | `Sleep` / Mutexes                                                                                                                             | Functions to pause threads or safely lock data so multiple threads don't crash into each other.                              |
+| Category          | Component                                                                                           | Description                                                                                                                  |
+| ----------------- | --------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- |
+| **Execution**     | `CreateProcess` / `CreateThread` [[Windows NT and Windows 98#Concurrency and Parallelism in Windows | Details on Concurrency and Parallelism]]                                                                                     | Functions to launch new programs or split your current program into multiple concurrent tasks. |
+| **File I/O**      | `CreateFile` / `ReadFile`                                                                           | Functions to interact with the hard drive. _(Note: `CreateFile` is used to open existing files as well as create new ones)._ |
+| **Memory**        | `HeapAlloc` / `GlobalAlloc`                                                                         | Functions for dynamically requesting chunks of RAM from the Operating System.                                                |
+| **Timing & Sync** | `Sleep` / Mutexes                                                                                   | Functions to pause threads or safely lock data so multiple threads don't crash into each other.                              |
 
 ## `WINUSER.H`: The User Interface Manager
 
@@ -88,13 +89,13 @@ Because the original C language did not have a native boolean type (until C99), 
 
 #### Key Components Reference
 
-| Category             | Component                        | Description                                                                                            |
-| -------------------- | -------------------------------- | ------------------------------------------------------------------------------------------------------ |
-| **Window Creation**  | `CreateWindowEx` / `WNDCLASS`    | The core function to spawn a window, and the structure used to define its style, cursor, and behavior. |
-| **The Message Loop** | `GetMessage` / `DispatchMessage` | The infinite loop that keeps a Windows program alive, constantly checking for new user interactions.   |
-| **Hardware Input**   | `WM_LBUTTONDOWN` / `WM_KEYDOWN`  | The specific message codes sent to your program when a mouse is clicked or a key is pressed.           |
-| **Dialogs**          | [[2 - MessageBox\|MessageBox]]   | The standard Windows pop-up dialog function (Warning, Error, Info).                                    |
-|                      |                                  |                                                                                                        |
+| Category             | Component                                             | Description                                                                                            |
+| -------------------- | ----------------------------------------------------- | ------------------------------------------------------------------------------------------------------ |
+| **Window Creation**  | `CreateWindowEx` / `WNDCLASS`                         | The core function to spawn a window, and the structure used to define its style, cursor, and behavior. |
+| **The Message Loop** | `GetMessage` / `DispatchMessage`                      | The infinite loop that keeps a Windows program alive, constantly checking for new user interactions.   |
+| **Hardware Input**   | `WM_LBUTTONDOWN` / `WM_KEYDOWN`                       | The specific message codes sent to your program when a mouse is clicked or a key is pressed.           |
+| **Dialogs**          | [MessageBox](../03 - API Reference/2 - MessageBox.md) | The standard Windows pop-up dialog function (Warning, Error, Info).                                    |
+|                      |                                                       |                                                                                                        |
 
 ## `WINGDI.H`: The Graphics Device Interface
 
@@ -106,9 +107,9 @@ Because the original C language did not have a native boolean type (until C99), 
 
 #### Key Components Reference
 
-|Category|Component|Description|
-|---|---|---|
-|**The Canvas**|`HDC` (Device Context)|The "Handle to a Device Context." You cannot draw anything in Windows without first acquiring an HDC.|
-|**Drawing Tools**|`HPEN` / `HBRUSH`|Digital tools used to draw the outlines of shapes (Pen) or fill the insides of shapes with color (Brush).|
-|**Typography**|`TextOut`|The core function for drawing strings of text onto the screen using TrueType fonts.|
-|**Pixels**|`BitBlt`|"Bit-Boundary Block Transfer." A high-speed function used to copy massive chunks of image data/pixels to the screen instantly.|
+| Category          | Component              | Description                                                                                                                    |
+| ----------------- | ---------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
+| **The Canvas**    | `HDC` (Device Context) | The "Handle to a Device Context." You cannot draw anything in Windows without first acquiring an HDC.                          |
+| **Drawing Tools** | `HPEN` / `HBRUSH`      | Digital tools used to draw the outlines of shapes (Pen) or fill the insides of shapes with color (Brush).                      |
+| **Typography**    | `TextOut`              | The core function for drawing strings of text onto the screen using TrueType fonts.                                            |
+| **Pixels**        | `BitBlt`               | "Bit-Boundary Block Transfer." A high-speed function used to copy massive chunks of image data/pixels to the screen instantly. |
