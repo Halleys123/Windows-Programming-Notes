@@ -37,7 +37,7 @@ A "Handle" is Windows' way of giving you an ID tag for an object without letting
 - **`HWND`**: Handle to a Window (Used to identify a specific window on the screen).
 - **`HINSTANCE`**: Handle to an Instance (Used to identify your running program/executable in memory).
 
-#### 3. The Boolean Truths (A C Quirks)
+#### 3. The Boolean Truths (C Language Quirks)
 
 Because the original C language did not have a native boolean type (until C99), Windows had to invent its own.
 

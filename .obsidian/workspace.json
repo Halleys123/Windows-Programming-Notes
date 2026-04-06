@@ -11,10 +11,14 @@
             "id": "f0288e2e405b44c7",
             "type": "leaf",
             "state": {
-              "type": "graph",
-              "state": {},
-              "icon": "lucide-git-fork",
-              "title": "Graph view"
+              "type": "markdown",
+              "state": {
+                "file": "04 - Unicode/3 - ANSI and Code Pages.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "3 - ANSI and Code Pages"
             }
           }
         ]
@@ -109,11 +113,12 @@
             "state": {
               "type": "outgoing-link",
               "state": {
+                "file": "04 - Unicode/3 - ANSI and Code Pages.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               },
               "icon": "links-going-out",
-              "title": "Outgoing links"
+              "title": "Outgoing links from 3 - ANSI and Code Pages"
             }
           },
           {
@@ -179,21 +184,21 @@
   },
   "active": "f0288e2e405b44c7",
   "lastOpenFiles": [
-    "02 - Architecture & Mechanics/Future Reads/History of CALLBACK and APIENTRY (FUTURE_READ).md",
+    "04 - Unicode/0 - History of Character Sets.md",
     "03 - API Reference/1 - General Program Structure.md",
-    "03 - API Reference/0 - Hungarian Notation.md",
     "03 - API Reference/2 - MessageBox.md",
+    "03 - API Reference/0 - Hungarian Notation.md",
+    "02 - Architecture & Mechanics/Dynamic Linking.md",
+    "02 - Architecture & Mechanics/Important Windows Headers and DLL's.md",
+    "04 - Unicode/1 - Early Character Encodings & The Rise of ASCII.md",
+    "04 - Unicode/2 - Flaws of ASCII and Extending ASCII.md",
+    "02 - Architecture & Mechanics/Future Reads/History of CALLBACK and APIENTRY (FUTURE_READ).md",
     "Untitled.canvas",
     "04 - Unicode/6 - Wide Characters (The implementation of Unicode).md",
     "04 - Unicode/7 - Architecture of Text.md",
     "04 - Unicode/5 - Unicode.md",
     "04 - Unicode/4 - Double Byte Character Set.md",
     "04 - Unicode/3 - ANSI and Code Pages.md",
-    "04 - Unicode/2 - Flaws of ASCII and Extending ASCII.md",
-    "04 - Unicode/1 - Early Character Encodings & The Rise of ASCII.md",
-    "04 - Unicode/0 - History of Character Sets.md",
-    "02 - Architecture & Mechanics/Important Windows Headers and DLL's.md",
-    "02 - Architecture & Mechanics/Dynamic Linking.md",
     "01 - History & Fundamentals/Introduction and History.md",
     "01 - History & Fundamentals/Alternate options to Win32.md",
     "01 - History & Fundamentals/Windows NT and Windows 98.md",
