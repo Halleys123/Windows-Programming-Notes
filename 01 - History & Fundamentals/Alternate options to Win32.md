@@ -1,3 +1,8 @@
+---
+tags:
+  - "#concept/ecosystem"
+---
+
 ## C Language
 
 Using C and the native APIs is not the only way to write programs, this gives you the best performance and smallest possible size of executable with no external libraries (only Win32 DLL are required)

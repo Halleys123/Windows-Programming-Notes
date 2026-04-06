@@ -1,3 +1,8 @@
+---
+tags:
+  - "#api"
+---
+
 ```C
 #include <stdio.h>
 #include <windows.h>
@@ -47,7 +52,7 @@ WINAPI is a macro defined by Microsoft which under the hood is same as `CALLBACK
 #define CALLBACK __stdcall
 ```
 
-They both tell the compiler to use the `__stdcall` (Standard Call) rule. These are defined in [[0 - Important Windows Headers and DLL's#WINDEF.h|WINDEF.H]]
+They both tell the compiler to use the `__stdcall` (Standard Call) rule. These are defined in [[Important Windows Headers and DLL's#WINDEF.h|WINDEF.H]]
 
 ### What is `__stdcall`?
 

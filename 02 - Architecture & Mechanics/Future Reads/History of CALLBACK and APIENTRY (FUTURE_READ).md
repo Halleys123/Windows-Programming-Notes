@@ -1,3 +1,7 @@
+---
+tags:
+  - "#history/api_design"
+---
 # The History of Windows Calling Conventions (`WINAPI` & `CALLBACK`)
 
 To understand why Windows uses `WINAPI` and `CALLBACK`, you have to look at the severe hardware limitations of the 1980s and the massive architectural shifts of the 1990s and 2000s.

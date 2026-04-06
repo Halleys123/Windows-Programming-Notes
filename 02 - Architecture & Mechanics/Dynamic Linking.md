@@ -1,3 +1,8 @@
+---
+tags:
+  - "#architecture/linking"
+---
+
 Windows has a concept of Dynamic Linking: a developer-written program can use a set of functions provided by another developer (often Microsoft itself). This allows developers to create Windows applications using the Win32 API, which is entirely `.dll` based.
 
 These are mostly location in paths `\WINDOWS\SYSTEM` subdirectory under **Windows 98** and the `\WINNT\SYSTEM` and `\WINNT\SYSTEM32` sub directories under **Windows NT**.

@@ -1,3 +1,8 @@
+---
+tags:
+  - "#api/functions/ui"
+---
+
 ```c++
 MessageBox(HWND, "MESSAGE_STRING", "HEADING_STRING", UINT);
 ```

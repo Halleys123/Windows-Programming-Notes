@@ -1,3 +1,9 @@
+---
+tags:
+  - "#history/windows"
+  - "#history/windows/timeline"
+---
+
 - Programs written for Windows whether it be Windows NT 4.0 or 5.0 or XP or Vista all are written in C or C++ language using Win32 API or [[Alternate options to Win32|modern alternatives]]
 - Windows 98 and Windows NT (Industrial Windows) both were GUI based systems.
 - Windows NT supported RISC architecture
@@ -15,5 +21,57 @@
 8. Then came Windows 3.1 in 1992 with features like TrueType font, multimedia.
 9. Then started 32 bit age of windows from 1993 with Windows NT, Windows 95 in 1995. Windows 95 was consumer version of Windows NT and didn't have all features of NT
 10. In 1998 windows 98 was released with more hardware support and Internet access.
+
+```mermaid
+timeline
+
+    title Sequential History of Early Windows (1981 - 1998)
+
+    1981 : IBM PC introduced
+
+         : Loaded with MS-DOS (GUI not possible due to RAM/hardware)
+
+    1983 : January: Apple Lisa introduced (character-based OS)
+
+         : November: Windows OS announced (Post-Lisa, Pre-Macintosh)
+
+    1984 : January: Apple Macintosh released
+
+         : Becomes the GUI standard (indebted to mid-1970s Xerox PARC)
+
+    1985 : Windows 1.0 released
+
+         : Required only 1MB RAM with 8085 or 8086
+
+    1987 : Windows 2.0 released
+
+    1988 : Windows/386 released (Named after processor, targeted workstations)
+
+         : Windows/286 released (Named after processor, consumer specific)
+
+    1989 : Windows 2.1 merged standard
+
+         : /286 and /386 merged into one OS supporting 8086+
+
+    1990 : May 22: Windows 3.0 released
+
+         : 16-bit Windows era peaks
+
+    1992 : Windows 3.1 released
+
+         : Introduced TrueType fonts and multimedia features
+
+    1993 : Windows NT released
+
+         : Start of the 32-bit age of Windows
+
+    1995 : Windows 95 released
+
+         : Consumer version of NT (lacked some NT features)
+
+    1998 : Windows 98 released
+
+         : Added more hardware support and Internet access
+```
 
 ![[Windows Timeline.canvas]]

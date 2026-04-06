@@ -1,0 +1,10 @@
+{
+  "file-title-updater:sync-titles-from-filename": [
+    {
+      "modifiers": [
+        "Mod"
+      ],
+      "key": "`"
+    }
+  ]
+}
