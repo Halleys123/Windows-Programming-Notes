@@ -1,6 +1,5 @@
 ---
 tags:
-  - "#history/api_design"
 ---
 # The History of Windows Calling Conventions (`WINAPI` & `CALLBACK`)
 

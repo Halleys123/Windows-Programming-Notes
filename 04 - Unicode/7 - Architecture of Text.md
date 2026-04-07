@@ -1,6 +1,5 @@
 ---
 tags:
-  - architecture/data_serialization
 ---
 
 > [!info]

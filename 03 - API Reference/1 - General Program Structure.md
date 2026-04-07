@@ -1,6 +1,5 @@
 ---
 tags:
-  - "#api"
 ---
 ```C
 #include <stdio.h>
@@ -78,7 +77,7 @@ However the Nuance of all this is much more than stated above, due to upgrades i
 | **Stack Cleanup**   | **Caller** (The function that asked for the work).                           | **Callee** (The function actually doing the work).                                        |
 | **Executable Size** | Slightly larger (cleanup code is written every time the function is called). | Slightly smaller (cleanup code is only written once, inside the function itself).         |
 | **Compatibility**   | Specific to the C/C++ compiler.                                              | Universal standard (Safe to share across different languages like Python or C# via DLLs). |
-|                     |                                                                              |                                                                                           |
+
 
 ### The Golden Rule of Windows Functions
 

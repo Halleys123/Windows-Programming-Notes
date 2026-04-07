@@ -1,3 +1,6 @@
+---
+tags:
+---
 
 This is a relic of the past when the microprocessors used 16 bit bus lane in era or MS-DOS and Windows 3.1 and are preserved just for historical purposes. In modern times there is no need to be bothered by the **Near** and **Far** pointers unless you are making a program that should run on these **historical relic systems**.
 
@@ -22,4 +25,4 @@ Therefore, when Microsoft designed the Win32 API, the distinction between a "nea
 
 ---
 
-Final review is that Long and Far pointer are totally Obsolete and we can totally ignore them .
+Final review is that Long and Far pointer are totally Obsolete and we can totally ignore them. If in any book or online tutorial you find people using functions starting with `L or N` we can remove them.

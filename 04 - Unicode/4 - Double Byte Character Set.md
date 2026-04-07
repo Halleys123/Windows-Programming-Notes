@@ -1,8 +1,6 @@
 ---
 title: "Double Byte Character: precursor to Unicode"
 tags:
-  - history/text/dbcs
-  - architecture/memory/variable_width
 ---
 All the previous version of encoding no matter what they did could not support languages like Chinese, Japanese, Korean that had about $80,000$ characters, so a new system of encoding was required which still supported ASCII while having support for new characters
 

@@ -1,6 +1,5 @@
 ---
 tags:
-  - "#history/text/extended"
 ---
 
 One of the primary problems that [[1 - Early Character Encodings & The Rise of ASCII#ASCII|ASCII]] encoding system face is that it is made for American standards including the currency, characters and had no support of characters from other languages which later gave rise to [[5 - Unicode|Unicode]].

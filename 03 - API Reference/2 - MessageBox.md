@@ -1,11 +1,11 @@
 ---
 tags:
-  - "#api/functions/ui"
 ---
-
 ```c++
 MessageBox(HWND, "MESSAGE_STRING", "HEADING_STRING", UINT);
 ```
+
+^605e95
 
 This is the structure of the `MessageBox` function used to generate a Windows-style default message box. It takes 4 parameters:
 
@@ -57,13 +57,13 @@ Because it is a bitmask, you do not just pass one value. You combine multiple fl
 
 **2. Icon Flags (Choose one, optional)** These display a standard system icon on the left side of the message text, which also triggers a specific Windows notification sound.
 
-- `MB_ICONINFORMATION` (or `MB_ICONASTERISK`): Displays a blue 'i' in a circle. Used for successful operations.
+- `MB_ICONINFORMATION` (or `MB_ICONASTERISK`): Displays a blue `i` in a circle. Used for successful operations.
 - `MB_ICONWARNING` (or `MB_ICONEXCLAMATION`): Displays a yellow triangle with an exclamation mark. Used for warnings.
 - `MB_ICONERROR` (or `MB_ICONHAND`, `MB_ICONSTOP`): Displays a red circle with a white X. Used for critical failures.
 - `MB_ICONQUESTION`: Displays a blue question mark. _(Note: Microsoft officially deprecates this icon in modern UI guidelines, recommending you just use text to ask the question)._
 
 **3. Default Button Flags (Choose one, optional)** If your box has multiple buttons, this dictates which button is highlighted by default (the one that gets clicked if the user simply presses the "Enter" key on their keyboard).
 
-- `MB_DEFBUTTON1`: The first button is default (Standard behavior).
+- `MB_DEFBUTTON1`: The first button is default (Standard behaviour).
 - `MB_DEFBUTTON2`: The second button is default (e.g., highlighting "No" in a YES/NO box to prevent accidental deletions).
 - `MB_DEFBUTTON3`: The third button is default.

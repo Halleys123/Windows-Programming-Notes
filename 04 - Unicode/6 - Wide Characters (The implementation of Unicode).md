@@ -1,7 +1,5 @@
 ---
 tags:
-  - api/types/wchar
-  - architecture/memory/fixed_width
 ---
 [[5 - Unicode|Unicode]] is just a giant list of numbers. **It does not dictate how a computer should physically save those numbers in RAM.**
 
@@ -58,4 +56,6 @@ When Linux receives the file, it looks at the hard drive and sees a standard 6-b
 **The Result:** The file format (UTF-8) acts as a universal bridge. The two operating systems never actually see each other's native memory size.
 
 ---
-More on char data type and wide character data type
+More on char data type and wide character data type in:
+1. [[6.1 - char, wchar_t, WCHAR and more]]
+2. [[6.2 - Wide Characters and ISO Standard (Summary)]]

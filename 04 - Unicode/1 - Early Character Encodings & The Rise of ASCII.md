@@ -1,7 +1,6 @@
 ---
 title: Early Character Encodings & The Rise of ASCII
 tags:
-  - "#history/text/ascii"
 ---
 Before modern Unicode existed, early computers had to agree on how to map binary numbers (0s and 1s) to human letters. This evolution was driven entirely by the hardware limitations of the time.
 

@@ -1,7 +1,5 @@
 ---
 tags:
-  - '#history/text/codepages'
-  - '#api/legacy'
 ---
 
 When Microsoft launched Windows 1.0, they had a major problem: the IBM PC extended character set (with its line-drawing boxes) was useless for a graphical OS that needed to support international languages. They needed a software-level standard.
@@ -30,7 +28,7 @@ In 1987, they introduced **Code Pages**. A Code Page is essentially a swappable 
 
 While Code Pages were a clever band-aid, they were a nightmare for global networking. If a computer in Germany (using a German Code Page) saved a text file and emailed it to a computer in Russia (using a Cyrillic Code Page), the upper 128 characters would be interpreted using the wrong dictionary. The document would turn into complete gibberish!
 
-This exact nightmare is what forced the entire tech industry to eventually unite and [[5 - Unicode|create unicode]].
+This exact nightmare is what forced the entire tech industry to eventually unite to [[5 - Unicode|create unicode]]. Although before [[5 - Unicode|Unicode]] a precursor to Unicode was made that was [[4 - Double Byte Character Set|DBCS]].
 
 ---
 

@@ -1,3 +1,6 @@
+---
+tags:
+---
 C was invented in 1972. Back then, computers were the Wild West. Some computers had 8-bit bytes, some had 9-bit bytes, and some had 36-bit words. Because C was designed to run on _literally any hardware_, the C Standard is intentionally extremely loose.
 
 ## The C Standard Specifications

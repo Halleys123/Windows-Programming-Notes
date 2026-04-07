@@ -1,7 +1,5 @@
 ---
 tags:
-  - "#history/text"
-  - "#source/petzold"
 ---
 Humans began speaking tens of thousands of years ago, but writing using alphabets only began about 3,000 years ago; before that, [[Glossary#^536d62|pictographs]] and symbols were used. Spoken language is actually estimated to be at least 50,000 to 150,000 years old. Early writing like Cuneiform started about 5,000 years ago, and alphabets started roughly 3,000 years ago
 

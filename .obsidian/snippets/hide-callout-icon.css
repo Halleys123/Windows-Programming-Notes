@@ -1,0 +1,9 @@
+/* Hide icon specifically for callouts with noicon class */
+.callout[data-callout="noicon"] .callout-icon {
+    display: none;
+}
+
+/* Optional: remove padding where icon used to be */
+.noicon .callout-title-inner {
+    padding-left: 0;
+}
