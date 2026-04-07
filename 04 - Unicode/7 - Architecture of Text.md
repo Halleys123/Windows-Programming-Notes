@@ -24,7 +24,7 @@ This is the algorithm the computer uses to translate that abstract ID number int
 - **UTF-8:** A rulebook that says, _"Use 8-bit blocks. English gets 1 block, Japanese gets 3 blocks."_
 - **UTF-16:** A rulebook that says, _"Use 16-bit blocks for almost everything."_
 - **Code Pages:** _This is the piece you were missing!_ A Code Page is simply **Microsoft's legacy 8-bit rulebook.** Before UTF-8 existed, if Windows wanted to translate the abstract concept of a Russian letter into binary, it looked up the rule in "Code Page 1251". DBCS (like Shift-JIS) is just a highly complex Code Page rulebook.
-- "ANSI" (in the Windows programming world) is a **Character Encoding Rulebook** used by legacy Windows.
+- [[3 - ANSI and Code Pages#The "ANSI" Character Set (Windows Latin 1)|ANSI]] (in the Windows programming world) is a **Character Encoding Rulebook** used by legacy Windows.
 - DBCS was a messy encoding system that used to rulebooks one was [[1 - Early Character Encodings & The Rise of ASCII#ASCII|ASCII]] and other was [[5 - Unicode|Unicode]]
 
 ### Pillar 3: The RAM Container (C++ Data Types)

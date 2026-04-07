@@ -56,3 +56,6 @@ When you click "Save," Windows does not save those raw 4 bytes. Today, almost al
 When Linux receives the file, it looks at the hard drive and sees a standard 6-byte UTF-8 file. It reads the UTF-8 file into memory. As it loads, Linux runs a translation algorithm: it unpacks the 8-bit blocks from the file and pours them into its native 32-bit `wchar_t` buckets for the text editor to use.
 
 **The Result:** The file format (UTF-8) acts as a universal bridge. The two operating systems never actually see each other's native memory size.
+
+---
+More on char data type and wide character data type

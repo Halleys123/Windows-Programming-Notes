@@ -20,18 +20,21 @@ Based on the value provided (if it is `NULL` or a valid `HWND` value), the follo
 - **If `HWND` is provided:** The message box becomes **Modal**. The Operating System completely disables mouse and keyboard input for the parent window. The user is locked out of the main application until they click a button (like OK or Cancel) on the message box to close it. Clicking the background window will produce an error sound.
 - **If `NULL` is provided:** The message box is **Modeless** (unowned). The user can freely click back into the main application, type, and interact with it while the message box safely sits in the background.
 
-**2. Z-Ordering (Stacking Behaviour)**
+**2. Z-Ordering (Stacking Behavior)**
 - **If `HWND` is provided:** The Z-order (3D depth) of the message box is permanently glued to the parent window. The message box is guaranteed to always float directly on top of the parent window. If the parent window is brought to the front of the screen, the message box comes with it.
 - **If `NULL` is provided:** The message box acts as an independent window. If the user clicks the main application, the main application will move to the front and physically cover up the message box, potentially hiding it from the user.
 
 ## `MESSAGE_STRING`
 
-**MESSAGE_STRING (`LPCSTR` / `LPCWSTR lpText`)** This is the second parameter, which defines the actual body text of the message box.
+**MESSAGE_STRING (`PCSTR` / `PCWSTR lpText`)** This is the second parameter, which defines the actual body text of the message box.
 
 - **Formatting:** It is a standard null-terminated string. If you want to format the text into multiple paragraphs or lines, you can use standard C escape sequences like `\n` (newline) or `\t` (tab) directly inside the string.
-    
-- **Unicode Note:** If you compiled your program using `wWinMain`, Windows expects a 16-bit wide string here. You should prefix your string literal with an `L` (e.g., `L"Operation completed successfully."`).
-    
+- **Unicode Note:** If you compiled your program using `wWinMain`, Windows expects a 16-bit wide string here. You should prefix your string literal with an `L` (e.g., `L"Operation completed successfully."` or `TEXT("Operation completed successfully.")`).
+- **Legacy Stuff**: Earlier there was a use of [[8 - Near and Long pointers|near and far pointers]] so there were a lot more data types that were available (although still present but have same meaning as PCSTR and PCWSTR) like NPCSTR or LPCSTR or NPCWSTR or LPCWSTR
+
+>[!fact] Fun Fact
+>C in `PCWSTR` and `PCSTR` means `constant` and not `Character` that means PCWSTR's and PCSTR's full form are`Pointer to constant wide string` and `Pointer to constant string` respectively.
+
 ## `HEADING_STRING`
 
 **HEADING_STRING (`LPCSTR` / `LPCWSTR lpCaption`)** This is the third parameter, which defines the text displayed in the title bar at the very top of the message box.

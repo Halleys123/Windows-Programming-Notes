@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "04 - Unicode/3 - ANSI and Code Pages.md",
+                "file": "04 - Unicode/8 - Near and Long pointers.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "3 - ANSI and Code Pages"
+              "title": "8 - Near and Long pointers"
             }
           }
         ]
@@ -53,7 +53,7 @@
             "state": {
               "type": "search",
               "state": {
-                "query": "[\"cssclasses\"]",
+                "query": "",
                 "matchingCase": false,
                 "explainSearch": false,
                 "collapseAll": false,
@@ -78,7 +78,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 257.5
+    "width": 385.5
   },
   "right": {
     "id": "85a790de0ed810ce",
@@ -94,7 +94,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Study Later.md",
+                "file": "04 - Unicode/8 - Near and Long pointers.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -104,7 +104,7 @@
                 "unlinkedCollapsed": true
               },
               "icon": "links-coming-in",
-              "title": "Backlinks for Study Later"
+              "title": "Backlinks for 8 - Near and Long pointers"
             }
           },
           {
@@ -113,12 +113,12 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "04 - Unicode/3 - ANSI and Code Pages.md",
+                "file": "04 - Unicode/8 - Near and Long pointers.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               },
               "icon": "links-going-out",
-              "title": "Outgoing links from 3 - ANSI and Code Pages"
+              "title": "Outgoing links from 8 - Near and Long pointers"
             }
           },
           {
@@ -156,20 +156,20 @@
             "state": {
               "type": "outline",
               "state": {
+                "file": "04 - Unicode/8 - Near and Long pointers.md",
                 "followCursor": false,
                 "showSearch": true,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Outline"
+              "title": "Outline of 8 - Near and Long pointers"
             }
           }
-        ],
-        "currentTab": 1
+        ]
       }
     ],
     "direction": "horizontal",
-    "width": 300
+    "width": 341.5
   },
   "left-ribbon": {
     "hiddenItems": {
@@ -182,23 +182,27 @@
       "bases:Create new base": false
     }
   },
-  "active": "f0288e2e405b44c7",
+  "active": "8d47b86aa138457a",
   "lastOpenFiles": [
+    "04 - Unicode/6.2 - Wide Characters and ISO Standard (Summary).md",
+    "04 - Unicode/6.1 - char, wchar_t, WCHAR and more.md",
+    "04 - Unicode/6 - Wide Characters (The implementation of Unicode).md",
+    "03 - API Reference/2 - MessageBox.md",
+    "04 - Unicode/8 - Near and Long pointers.md",
+    "02 - Architecture & Mechanics/Important Windows Headers and DLL's.md",
+    "02 - Architecture & Mechanics/ISO C Standard and C Specifications.md",
+    "04 - Unicode/7 - Architecture of Text.md",
+    "04 - Unicode/3 - ANSI and Code Pages.md",
     "04 - Unicode/0 - History of Character Sets.md",
     "03 - API Reference/1 - General Program Structure.md",
-    "03 - API Reference/2 - MessageBox.md",
     "03 - API Reference/0 - Hungarian Notation.md",
     "02 - Architecture & Mechanics/Dynamic Linking.md",
-    "02 - Architecture & Mechanics/Important Windows Headers and DLL's.md",
     "04 - Unicode/1 - Early Character Encodings & The Rise of ASCII.md",
     "04 - Unicode/2 - Flaws of ASCII and Extending ASCII.md",
     "02 - Architecture & Mechanics/Future Reads/History of CALLBACK and APIENTRY (FUTURE_READ).md",
     "Untitled.canvas",
-    "04 - Unicode/6 - Wide Characters (The implementation of Unicode).md",
-    "04 - Unicode/7 - Architecture of Text.md",
     "04 - Unicode/5 - Unicode.md",
     "04 - Unicode/4 - Double Byte Character Set.md",
-    "04 - Unicode/3 - ANSI and Code Pages.md",
     "01 - History & Fundamentals/Introduction and History.md",
     "01 - History & Fundamentals/Alternate options to Win32.md",
     "01 - History & Fundamentals/Windows NT and Windows 98.md",
@@ -213,9 +217,6 @@
     "Untitled.base",
     "1 - Important Windows Headers and DLL's.md",
     "02 - Architecture & Mechanics/1 0 Dynamic Linking.md",
-    "API Reference/General Program Structure.md",
-    "API Reference/Hungarian Notation.md",
-    "API Reference/MessageBox.md",
     "03 - API Reference",
     "02 - Architecture & Mechanics/Future Reads",
     "02 - Architecture & Mechanics",
