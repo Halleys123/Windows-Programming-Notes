@@ -11,10 +11,26 @@
             "id": "f0288e2e405b44c7",
             "type": "leaf",
             "state": {
-              "type": "graph",
-              "state": {},
-              "icon": "lucide-git-fork",
-              "title": "Graph view"
+              "type": "markdown",
+              "state": {
+                "file": "05 - Windows, Messages and Core Architecture/01.1 - Some Message and Processing Messages.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "01.1 - Some Message and Processing Messages"
+            }
+          },
+          {
+            "id": "84133515cc20f250",
+            "type": "leaf",
+            "state": {
+              "type": "excalidraw",
+              "state": {
+                "file": "Excalidraw/Coordinates in ClientArea.md"
+              },
+              "icon": "excalidraw-icon",
+              "title": "Coordinates in ClientArea"
             }
           }
         ]
@@ -49,7 +65,7 @@
             "state": {
               "type": "search",
               "state": {
-                "query": "",
+                "query": "loop",
                 "matchingCase": false,
                 "explainSearch": false,
                 "collapseAll": false,
@@ -74,7 +90,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 300.5
+    "width": 385.5
   },
   "right": {
     "id": "85a790de0ed810ce",
@@ -90,6 +106,7 @@
             "state": {
               "type": "backlink",
               "state": {
+                "file": "05 - Windows, Messages and Core Architecture/01.1 - Some Message and Processing Messages.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -99,7 +116,7 @@
                 "unlinkedCollapsed": true
               },
               "icon": "links-coming-in",
-              "title": "Backlinks"
+              "title": "Backlinks for 01.1 - Some Message and Processing Messages"
             }
           },
           {
@@ -108,12 +125,12 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "03 - API Reference/2 - MessageBox.md",
+                "file": "05 - Windows, Messages and Core Architecture/01.1 - Some Message and Processing Messages.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               },
               "icon": "links-going-out",
-              "title": "Outgoing links from 2 - MessageBox"
+              "title": "Outgoing links from 01.1 - Some Message and Processing Messages"
             }
           },
           {
@@ -151,19 +168,20 @@
             "state": {
               "type": "outline",
               "state": {
+                "file": "05 - Windows, Messages and Core Architecture/01.1 - Some Message and Processing Messages.md",
                 "followCursor": false,
                 "showSearch": true,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Outline"
+              "title": "Outline of 01.1 - Some Message and Processing Messages"
             }
           }
         ]
       }
     ],
     "direction": "horizontal",
-    "width": 300
+    "width": 341.5
   },
   "left-ribbon": {
     "hiddenItems": {
@@ -179,36 +197,35 @@
   },
   "active": "f0288e2e405b44c7",
   "lastOpenFiles": [
-    "05 - Windows, Messages and Core Architecture/04 - Window and Window Creation.md",
-    "05 - Windows, Messages and Core Architecture/02 - Window Class.md",
-    "05 - Windows, Messages and Core Architecture/02.2 - cbClsExtra and cbWndExtra.md",
-    "05 - Windows, Messages and Core Architecture/03 - Window Procedure.md",
-    "03 - API Reference/5 - WPARAM and LPARAM.md",
-    "03 - API Reference/4 - LoadCursor.md",
-    "03 - API Reference/3 - LoadIcon.md",
-    "05 - Windows, Messages and Core Architecture/02.1 - WNDCLASS Styles.md",
     "05 - Windows, Messages and Core Architecture/01 - Core architectural overview.md",
-    "5- RegisterClass.md",
-    "03 - API Reference/5- RegisterClass.md",
-    "03 - API Reference/Untitled",
-    "01 - History & Fundamentals/Windows NT and Windows 98.md",
-    "03 - API Reference/0 - Hungarian Notation.md",
+    "05 - Windows, Messages and Core Architecture/01.1 - Some Message and Processing Messages.md",
+    "03 - API Reference/5 - WPARAM and LPARAM.md",
+    "05 - Windows, Messages and Core Architecture/03 - Window Procedure.md",
+    "05 - Windows, Messages and Core Architecture/01.5 - WM_QUIT.md",
+    "05 - Windows, Messages and Core Architecture/02 - Window Class.md",
+    "Excalidraw/Coordinates in ClientArea.md",
+    "05 - Windows, Messages and Core Architecture/01.4 - WM_DESTROY.md",
+    "05 - Windows, Messages and Core Architecture/01.3 - WM_CLOSE.md",
+    "Excalidraw/Coordinates of Window.md",
+    "05 - Windows, Messages and Core Architecture/01.2 - WM_PAINT.md",
+    "03 - API Reference/7 - DrawText.md",
+    "05 - Windows, Messages and Core Architecture/04 - Window and Window Creation.md",
+    "03 - API Reference/6 - Client Area & Window Area.md",
+    "Excalidraw/Untitled.md",
+    "Images/ClientArea.png",
+    "05 - Windows, Messages and Core Architecture/02.2 - cbClsExtra and cbWndExtra.md",
+    "04 - Unicode/8 - Near and Long pointers.md",
     "Excalidraw/Message Loop.excalidraw.md",
     "Excalidraw",
-    "03 - API Reference/1 - General Program Structure.md",
-    "03 - API Reference/2 - MessageBox.md",
-    "05 - Core UI Architecture",
+    "05 - Windows, Messages and Core Architecture/02.1 - WNDCLASS Styles.md",
     "05 - Windows, Messages and Core Architecture",
-    "02 - Architecture & Mechanics/Future Reads/History of CALLBACK and APIENTRY (FUTURE_READ).md",
-    "02 - Architecture & Mechanics/Dynamic Linking.md",
+    "03 - API Reference/4 - LoadCursor.md",
+    "03 - API Reference/3 - LoadIcon.md",
+    "04 - Unicode/6.2 - Wide Characters and ISO Standard (Summary).md",
+    "04 - Unicode/6.1 - char, wchar_t, WCHAR and more.md",
+    "04 - Unicode/6 - Wide Characters (The implementation of Unicode).md",
+    "03 - API Reference/2 - MessageBox.md",
     "02 - Architecture & Mechanics/Important Windows Headers and DLL's.md",
-    "02 - Architecture & Mechanics/ISO C Standard and C Specifications.md",
-    "04 - Unicode/0 - History of Character Sets.md",
-    "04 - Unicode/1 - Early Character Encodings & The Rise of ASCII.md",
-    "04 - Unicode/2 - Flaws of ASCII and Extending ASCII.md",
-    "04 - Unicode/3 - ANSI and Code Pages.md",
-    "04 - Unicode/4 - Double Byte Character Set.md",
-    "04 - Unicode/5 - Unicode.md",
     "Untitled.canvas",
     "01 - History & Fundamentals/Windows Timeline.canvas",
     "Images/DBCS_Memory_Parsing.gif",
@@ -218,6 +235,8 @@
     "Untitled.base",
     "03 - API Reference",
     "02 - Architecture & Mechanics/Future Reads",
-    "02 - Architecture & Mechanics"
+    "02 - Architecture & Mechanics",
+    "01 - History & Fundamentals",
+    "00 - Meta & Reference"
   ]
 }

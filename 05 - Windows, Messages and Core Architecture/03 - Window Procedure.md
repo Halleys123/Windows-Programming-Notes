@@ -35,3 +35,4 @@ The WndProc function returns a value of type LRESULT. That’s simply defined as
 >[!info] More about WPARAM and LPARAM
 >Visit [[5 - WPARAM and LPARAM]] to know what W and L in PARAM means and why are they named in such a manner.
 >Unlike [[8 - Near and Long pointers|Near and Long abbreviation]] the [[5 - WPARAM and LPARAM|WPARAM and LPARAM abbreviation]] is still useful and used in todays programming.
+

@@ -59,5 +59,5 @@ This can be whatever you want. In pro grams that create only one window, the win
 5. `hInstance` - Handle (memory address) of program in memory.
 6. `hIcon` - This field saves a `Handle to Icon` for window and is loaded with [[3 - LoadIcon|LoadIcon]]. ^dc8f54
 7. `hCursor` - Similar to hIcon, The [[4 - LoadCursor]] function loads a predefined mouse cursor known as IDC_ARROW and returns a handle to the cursor.
-8. `hbrBackground` - The hbr prefix of the hbrBackground field name stands for “handle to a brush.” A brush is a graphics term that refers to a colored pattern of pixels used to fill an area. The GetStockObject call shown here returns a handle to a white brush: `GetStockObject (WHITE_BRUSH)`.
+8. `hbrBackground` - The hbr prefix of the hbrBackground field name stands for “handle to a brush.” A brush is a graphics term that refers to a colored pattern of pixels used to fill an area. The GetStockObject call shown here returns a handle to a white brush: `GetStockObject (WHITE_BRUSH)`. ^efdbd9
 9. 
