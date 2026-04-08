@@ -2,7 +2,6 @@
 cssclasses:
   - no-callout-icon
 ---
-
 When programming for Windows, you are engaging in a specialized form of object-oriented programming, where the primary object is the [[04 - Window and Window Creation|Window]]. 
 
 The most common type of window is an application window, such as a browser or File Explorer. However, this represents only a fraction of the architecture.

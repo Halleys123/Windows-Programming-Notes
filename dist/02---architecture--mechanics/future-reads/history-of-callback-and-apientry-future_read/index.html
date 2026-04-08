@@ -1,0 +1,106 @@
+<!DOCTYPE html><html lang="en"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>History of CALLBACK and APIENTRY (FUTURE_READ) | Windows Programming Notes</title><meta name="description" content="Windows Programming Notes"><link rel="stylesheet" href="/_astro/_slug_.BZ3F152Q.css"></head> <body> <div class="container"> <aside class="sidebar">  <nav class="navigation" data-astro-cid-pux6a34n> <h1 data-astro-cid-pux6a34n>Windows Programming Notes</h1> <p class="build-meta" data-astro-cid-pux6a34n>Generated: 9/4/2026, 1:55:22 am</p> <ul class="nav-list" data-astro-cid-pux6a34n> <li class="nav-item" data-astro-cid-pux6a34n> <details class="nav-section" data-astro-cid-pux6a34n> <summary class="nav-folder" data-astro-cid-pux6a34n>Meta &amp; Reference</summary> <ul class="nav-list" data-astro-cid-pux6a34n> <li class="nav-item" data-astro-cid-pux6a34n> <a href="/00---meta--reference/chapters-for-notes" class="nav-link " data-astro-cid-pux6a34n> Chapters for Notes </a> </li><li class="nav-item" data-astro-cid-pux6a34n> <a href="/00---meta--reference/glossary" class="nav-link " data-astro-cid-pux6a34n> Glossary </a> </li><li class="nav-item" data-astro-cid-pux6a34n> <a href="/00---meta--reference/study-later" class="nav-link " data-astro-cid-pux6a34n> Study Later </a> </li><li class="nav-item" data-astro-cid-pux6a34n> <a href="/00---meta--reference/tag-list" class="nav-link " data-astro-cid-pux6a34n> Tag List </a> </li> </ul> </details> </li><li class="nav-item" data-astro-cid-pux6a34n> <details class="nav-section" data-astro-cid-pux6a34n> <summary class="nav-folder" data-astro-cid-pux6a34n>History &amp; Fundamentals</summary> <ul class="nav-list" data-astro-cid-pux6a34n> <li class="nav-item" data-astro-cid-pux6a34n> <a href="/01---history--fundamentals/alternate-options-to-win32" class="nav-link " data-astro-cid-pux6a34n> Alternate options to Win32 </a> </li><li class="nav-item" data-astro-cid-pux6a34n> <a href="/01---history--fundamentals/introduction-and-history" class="nav-link " data-astro-cid-pux6a34n> Introduction and History </a> </li><li class="nav-item" data-astro-cid-pux6a34n> <a href="/01---history--fundamentals/windows-nt-and-windows-98" class="nav-link " data-astro-cid-pux6a34n> Windows NT and Windows 98 </a> </li> </ul> </details> </li><li class="nav-item" data-astro-cid-pux6a34n> <details class="nav-section" open data-astro-cid-pux6a34n> <summary class="nav-folder" data-astro-cid-pux6a34n>Architecture &amp; Mechanics</summary> <ul class="nav-list" data-astro-cid-pux6a34n> <li class="nav-item" data-astro-cid-pux6a34n> <a href="/02---architecture--mechanics/dynamic-linking" class="nav-link " data-astro-cid-pux6a34n> Dynamic Linking </a> </li><li class="nav-item" data-astro-cid-pux6a34n> <details class="nav-section" open data-astro-cid-pux6a34n> <summary class="nav-folder" data-astro-cid-pux6a34n>Future Reads</summary> <ul class="nav-list" data-astro-cid-pux6a34n> <li class="nav-item" data-astro-cid-pux6a34n> <a href="/02---architecture--mechanics/future-reads/history-of-callback-and-apientry-future_read" class="nav-link active" data-astro-cid-pux6a34n> History of CALLBACK and APIENTRY (FUTURE_READ) </a> </li> </ul> </details> </li><li class="nav-item" data-astro-cid-pux6a34n> <a href="/02---architecture--mechanics/important-windows-headers-and-dlls" class="nav-link " data-astro-cid-pux6a34n> Important Windows Headers and DLL&#39;s </a> </li><li class="nav-item" data-astro-cid-pux6a34n> <a href="/02---architecture--mechanics/iso-c-standard-and-c-specifications" class="nav-link " data-astro-cid-pux6a34n> ISO C Standard and C Specifications </a> </li> </ul> </details> </li><li class="nav-item" data-astro-cid-pux6a34n> <details class="nav-section" data-astro-cid-pux6a34n> <summary class="nav-folder" data-astro-cid-pux6a34n>API Reference</summary> <ul class="nav-list" data-astro-cid-pux6a34n> <li class="nav-item" data-astro-cid-pux6a34n> <a href="/03---api-reference/0---hungarian-notation" class="nav-link " data-astro-cid-pux6a34n> Hungarian Notation </a> </li><li class="nav-item" data-astro-cid-pux6a34n> <a href="/03---api-reference/1---general-program-structure" class="nav-link " data-astro-cid-pux6a34n> General Program Structure </a> </li><li class="nav-item" data-astro-cid-pux6a34n> <a href="/03---api-reference/2---messagebox" class="nav-link " data-astro-cid-pux6a34n> MessageBox </a> </li><li class="nav-item" data-astro-cid-pux6a34n> <a href="/03---api-reference/3---loadicon" class="nav-link " data-astro-cid-pux6a34n> LoadIcon </a> </li><li class="nav-item" data-astro-cid-pux6a34n> <a href="/03---api-reference/4---loadcursor" class="nav-link " data-astro-cid-pux6a34n> LoadCursor </a> </li><li class="nav-item" data-astro-cid-pux6a34n> <a href="/03---api-reference/5---wparam-and-lparam" class="nav-link " data-astro-cid-pux6a34n> WPARAM and LPARAM </a> </li><li class="nav-item" data-astro-cid-pux6a34n> <a href="/03---api-reference/6---client-area--window-area" class="nav-link " data-astro-cid-pux6a34n> Client Area &amp; Window Area </a> </li><li class="nav-item" data-astro-cid-pux6a34n> <a href="/03---api-reference/7---drawtext" class="nav-link " data-astro-cid-pux6a34n> DrawText </a> </li> </ul> </details> </li><li class="nav-item" data-astro-cid-pux6a34n> <details class="nav-section" data-astro-cid-pux6a34n> <summary class="nav-folder" data-astro-cid-pux6a34n>Unicode</summary> <ul class="nav-list" data-astro-cid-pux6a34n> <li class="nav-item" data-astro-cid-pux6a34n> <a href="/04---unicode/0---history-of-character-sets" class="nav-link " data-astro-cid-pux6a34n> History of Character Sets </a> </li><li class="nav-item" data-astro-cid-pux6a34n> <a href="/04---unicode/1---early-character-encodings--the-rise-of-ascii" class="nav-link " data-astro-cid-pux6a34n> Early Character Encodings &amp; The Rise of ASCII </a> </li><li class="nav-item" data-astro-cid-pux6a34n> <a href="/04---unicode/2---flaws-of-ascii-and-extending-ascii" class="nav-link " data-astro-cid-pux6a34n> Flaws of ASCII and Extending ASCII </a> </li><li class="nav-item" data-astro-cid-pux6a34n> <a href="/04---unicode/3---ansi-and-code-pages" class="nav-link " data-astro-cid-pux6a34n> ANSI and Code Pages </a> </li><li class="nav-item" data-astro-cid-pux6a34n> <a href="/04---unicode/4---double-byte-character-set" class="nav-link " data-astro-cid-pux6a34n> Double Byte Character Set </a> </li><li class="nav-item" data-astro-cid-pux6a34n> <a href="/04---unicode/5---unicode" class="nav-link " data-astro-cid-pux6a34n> Unicode </a> </li><li class="nav-item" data-astro-cid-pux6a34n> <a href="/04---unicode/6---wide-characters-the-implementation-of-unicode" class="nav-link " data-astro-cid-pux6a34n> Wide Characters (The implementation of Unicode) </a> </li><li class="nav-item" data-astro-cid-pux6a34n> <a href="/04---unicode/61---char-wchar_t-wchar-and-more" class="nav-link " data-astro-cid-pux6a34n> char, wchar_t, WCHAR and more </a> </li><li class="nav-item" data-astro-cid-pux6a34n> <a href="/04---unicode/62---wide-characters-and-iso-standard-summary" class="nav-link " data-astro-cid-pux6a34n> Wide Characters and ISO Standard (Summary) </a> </li><li class="nav-item" data-astro-cid-pux6a34n> <a href="/04---unicode/7---architecture-of-text" class="nav-link " data-astro-cid-pux6a34n> Architecture of Text </a> </li><li class="nav-item" data-astro-cid-pux6a34n> <a href="/04---unicode/8---near-and-long-pointers" class="nav-link " data-astro-cid-pux6a34n> Near and Long pointers </a> </li> </ul> </details> </li><li class="nav-item" data-astro-cid-pux6a34n> <details class="nav-section" data-astro-cid-pux6a34n> <summary class="nav-folder" data-astro-cid-pux6a34n>Windows, Messages and Core Architecture</summary> <ul class="nav-list" data-astro-cid-pux6a34n> <li class="nav-item" data-astro-cid-pux6a34n> <a href="/05---windows-messages-and-core-architecture/01---core-architectural-overview" class="nav-link " data-astro-cid-pux6a34n> Core architectural overview </a> </li><li class="nav-item" data-astro-cid-pux6a34n> <a href="/05---windows-messages-and-core-architecture/011---some-message-and-processing-messages" class="nav-link " data-astro-cid-pux6a34n> Some Message and Processing Messages </a> </li><li class="nav-item" data-astro-cid-pux6a34n> <a href="/05---windows-messages-and-core-architecture/012---wm_paint" class="nav-link " data-astro-cid-pux6a34n> WM_PAINT </a> </li><li class="nav-item" data-astro-cid-pux6a34n> <a href="/05---windows-messages-and-core-architecture/013---wm_close" class="nav-link " data-astro-cid-pux6a34n> WM_CLOSE </a> </li><li class="nav-item" data-astro-cid-pux6a34n> <a href="/05---windows-messages-and-core-architecture/014---wm_destroy" class="nav-link " data-astro-cid-pux6a34n> WM_DESTROY </a> </li><li class="nav-item" data-astro-cid-pux6a34n> <a href="/05---windows-messages-and-core-architecture/015---wm_quit" class="nav-link " data-astro-cid-pux6a34n> WM_QUIT </a> </li><li class="nav-item" data-astro-cid-pux6a34n> <a href="/05---windows-messages-and-core-architecture/02---window-class" class="nav-link " data-astro-cid-pux6a34n> Window Class </a> </li><li class="nav-item" data-astro-cid-pux6a34n> <a href="/05---windows-messages-and-core-architecture/021---wndclass-styles" class="nav-link " data-astro-cid-pux6a34n> WNDCLASS Styles </a> </li><li class="nav-item" data-astro-cid-pux6a34n> <a href="/05---windows-messages-and-core-architecture/022---cbclsextra-and-cbwndextra" class="nav-link " data-astro-cid-pux6a34n> cbClsExtra and cbWndExtra </a> </li><li class="nav-item" data-astro-cid-pux6a34n> <a href="/05---windows-messages-and-core-architecture/03---window-procedure" class="nav-link " data-astro-cid-pux6a34n> Window Procedure </a> </li><li class="nav-item" data-astro-cid-pux6a34n> <a href="/05---windows-messages-and-core-architecture/04---window-and-window-creation" class="nav-link " data-astro-cid-pux6a34n> Window and Window Creation </a> </li> </ul> </details> </li><li class="nav-item" data-astro-cid-pux6a34n> <details class="nav-section" data-astro-cid-pux6a34n> <summary class="nav-folder" data-astro-cid-pux6a34n>Excalidraw</summary> <ul class="nav-list" data-astro-cid-pux6a34n> <li class="nav-item" data-astro-cid-pux6a34n> <a href="/excalidraw/coordinates-in-clientarea" class="nav-link " data-astro-cid-pux6a34n> Coordinates in ClientArea </a> </li><li class="nav-item" data-astro-cid-pux6a34n> <a href="/excalidraw/coordinates-of-window" class="nav-link " data-astro-cid-pux6a34n> Coordinates of Window </a> </li><li class="nav-item" data-astro-cid-pux6a34n> <a href="/excalidraw/message-loopexcalidraw" class="nav-link " data-astro-cid-pux6a34n> Message Loop.excalidraw </a> </li> </ul> </details> </li> </ul> </nav>   </aside> <main class="content"> <header class="content-header"> <h2>History of CALLBACK and APIENTRY (FUTURE_READ)</h2> <p>02 - Architecture &amp; Mechanics/Future Reads/History of CALLBACK and APIENTRY (FUTURE_READ).md</p> </header> <article class="markdown-body">    <h1 id="the-history-of-windows-calling-conventions-winapi--callback">The History of Windows Calling Conventions (<code>WINAPI</code> &#x26; <code>CALLBACK</code>)</h1>
+<p>To understand why Windows uses <code>WINAPI</code> and <code>CALLBACK</code>, you have to look at the severe hardware limitations of the 1980s and the massive architectural shifts of the 1990s and 2000s.</p>
+<h2 id="1-the-origins-the-16-bit-era-1985--1993">1. The Origins: The 16-bit Era (1985 – 1993)</h2>
+<p><strong>Operating Systems:</strong> Windows 1.0 through Windows 3.1 <strong>Processors:</strong> Intel 8086, 80286 (Real Mode and early Protected Mode)</p>
+<p>In the 16-bit era, RAM and hard drive space were incredibly scarce. The standard C calling convention (<code>__cdecl</code>) was considered too “fat” for an operating system because it required the <strong>Caller</strong> to clean the stack. If a program called <code>MessageBox</code> 1,000 times, the compiler had to generate the stack-cleanup assembly instruction 1,000 times, bloating the size of the <code>.exe</code> file.</p>
+<p><strong>The Solution: <code>PASCAL</code></strong> Microsoft decided that the Windows API would not use standard C rules. Instead, they used the calling convention of the <strong>Pascal</strong> programming language. In Pascal, the <strong>Callee</strong> (the function itself) cleans the stack. This meant the cleanup code was written exactly once (inside the Windows DLLs), keeping user programs tiny.</p>
+<p>During this era, if you wrote a Windows program, your functions looked like this:</p>
+<pre class="astro-code github-light" style="background-color:#fff;color:#24292e; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="c"><code><span class="line"><span style="color:#D73A49">int</span><span style="color:#24292E"> PASCAL </span><span style="color:#6F42C1">WinMain</span><span style="color:#24292E">(...) </span></span>
+<span class="line"></span></code></pre>
+<h2 id="2-the-32-bit-transition-the-birth-of-winapi-1993--2005">2. The 32-bit Transition: The Birth of <code>WINAPI</code> (1993 – 2005)</h2>
+<p><strong>Operating Systems:</strong> Windows NT 3.1, Windows 95 <strong>Processors:</strong> Intel 80386, Pentium</p>
+<p>When Microsoft transitioned to 32-bit architecture, the old <code>PASCAL</code> convention broke down because it couldn’t handle C’s “variadic functions” (functions that take a variable number of arguments, like <code>printf</code>).</p>
+<p>Microsoft needed a new standard for 32-bit Windows that:</p>
+<ol>
+<li>Kept the file-size benefits of Callee-cleanup.</li>
+<li>Supported modern C/C++ development.</li>
+<li>Allowed other languages (Visual Basic, Delphi) to easily call Windows functions.</li>
+</ol>
+<p><strong>The Solution: <code>__stdcall</code></strong> Microsoft invented <code>__stdcall</code> (Standard Call). However, they faced a massive problem: millions of lines of 16-bit code already had the word <code>PASCAL</code> written everywhere. If they just told everyone to replace <code>PASCAL</code> with <code>__stdcall</code>, it would break compatibility.</p>
+<p>So, Microsoft created <strong>Abstraction Macros</strong>. They told developers: <em>“Stop using hardware-specific words. Use our new macros. We will define them based on whatever compiler you are using.”</em></p>
+<p>Thus, <code>WINDEF.H</code> was born with these definitions:</p>
+<pre class="astro-code github-light" style="background-color:#fff;color:#24292e; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="plaintext"><code><span class="line"><span>// If compiling for modern 32-bit Windows:</span></span>
+<span class="line"><span>#define WINAPI    __stdcall</span></span>
+<span class="line"><span>#define CALLBACK  __stdcall</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>// (Hidden away for legacy 16-bit compilers, they still equaled PASCAL)</span></span>
+<span class="line"><span></span></span></code></pre>
+<ul>
+<li><strong><code>WINAPI</code></strong> was designated for functions the OS provides to you.</li>
+<li><strong><code>CALLBACK</code></strong> was designated for functions you provide to the OS.</li>
+</ul>
+<h2 id="3-the-64-bit-obsolescence-2005--present">3. The 64-bit Obsolescence (2005 – Present)</h2>
+<p><strong>Operating Systems:</strong> Windows XP Professional x64, Windows 7, 10, 11 <strong>Processors:</strong> AMD64, Intel x86-64</p>
+<p>By the mid-2000s, RAM and hard drive space were no longer the primary bottlenecks; <strong>CPU speed</strong> was. Hardware engineers realized that pushing variables into the RAM Stack (which <code>__cdecl</code> and <code>__stdcall</code> both did heavily) was incredibly slow compared to the blazing speed of the CPU’s internal hardware registers. Modern 64-bit processors had plenty of these registers to spare.</p>
+<p><strong>The Solution: The x64 Calling Convention</strong> Microsoft completely abandoned the concept of Callee-cleans vs. Caller-cleans at the hardware level. They created a single, unified rule for 64-bit Windows:</p>
+<ol>
+<li>The first four parameters of any function are passed directly into the CPU’s ultra-fast registers (<code>RCX</code>, <code>RDX</code>, <code>R8</code>, <code>R9</code>).</li>
+<li>Only if there is a 5th parameter does the system resort to using the RAM stack.</li>
+<li>The Caller is strictly responsible for allocating and cleaning a “Shadow Space” on the stack.</li>
+</ol>
+<blockquote>
+<p><strong>The “Aha!” Connection:</strong> > When you call a standard function like <code>wWinMain(A, B, C, D)</code>, the OS shoves all four parameters directly into the CPU’s registers (its hands). <strong>If the parameters never go onto the RAM Stack, the RAM Stack does not need to be cleaned!</strong> The whole debate over who cleans the stack (<code>__cdecl</code> vs <code>__stdcall</code>) completely vanished because the stack isn’t holding the parameters anymore.</p>
+</blockquote>
+<h3 id="why-do-the-macros-still-exist-today">Why do the macros still exist today?</h3>
+<p>If the 64-bit hardware completely ignores <code>__stdcall</code>, why are <code>WINAPI</code> and <code>CALLBACK</code> still required in modern C++ code?</p>
+<ul>
+<li><strong>The C++ Type System:</strong> The C++ language standard dictates that <code>__cdecl</code> and <code>__stdcall</code> are fundamentally different data types. Even if the hardware treats them identically, the compiler will throw a “Type Mismatch Error” if Windows asks for a <code>__stdcall</code> function pointer and you provide a <code>__cdecl</code> one.</li>
+<li><strong>Cross-Architecture Portability:</strong> By forcing developers to keep the macros in their code, Microsoft ensures that a program written on Windows 11 (64-bit) can be recompiled for an older 32-bit machine without changing a single line of text. The compiler simply looks at the target architecture and decides whether to use the modern x64 register rules or fall back to the old 32-bit stack rules.</li>
+</ul>
+<hr>
+<h3 id="summary-timeline">Summary Timeline</h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Era</th><th>Architecture</th><th>Standard OS Convention</th><th>Who Cleans the Stack?</th><th>Primary Motivation</th></tr></thead><tbody><tr><td><strong>1980s</strong></td><td>16-bit (x86)</td><td><code>PASCAL</code></td><td>Callee (Function)</td><td>Save RAM and Disk Space (Smaller <code>.exe</code>).</td></tr><tr><td><strong>1990s</strong></td><td>32-bit (x86)</td><td><code>__stdcall</code></td><td>Callee (Function)</td><td>Standardize Windows APIs; allow VB/Delphi interop.</td></tr><tr><td><strong>2000s+</strong></td><td>64-bit (x64)</td><td><strong>x64 Convention</strong></td><td>Caller</td><td>Pure Execution Speed (Use CPU registers, skip the RAM stack).</td></tr><tr><td></td><td></td><td></td><td></td><td></td></tr></tbody></table>
+<h3 id="external-links">External Links</h3>
+<ol>
+<li><a href="https://learn.microsoft.com/en-us/cpp/cpp/calling-conventions?view=msvc-170">Argument Passing and Naming Convention</a></li>
+<li><a href="https://learn.microsoft.com/en-us/cpp/cpp/argument-passing-and-naming-conventions?view=msvc-170">https://learn.microsoft.com/en-us/cpp/cpp/argument-passing-and-naming-conventions?view=msvc-170</a></li>
+<li><a href="https://learn.microsoft.com/en-us/cpp/build/x64-calling-convention?view=msvc-170">x64 Calling convention</a></li>
+<li><a href="https://wiki.osdev.org/Calling_Conventions">Calling conventions by osdev</a></li>
+<li><a href="https://www.agner.org/optimize/">Software Optimization</a></li>
+<li><a href="https://learn.microsoft.com/en-us/sysinternals/resources/windows-internals">https://learn.microsoft.com/en-us/sysinternals/resources/windows-internals</a></li>
+</ol>
+<hr>
+<blockquote>
+<p>Personal Note
+This section needs extensive understand as it was kind of confusing to Chronology of how everything changed (I think someone at Mircrosoft is also not very clear about how everything is working.). (Maybe I can ask on <code>stack overflow</code> about CALLBACK and APIENTRY and how were they used earlier and how are they currently used)</p>
+</blockquote>  </article> </main> </div> </body></html>

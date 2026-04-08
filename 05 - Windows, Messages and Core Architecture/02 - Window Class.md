@@ -1,4 +1,4 @@
--  A window is always created based on a window class. The window class identifies the window procedure that processes messages to the window.
+-  A window is always created based on a window class. The window class identifies the [[03 - Window Procedure|window procedure]] that processes messages to the window.
 - More than one window can be created based on a single window class.
 
 For example, all button windows—including push buttons, check boxes, and radio buttons—are created based on the same window class.
