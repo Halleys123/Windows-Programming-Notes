@@ -89,6 +89,18 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 }
 ```
 
+The message loop in our program is following code
+
+```c
+	MSG msg = { 0 };
+	while (GetMessage(&msg, NULL, 0, 0)) {
+		TranslateMessage(&msg);
+		DispatchMessage(&msg);
+	}
+```
+
+^55dd28
+
 ### Structure of a message
 
 When your program executes `GetMessage(&msg, NULL, 0, 0)`, the operating system reaches into the thread's queue and fills your `msg` variable with the following precise data points:
@@ -109,5 +121,8 @@ typedef struct tagMSG {
   DWORD  time;
   POINT  pt;
   DWORD  lPrivate;
-} MSG, *PMSG, *NPMSG, *LPMSG;ś
+} MSG, *PMSG, *NPMSG, *LPMSG;
 ```
+
+---
+Continue Reading on Messages and Handling messages in [[01.1 - Some Message and Processing Messages]]

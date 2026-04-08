@@ -1,5 +1,6 @@
 {
   "enabledCssSnippets": [
     "hide-callout-icon"
-  ]
+  ],
+  "theme": "obsidian"
 }
