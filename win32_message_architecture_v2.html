@@ -1,0 +1,309 @@
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+.root{background:var(--color-background-tertiary);border-radius:var(--border-radius-lg);padding:18px;display:flex;flex-direction:column;gap:14px}
+.hdr{display:flex;justify-content:space-between;align-items:flex-start;border-bottom:0.5px solid var(--color-border-tertiary);padding-bottom:12px;flex-wrap:wrap;gap:8px}
+.title{font-size:13px;font-weight:500;color:var(--color-text-primary);font-family:var(--font-mono)}
+.stats{display:flex;gap:18px;flex-wrap:wrap}
+.stat{display:flex;flex-direction:column;align-items:flex-end}
+.sl{font-size:9px;color:var(--color-text-tertiary);text-transform:uppercase;letter-spacing:.06em}
+.sv{font-size:15px;font-weight:500;color:var(--color-text-primary);font-family:var(--font-mono)}
+.sv.bl{color:var(--color-text-info)}
+.sv.rd{color:var(--color-text-danger)}
+
+.canvas{position:relative;background:var(--color-background-primary);border-radius:var(--border-radius-md);border:0.5px solid var(--color-border-tertiary);overflow:hidden}
+svg.ov{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:1}
+
+.nd{position:absolute;border:0.5px solid var(--color-border-secondary);background:var(--color-background-secondary);border-radius:8px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-family:var(--font-mono);z-index:10;transition:border-color .15s,box-shadow .15s}
+.nd .nm{font-size:11px;font-weight:500;color:var(--color-text-primary)}
+.nd .sub{font-size:9px;color:var(--color-text-tertiary);margin-top:2px}
+.nd.fl{border-color:var(--color-border-info);box-shadow:0 0 0 2px rgba(59,130,246,.15)}
+.nd.fl-r{border-color:var(--color-border-danger);box-shadow:0 0 0 2px rgba(220,38,38,.15)}
+
+.badge{font-size:8px;letter-spacing:.07em;text-transform:uppercase;padding:1px 6px;border-radius:99px;border:0.5px solid;margin-top:3px;font-family:var(--font-mono)}
+.badge.sl2{color:var(--color-text-tertiary);border-color:var(--color-border-secondary)}
+.badge.ac{color:var(--color-text-success);border-color:var(--color-border-success);background:var(--color-background-success)}
+
+.fn-chip{position:absolute;font-family:var(--font-mono);font-size:9px;color:var(--color-text-tertiary);background:var(--color-background-secondary);border:0.5px solid var(--color-border-tertiary);border-radius:4px;padding:2px 6px;z-index:12;pointer-events:none;white-space:nowrap}
+.fn-chip.active{color:var(--color-text-info);border-color:var(--color-border-info);background:var(--color-background-info)}
+.fn-chip.active-r{color:var(--color-text-danger);border-color:var(--color-border-danger);background:var(--color-background-danger)}
+
+.pill{position:absolute;padding:2px 8px;border-radius:99px;font-size:9px;font-weight:500;white-space:nowrap;pointer-events:none;z-index:50;transform:translate(-50%,-50%);font-family:var(--font-mono)}
+.pill.q{background:var(--color-background-info);color:var(--color-text-info);border:0.5px solid var(--color-border-info)}
+.pill.d{background:var(--color-background-danger);color:var(--color-text-danger);border:0.5px solid var(--color-border-danger)}
+
+.ctrls{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+button{padding:9px 12px;background:var(--color-background-secondary);border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);font-size:11px;font-weight:500;color:var(--color-text-primary);cursor:pointer;font-family:var(--font-mono)}
+button:hover{background:var(--color-background-tertiary);border-color:var(--color-border-primary)}
+button:active{opacity:.8}
+
+.spd-row{display:flex;align-items:center;gap:10px;border-top:0.5px solid var(--color-border-tertiary);padding-top:12px}
+.spd-row label{font-size:10px;color:var(--color-text-tertiary);white-space:nowrap;font-family:var(--font-mono)}
+input[type=range]{flex:1;accent-color:var(--color-text-info)}
+.spd-v{font-size:10px;color:var(--color-text-secondary);min-width:28px;font-family:var(--font-mono)}
+
+.legend{display:flex;gap:14px;flex-wrap:wrap}
+.legend span{display:flex;align-items:center;gap:5px;font-size:9px;color:var(--color-text-tertiary);font-family:var(--font-mono)}
+.dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.dot.q{background:var(--color-text-info)}
+.dot.d{background:var(--color-text-danger)}
+</style>
+
+<div class="root">
+  <div class="hdr">
+    <div class="title">Win32 message architecture</div>
+    <div class="stats">
+      <div class="stat"><span class="sl">Queue depth</span><span class="sv" id="s-qd">0</span></div>
+      <div class="stat"><span class="sl">Queued msgs</span><span class="sv bl" id="s-qc">0</span></div>
+      <div class="stat"><span class="sl">Direct msgs</span><span class="sv rd" id="s-dc">0</span></div>
+      <div class="stat"><span class="sl">Last msg</span><span class="sv bl" id="s-last">—</span></div>
+    </div>
+  </div>
+
+  <div class="canvas" id="canvas" style="height:440px">
+    <svg class="ov" id="svg">
+      <defs>
+        <marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+          <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </marker>
+      </defs>
+      <path id="ln-os-q"  fill="none" stroke-dasharray="5 4" stroke-width="1" opacity=".5"/>
+      <path id="ln-q-l"   fill="none" stroke-dasharray="5 4" stroke-width="1" opacity=".5"/>
+      <path id="ln-l-w"   fill="none" stroke-dasharray="5 4" stroke-width="1" opacity=".5"/>
+      <path id="ln-direct" fill="none" stroke-width="1.5" opacity=".35" stroke-dasharray="3 3"/>
+      <text id="txt-direct" font-family="var(--font-mono)" font-size="9" fill="var(--color-text-tertiary)" text-anchor="middle" opacity=".6"></text>
+    </svg>
+
+    <div class="nd" id="node-os" style="left:5%;width:58%;height:52px;top:14px">
+      <span class="nm">Windows OS / SendMessage caller</span>
+      <span class="sub">same application thread</span>
+    </div>
+
+    <div class="nd" id="node-queue" style="left:5%;width:26%;height:66px;top:130px">
+      <span class="nm">Message queue</span>
+      <span class="sub">depth: <span id="qdepth">0</span></span>
+      <span class="badge sl2" id="q-badge">idle</span>
+    </div>
+
+    <div class="nd" id="node-loop" style="left:35%;width:28%;height:66px;top:130px">
+      <span class="nm">Message loop</span>
+      <span class="sub">thread pump</span>
+      <span class="badge sl2" id="loop-badge">sleeping</span>
+    </div>
+
+    <div class="nd" id="node-wndproc" style="left:5%;width:58%;height:52px;bottom:14px">
+      <span class="nm">WndProc — window procedure</span>
+    </div>
+
+    <div class="fn-chip" id="chip-getmsg"   style="left:5%">GetMessage()</div>
+    <div class="fn-chip" id="chip-translmsg" style="left:5%">TranslateMessage()</div>
+    <div class="fn-chip" id="chip-dispmsg"  style="left:5%">DispatchMessage()</div>
+    <div class="fn-chip" id="chip-direct-lbl" style="right:2%;top:50%">direct WndProc call</div>
+  </div>
+
+  <div class="legend">
+    <span><span class="dot q"></span>queued — PostMessage path (hardware input)</span>
+    <span><span class="dot d"></span>non-queued — direct WndProc call on same thread</span>
+  </div>
+
+  <div class="ctrls">
+    <button onclick="triggerQueued()">Hardware event (queued)</button>
+    <button onclick="triggerDirect()">OS event (non-queued / direct)</button>
+  </div>
+
+  <div class="spd-row">
+    <label>Speed</label>
+    <input type="range" id="spd" min="0.5" max="3" step="0.1" value="1.5" oninput="document.getElementById('spd-v').textContent=parseFloat(this.value).toFixed(1)+'x'">
+    <span class="spd-v" id="spd-v">1.5x</span>
+  </div>
+</div>
+
+<script>
+const canvas = document.getElementById('canvas');
+const qMsgs = ['WM_MOUSEMOVE','WM_KEYDOWN','WM_LBUTTONDOWN','WM_PAINT','WM_TIMER'];
+const dMsgs = ['WM_SIZE','WM_ACTIVATE','WM_SETFOCUS','WM_WINDOWPOSCHANGING'];
+let qDepth=0, qCount=0, dCount=0, loopBusy=false;
+
+function spd(){return parseFloat(document.getElementById('spd').value)}
+function dur(b){return Math.round(b/spd())}
+function sleep(ms){return new Promise(r=>setTimeout(r,ms))}
+
+function r(id){
+  const c=canvas.getBoundingClientRect(), e=document.getElementById(id).getBoundingClientRect();
+  return{x:e.left-c.left,y:e.top-c.top,w:e.width,h:e.height,
+    cx:e.left-c.left+e.width/2, cy:e.top-c.top+e.height/2,
+    t:e.top-c.top, b:e.bottom-c.top, l:e.left-c.left, r:e.right-c.left};
+}
+
+function sp(id,d,stroke){
+  const p=document.getElementById(id);
+  p.setAttribute('d',d);
+  if(stroke)p.setAttribute('stroke',stroke);
+}
+
+function positionChips(){
+  const os=r('node-os'), q=r('node-queue'), loop=r('node-loop'), w=r('node-wndproc');
+  const canvasW = canvas.getBoundingClientRect().width;
+
+  const gm=document.getElementById('chip-getmsg');
+  gm.style.left=loop.l+'px';
+  gm.style.top=(q.b+4)+'px';
+
+  const tm=document.getElementById('chip-translmsg');
+  tm.style.left=loop.l+'px';
+  tm.style.top=(q.b+24)+'px';
+
+  const dm=document.getElementById('chip-dispmsg');
+  dm.style.left=loop.l+'px';
+  dm.style.top=(q.b+44)+'px';
+
+  const dx = os.l + os.w + (canvasW - os.r)*0.45;
+  const dl=document.getElementById('chip-direct-lbl');
+  dl.style.right='';
+  dl.style.left=(dx+6)+'px';
+  dl.style.top=Math.round((os.b+w.t)/2-8)+'px';
+
+  sp('ln-os-q', `M${os.l+os.w*0.22},${os.b} L${os.l+os.w*0.22},${q.cy} L${q.r},${q.cy}`, 'var(--color-text-info)');
+  sp('ln-q-l',  `M${q.r},${q.cy} L${loop.l},${loop.cy}`, 'var(--color-text-info)');
+  sp('ln-l-w',  `M${loop.cx},${loop.b} L${loop.cx},${w.t}`, 'var(--color-text-info)');
+  sp('ln-direct', `M${dx},${os.b} L${dx},${w.t}`, 'var(--color-text-danger)');
+
+  const txt=document.getElementById('txt-direct');
+  txt.setAttribute('x',0); txt.setAttribute('y',0);
+}
+
+positionChips();
+window.addEventListener('resize',positionChips);
+
+function flash(id,cls='fl',ms=340){
+  const el=document.getElementById(id);
+  el.classList.remove('fl','fl-r');
+  void el.offsetWidth;
+  el.classList.add(cls);
+  setTimeout(()=>el.classList.remove(cls),ms);
+}
+
+function chipActive(id,cls='active',ms){
+  const el=document.getElementById(id);
+  el.classList.add(cls);
+  if(ms)setTimeout(()=>el.classList.remove(cls),ms);
+  return ()=>el.classList.remove(cls);
+}
+
+function updateStats(){
+  document.getElementById('s-qd').textContent=qDepth;
+  document.getElementById('s-qc').textContent=qCount;
+  document.getElementById('s-dc').textContent=dCount;
+  document.getElementById('qdepth').textContent=qDepth;
+}
+
+function setLoopState(busy){
+  loopBusy=busy;
+  const b=document.getElementById('loop-badge');
+  b.textContent=busy?'processing':'sleeping';
+  b.className='badge '+(busy?'ac':'sl2');
+}
+
+function createPill(text,type){
+  const p=document.createElement('div');
+  p.className=`pill ${type}`;
+  p.textContent=text;
+  canvas.appendChild(p);
+  return p;
+}
+
+function movePill(pill,from,to,ms){
+  return new Promise(resolve=>{
+    pill.style.left=from.x+'px'; pill.style.top=from.y+'px';
+    pill.style.transition='none';
+    void pill.offsetWidth;
+    pill.style.transition=`left ${ms}ms cubic-bezier(.4,0,.2,1),top ${ms}ms cubic-bezier(.4,0,.2,1)`;
+    pill.style.left=to.x+'px'; pill.style.top=to.y+'px';
+    setTimeout(resolve,ms);
+  });
+}
+
+async function triggerQueued(){
+  const msg=qMsgs[Math.floor(Math.random()*qMsgs.length)];
+  const os=r('node-os'), q=r('node-queue');
+  flash('node-os','fl',300);
+  const pill=createPill(msg,'q');
+  const startX=os.l+os.w*0.22;
+  await movePill(pill,{x:startX,y:os.b+8},{x:q.cx,y:q.cy},dur(480));
+  pill.remove();
+  qDepth++;
+  flash('node-queue','fl',280);
+  document.getElementById('q-badge').textContent='has msg';
+  document.getElementById('q-badge').className='badge ac';
+  updateStats();
+  processQueue();
+}
+
+async function processQueue(){
+  if(loopBusy||qDepth===0)return;
+  setLoopState(true);
+  while(qDepth>0){
+    qDepth--;
+    updateStats();
+    if(qDepth===0){
+      document.getElementById('q-badge').textContent='idle';
+      document.getElementById('q-badge').className='badge sl2';
+    }
+
+    const qn=r('node-queue'), ln=r('node-loop'), wn=r('node-wndproc');
+
+    const gmD=dur(320);
+    chipActive('chip-getmsg','active',gmD);
+    const pill=createPill('msg','q');
+    await movePill(pill,{x:qn.cx,y:qn.cy},{x:ln.cx,y:ln.cy},gmD);
+    flash('node-loop','fl',250);
+
+    await sleep(dur(60));
+
+    const tmD=dur(220);
+    chipActive('chip-translmsg','active',tmD);
+    await sleep(tmD);
+
+    await sleep(dur(40));
+
+    const dmD=dur(300);
+    const offDm=chipActive('chip-dispmsg','active');
+    await movePill(pill,{x:ln.cx,y:ln.b+8},{x:ln.cx,y:wn.t-8},dmD);
+    pill.remove();
+    offDm();
+
+    flash('node-wndproc','fl',300);
+    qCount++;
+    const s=document.getElementById('s-last');
+    s.textContent='WM_EVENT';
+    s.className='sv bl';
+    updateStats();
+    await sleep(dur(100));
+  }
+  setLoopState(false);
+}
+
+async function triggerDirect(){
+  const msg=dMsgs[Math.floor(Math.random()*dMsgs.length)];
+  const os=r('node-os'), wn=r('node-wndproc');
+  const canvasW=canvas.getBoundingClientRect().width;
+  const dx=os.l+os.w+(canvasW-os.r)*0.45;
+
+  flash('node-os','fl-r',350);
+
+  const lbl=document.getElementById('chip-direct-lbl');
+  lbl.classList.add('active-r');
+  setTimeout(()=>lbl.classList.remove('active-r'),dur(500));
+
+  const pill=createPill(msg,'d');
+  await movePill(pill,{x:dx,y:os.b+8},{x:dx,y:wn.t-8},dur(310));
+  pill.remove();
+
+  flash('node-wndproc','fl-r',350);
+  dCount++;
+  const s=document.getElementById('s-last');
+  s.textContent=msg;
+  s.className='sv rd';
+  updateStats();
+}
+</script>
