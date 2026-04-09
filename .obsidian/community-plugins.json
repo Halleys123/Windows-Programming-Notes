@@ -1,4 +1,6 @@
 [
   "quick-latex",
-  "obsidian-excalidraw-plugin"
+  "obsidian-excalidraw-plugin",
+  "shiki-highlighter",
+  "open-in-terminal"
 ]

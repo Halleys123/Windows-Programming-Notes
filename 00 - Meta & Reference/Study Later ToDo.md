@@ -14,3 +14,4 @@ tags:
 	- [ ] Add more context in [[History of CALLBACK and APIENTRY (FUTURE_READ)]]
 	- [ ] Completed on **_ADD DATE HERE_**
 - [ ] Study about [[02.2 - cbClsExtra and cbWndExtra|cbClsExtra and cbWndExtra]] as it was difficult to understand what they are actually used to store and how they are used.
+- [ ] *Very Low Priority* - Read about GDI and legacy graphics of Win32, although now DirectX family is used for that but after everything is done including windows internals, try reading chapter 4, 5, 14, 15 of Charles Petzold 
