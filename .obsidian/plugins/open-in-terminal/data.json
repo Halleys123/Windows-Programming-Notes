@@ -1,6 +1,6 @@
 {
   "terminalApp": {
-    "win": "powershell.exe"
+    "win": "cmd.exe"
   },
   "enableClaude": false,
   "enableCodex": false,
