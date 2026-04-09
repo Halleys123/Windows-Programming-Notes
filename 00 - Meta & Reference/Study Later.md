@@ -1,6 +1,0 @@
----
-tags:
-  - "#meta/todo"
----
-
-1. Internal Working of a DLL like handling of memory, stack and heap memory how does a program which use DLL save data in memory, is it saved in DLL, does a DLL run as a separate program which can be called from main program [Internal Link](obsidian://open?vault=Windows%20Programming&file=02%20-%20Architecture%20%26%20Mechanics%2FFuture%20Reads%2FHistory%20of%20CALLBACK%20and%20APIENTRY%20(FUTURE_READ)) and [Gemini Link](https://gemini.google.com/app/803517e06ac30075) ^bfceee

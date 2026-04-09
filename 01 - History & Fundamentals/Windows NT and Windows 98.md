@@ -3,7 +3,7 @@ tags:
   - "#history/windows/os_kernels"
 ---
 
-Both Windows 98 and Windows NT are 32-bit pre-emptive multitasking and multithreading graphical operating systems. GUI also called a "visual interface" or "graphical windowing environment"
+Both Windows 98 and Windows NT are 32-bit pre-emptive multitasking and multithreading graphical operating systems. GUI also called a "visual interface" or "graphical windowing environment" ^771638
 
 Windows use Rectangular grids known as windows to show the information to the user and user is allowed to resize, modify close, move the window on screen thus allowing multiple windows to be open concurrently, and supports multi tasking.
 

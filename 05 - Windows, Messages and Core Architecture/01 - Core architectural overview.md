@@ -124,4 +124,27 @@ typedef struct tagMSG {
 ```
 
 ---
+## Static Variable Trap
+
+The orderly, sequential execution of messages is guaranteed _unless the programmer explicitly invites the operating system back in._
+
+If your `WndProc` is processing a message and you call a specific Windows API function—such as `UpdateWindow()` or `SendMessage()`—you are handing control back to the Windows Kernel. The Kernel may decide that this API call requires a new, immediate non-queued message (such as `WM_PAINT`).
+
+The Kernel will immediately execute your `WndProc` a second time, pushing it onto the CPU stack directly on top of the first, currently paused execution. This is **indirect recursion**. The operating system is the invisible middleman causing your function to call itself.
+
+This completely shatters the safety of static variables. Here is the precise mechanical timeline of the failure:
+
+1. **Entry 1:** The `WndProc` receives a mouse click message.
+2. **State Set:** The `WndProc` sets a variable: `static int memory = 5;`.
+3. **The Trap:** The `WndProc` calls `UpdateWindow()`, pausing its own execution.
+4. **Entry 2:** The OS intercepts `UpdateWindow()` and instantly forces a second instance of `WndProc` to handle a `WM_PAINT` message.
+5. **State Mutated:** The second instance of `WndProc` alters the variable: `memory = 99;`. It then returns.
+6. **Resumption:** The original `UpdateWindow()` call finishes. The first instance of `WndProc` resumes execution.
+7. **The Crash:** The first instance expects `memory` to still be `5`. It reads the physical memory address and finds `99`. The logical foundation of the code collapses.
+
+Because a static variable occupies a single, fixed location in physical RAM, both recursive instances of the function are writing to the exact same physical wire.
+
+This is why you may want to avoid global and static variables especially when writing a windows program.
+
+---
 Continue Reading on Messages and Handling messages in [[01.1 - Some Message and Processing Messages]]

@@ -1,7 +1,6 @@
 ---
 tags:
 ---
-
 > [!info]
 > Four pillar architecture helps to better remember what are Unicode, ASCII, ANSI, Code Pages, Wide Characters and how are they related.
 
