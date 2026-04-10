@@ -101,7 +101,7 @@ Because the original C language did not have a native boolean type (until C99), 
 
 #### The Historical Context: The Universal Canvas
 
-> **Hardware Abstraction** In the MS-DOS days, a developer had to write custom driver code for every single brand of monitor and printer on the market. Windows solved this by introducing the Graphics Device Interface (GDI). The developer draws their shapes to a generic "Device Context" (a virtual canvas), and Windows translates that canvas into the specific electronic signals required by whatever monitor the user owns.
+> **Hardware Abstraction** In the MS-DOS days, a developer had to write custom driver code for every single brand of monitor and printer on the market. Windows solved this by introducing the Graphics Device Interface (GDI). The developer draws their shapes to a generic [[03 - Device Context|"Device Context"]] (a virtual canvas), and Windows translates that canvas into the specific electronic signals required by whatever monitor the user owns.
 
 #### Key Components Reference
 

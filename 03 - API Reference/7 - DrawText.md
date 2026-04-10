@@ -13,7 +13,7 @@ int DrawText(
 
 `[in] hdc`
 
-A handle to the device context.
+A handle to the [[03 - Device Context|Device Context]].
 
 `[in, out] lpchText`
 
