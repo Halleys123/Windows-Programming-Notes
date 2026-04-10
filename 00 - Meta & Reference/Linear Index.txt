@@ -1,0 +1,86 @@
+# Windows Programming - Linear Index
+
+Read this top to bottom. Each chapter is ordered to reduce context switching for a first-time reader. 
+## 00 - Meta & Reference (Use as support while reading)
+
+1. [Chapters for Notes](../00%20-%20Meta%20%26%20Reference/Chapters%20for%20Notes.md)
+2. [Glossary](../00%20-%20Meta%20%26%20Reference/Glossary.md)
+3. [Tag List](../00%20-%20Meta%20%26%20Reference/Tag%20List.md)
+4. [Study Later ToDo](../00%20-%20Meta%20%26%20Reference/Study%20Later%20ToDo.md)
+
+## 01 - History & Fundamentals
+
+1. [Introduction and History](../01%20-%20History%20%26%20Fundamentals/Introduction%20and%20History.md)
+2. [Windows NT and Windows 98](../01%20-%20History%20%26%20Fundamentals/Windows%20NT%20and%20Windows%2098.md)
+3. [Alternate options to Win32](../01%20-%20History%20%26%20Fundamentals/Alternate%20options%20to%20Win32.md)
+4. [Windows Timeline](../01%20-%20History%20%26%20Fundamentals/Windows%20Timeline.canvas)
+
+## 02 - Architecture & Mechanics
+
+1. [01 - Important Windows Headers and DLL's](../02%20-%20Architecture%20%26%20Mechanics/01%20-%20Important%20Windows%20Headers%20and%20DLL's.md)
+2. [02 - ISO C Standard and C Specifications](../02%20-%20Architecture%20%26%20Mechanics/02%20-%20ISO%20C%20Standard%20and%20C%20Specifications.md)
+3. [03 - Dynamic Linking](../02%20-%20Architecture%20%26%20Mechanics/03%20-%20Dynamic%20Linking.md)
+4. [04 - Blocking Functions](../02%20-%20Architecture%20%26%20Mechanics/04%20-%20Blocking%20Functions.md)
+
+## 04 - Unicode
+
+1. [0 - History of Character Sets](../04%20-%20Unicode/0%20-%20History%20of%20Character%20Sets.md)
+2. [1 - Early Character Encodings & The Rise of ASCII](../04%20-%20Unicode/1%20-%20Early%20Character%20Encodings%20%26%20The%20Rise%20of%20ASCII.md)
+3. [2 - Flaws of ASCII and Extending ASCII](../04%20-%20Unicode/2%20-%20Flaws%20of%20ASCII%20and%20Extending%20ASCII.md)
+4. [3 - ANSI and Code Pages](../04%20-%20Unicode/3%20-%20ANSI%20and%20Code%20Pages.md)
+5. [4 - Double Byte Character Set](../04%20-%20Unicode/4%20-%20Double%20Byte%20Character%20Set.md)
+6. [5 - Unicode](../04%20-%20Unicode/5%20-%20Unicode.md)
+7. [6 - Wide Characters (The implementation of Unicode)](<../04%20-%20Unicode/6%20-%20Wide%20Characters%20(The%20implementation%20of%20Unicode).md>)
+8. [6.1 - char, wchar_t, WCHAR and more](../04%20-%20Unicode/6.1%20-%20char,%20wchar_t,%20WCHAR%20and%20more.md)
+9. [6.2 - Wide Characters and ISO Standard (Summary)](<../04%20-%20Unicode/6.2%20-%20Wide%20Characters%20and%20ISO%20Standard%20(Summary).md>)
+10. [7 - Architecture of Text](../04%20-%20Unicode/7%20-%20Architecture%20of%20Text.md)
+11. [8 - Near and Long pointers](../04%20-%20Unicode/8%20-%20Near%20and%20Long%20pointers.md)
+
+## 05 - Windows, Messages and Core Architecture
+
+1. [01 - Core architectural overview](../05%20-%20Windows,%20Messages%20and%20Core%20Architecture/01%20-%20Core%20architectural%20overview.md)
+2. [01.1 - Some Message and Processing Messages](../05%20-%20Windows,%20Messages%20and%20Core%20Architecture/01.1%20-%20Some%20Message%20and%20Processing%20Messages.md)
+3. [01.2 - Queued and Nonqueued messages](../05%20-%20Windows,%20Messages%20and%20Core%20Architecture/01.2%20-%20Queued%20and%20Nonqueued%20messages.md)
+4. [01.2 - WM_PAINT](../05%20-%20Windows,%20Messages%20and%20Core%20Architecture/01.2%20-%20WM_PAINT.md)
+5. [01.3 - WM_CLOSE](../05%20-%20Windows,%20Messages%20and%20Core%20Architecture/01.3%20-%20WM_CLOSE.md)
+6. [01.4 - WM_DESTROY](../05%20-%20Windows,%20Messages%20and%20Core%20Architecture/01.4%20-%20WM_DESTROY.md)
+7. [01.5 - WM_QUIT](../05%20-%20Windows,%20Messages%20and%20Core%20Architecture/01.5%20-%20WM_QUIT.md)
+8. [02 - Window Class](../05%20-%20Windows,%20Messages%20and%20Core%20Architecture/02%20-%20Window%20Class.md)
+9. [02.1 - WNDCLASS Styles](../05%20-%20Windows,%20Messages%20and%20Core%20Architecture/02.1%20-%20WNDCLASS%20Styles.md)
+10. [02.2 - cbClsExtra and cbWndExtra](../05%20-%20Windows,%20Messages%20and%20Core%20Architecture/02.2%20-%20cbClsExtra%20and%20cbWndExtra.md)
+11. [03 - Window Procedure](../05%20-%20Windows,%20Messages%20and%20Core%20Architecture/03%20-%20Window%20Procedure.md)
+12. [04 - Window and Window Creation](../05%20-%20Windows,%20Messages%20and%20Core%20Architecture/04%20-%20Window%20and%20Window%20Creation.md)
+
+## 03 - API Reference (Read after core architecture)
+
+1. [0 - Hungarian Notation](../03%20-%20API%20Reference/0%20-%20Hungarian%20Notation.md)
+2. [1 - General Program Structure](../03%20-%20API%20Reference/1%20-%20General%20Program%20Structure.md)
+3. [2 - MessageBox](../03%20-%20API%20Reference/2%20-%20MessageBox.md)
+4. [3 - LoadIcon](../03%20-%20API%20Reference/3%20-%20LoadIcon.md)
+5. [4 - LoadCursor](../03%20-%20API%20Reference/4%20-%20LoadCursor.md)
+6. [5 - WPARAM and LPARAM](../03%20-%20API%20Reference/5%20-%20WPARAM%20and%20LPARAM.md)
+7. [6 - Client Area & Window Area](../03%20-%20API%20Reference/6%20-%20Client%20Area%20%26%20Window%20Area.md)
+8. [7 - DrawText](../03%20-%20API%20Reference/7%20-%20DrawText.md)
+9. [11 - PAINTSTRUCT - Paint Information Structure](../03%20-%20API%20Reference/11%20-%20PAINTSTRUCT%20-%20Paint%20Information%20Structure.md)
+10. [10 - InvalidateRect](../03%20-%20API%20Reference/10%20-%20InvalidateRect.md)
+11. [9 - ValidateRect](../03%20-%20API%20Reference/9%20-%20ValidateRect.md)
+12. [8 - UpdateWindow](../03%20-%20API%20Reference/8%20-%20UpdateWindow.md)
+
+## 06 - Physics of Screen
+
+1. [01 - Introduction](../06%20-%20Physics%20of%20Screen/01%20-%20Introduction.md)
+2. [02 - Valid and Invalid Rectangles](../06%20-%20Physics%20of%20Screen/02%20-%20Valid%20and%20Invalid%20Rectangles.md)
+3. [03 - Device Context](../06%20-%20Physics%20of%20Screen/03%20-%20Device%20Context.md)
+
+## Assets - Excalidraw Visual Notes (Optional, after each related chapter)
+
+1. [Coordinates in ClientArea](../Assets/Excalidraw/Coordinates%20in%20ClientArea.md)
+2. [Coordinates of Window](../Assets/Excalidraw/Coordinates%20of%20Window.md)
+3. [Message Loop.excalidraw](../Assets/Excalidraw/Message%20Loop.excalidraw.md)
+4. [Invalid_Region_single.excalidraw](../Assets/Excalidraw/Invalid_Region_single.excalidraw.md)
+5. [Invalid_Region_multiple_windows.excalidraw](../Assets/Excalidraw/Invalid_Region_multiple_windows.excalidraw.md)
+
+## More and Future Reads
+
+1. [Modern 4K monitors and DPI awareness in Windows](../More/Modern%204K%20monitors%20and%20DPI%20awareness%20in%20Windows.md)
+2. [History of CALLBACK and APIENTRY (FUTURE_READ)](<../02%20-%20Architecture%20%26%20Mechanics/Future%20Reads/History%20of%20CALLBACK%20and%20APIENTRY%20(FUTURE_READ).md>)

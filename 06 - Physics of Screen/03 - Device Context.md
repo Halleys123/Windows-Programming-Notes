@@ -4,6 +4,7 @@ The device context handle is your window’s passport to the GDI functions. With
 >Device Context does _not_ allow **any** kind of drawing but only **GDI** function drawings. If you possess an `HDC`, you are strictly bound to the GDI subsystem (`GDI32.dll`).
 
 To perform any graphical output using the GDI subsystem, a program must first acquire a handle to a Device Context (`HDC`), which is typically achieved using the [[01.2 - WM_PAINT#`BeginPaint` Function|BeginPaint]] function while processing a `WM_PAINT` message, or the `GetDC` function when drawing is required outside of the standard paint cycle.
+Device Context also posses information about font that windows uses when you call `TextOut` or other GDI Text functions, Read more in [[04 - System Font and Character Size]]
 
 ## Begin and End paint
 

@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="index-heading" content="GDI Font Architecture">
+    <meta name="index-description"
+        content="Visual comparison of fixed-pitch and variable-pitch font geometry in classic Win32 text rendering.">
+    <meta name="index-tags" content="Win32, GDI, Fonts, Typography">
+    <meta name="index-tag-colors" content="#60a5fa, #34d399, #f59e0b, #f472b6">
+    <title>Win32 Font Pitch Simulation</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@400;700&display=swap');
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0a0a0f;
+            color: #e2e8f0;
+            overflow-x: hidden;
+        }
+
+        .font-mono {
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        canvas {
+            image-rendering: -moz-crisp-edges;
+            image-rendering: -webkit-crisp-edges;
+            image-rendering: pixelated;
+            image-rendering: crisp-edges;
+        }
+
+        /* Custom toggle switch */
+        .toggle-checkbox:checked {
+            right: 0;
+            border-color: #3b82f6;
+        }
+
+        .toggle-checkbox:checked+.toggle-label {
+            background-color: #3b82f6;
+        }
+
+        .toggle-checkbox:checked+.toggle-label:after {
+            transform: translateX(100%);
+            border-color: white;
+        }
+    </style>
+</head>
+
+<body class="min-h-screen flex flex-col p-6 gap-6 max-w-7xl mx-auto">
+
+    <!-- Header -->
+    <header
+        class="flex flex-col md:flex-row justify-between items-start md:items-center bg-[#151722] p-5 rounded-xl border border-gray-800 shadow-xl gap-4">
+        <div>
+            <h1 class="text-2xl font-bold text-white tracking-tight">GDI Font Architecture</h1>
+            <p class="text-sm text-gray-400 font-mono mt-1">Fixed-Pitch vs. Variable-Pitch Geometry</p>
+        </div>
+
+        <div class="flex items-center gap-4 bg-[#0a0a0f] p-2 rounded-lg border border-gray-800">
+            <span class="text-xs font-bold text-gray-500 uppercase tracking-wider w-24 text-right">Fixed Pitch</span>
+
+            <div class="relative inline-block w-12 mr-2 align-middle select-none transition duration-200 ease-in">
+                <input type="checkbox" name="toggle" id="fontToggle"
+                    class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer z-10 transition-transform duration-300 ease-in-out"
+                    checked />
+                <label for="fontToggle"
+                    class="toggle-label block overflow-hidden h-6 rounded-full bg-blue-600 cursor-pointer border border-gray-700"></label>
+            </div>
+
+            <span class="text-xs font-bold text-blue-400 uppercase tracking-wider w-28">Variable Pitch</span>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+        <!-- Controls & Data Panel -->
+        <div class="flex flex-col gap-6 lg:col-span-1">
+
+            <!-- User Input -->
+            <div class="bg-[#151722] p-5 rounded-xl border border-gray-800 shadow-lg">
+                <label class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 block">Test String</label>
+                <input type="text" id="textInput" value="Windows 3.0 API"
+                    class="w-full bg-[#0a0a0f] border border-gray-700 rounded p-3 text-lg font-mono text-white focus:outline-none focus:border-blue-500 transition-colors">
+
+                <div class="mt-4 flex gap-2">
+                    <button onclick="setText('W i W i W i')"
+                        class="text-xs bg-gray-800 hover:bg-gray-700 px-3 py-1.5 rounded transition-colors text-gray-300 border border-gray-700">W
+                        vs i</button>
+                    <button onclick="setText('ABCDEFGHIJKLMNOPQRSTUVWXYZ')"
+                        class="text-xs bg-gray-800 hover:bg-gray-700 px-3 py-1.5 rounded transition-colors text-gray-300 border border-gray-700">A-Z</button>
+                    <button onclick="setText('abcdefghijklmnopqrstuvwxyz')"
+                        class="text-xs bg-gray-800 hover:bg-gray-700 px-3 py-1.5 rounded transition-colors text-gray-300 border border-gray-700">a-z</button>
+                </div>
+            </div>
+
+            <!-- Petzold's "W" vs "i" Proof -->
+            <div class="bg-[#151722] p-5 rounded-xl border border-gray-800 shadow-lg relative overflow-hidden">
+                <div class="absolute top-0 right-0 p-4 opacity-10 pointer-events-none text-6xl font-serif">W</div>
+                <h2 class="text-sm font-bold text-blue-400 uppercase tracking-wider mb-4 border-b border-gray-800 pb-2">
+                    The "W" vs "i" Anomaly</h2>
+
+                <div class="grid grid-cols-2 gap-4 mb-4">
+                    <div class="bg-[#0a0a0f] p-3 rounded border border-gray-800 flex flex-col items-center">
+                        <span class="text-4xl mb-2" id="demo-w" style="font-family: Arial, sans-serif;">W</span>
+                        <span class="text-xs text-gray-500 font-mono" id="width-w">0px wide</span>
+                    </div>
+                    <div class="bg-[#0a0a0f] p-3 rounded border border-gray-800 flex flex-col items-center">
+                        <span class="text-4xl mb-2" id="demo-i" style="font-family: Arial, sans-serif;">i</span>
+                        <span class="text-xs text-gray-500 font-mono" id="width-i">0px wide</span>
+                    </div>
+                </div>
+
+                <div class="text-sm text-gray-400 leading-relaxed">
+                    <span id="proof-text" class="text-white bg-blue-900/50 px-1 rounded">In Variable Pitch</span>, the
+                    <strong class="text-blue-300">W</strong> is mathematically wider. Old C code that calculated <code
+                        class="bg-gray-900 text-red-300 px-1 rounded">X = column * 8_pixels</code> caused letters to
+                    instantly collide and overlap.
+                </div>
+            </div>
+
+            <!-- Total Metrics -->
+            <div class="bg-[#151722] p-5 rounded-xl border border-gray-800 shadow-lg">
+                <h2 class="text-sm font-bold text-gray-500 uppercase tracking-wider mb-4 border-b border-gray-800 pb-2">
+                    String Rendering Metrics</h2>
+
+                <div class="space-y-3 font-mono text-sm">
+                    <div class="flex justify-between">
+                        <span class="text-gray-400">Character Count:</span>
+                        <span id="stat-count" class="text-white font-bold">0</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-gray-400">Avg. Char Width:</span>
+                        <span id="stat-avg" class="text-yellow-400 font-bold">0 px</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-gray-400">Total Pixel Width:</span>
+                        <span id="stat-total" class="text-green-400 font-bold">0 px</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Canvas Visualizer -->
+        <div class="lg:col-span-2 flex flex-col gap-6">
+
+            <div class="bg-[#151722] p-5 rounded-xl border border-gray-800 shadow-lg flex-1 flex flex-col">
+                <div class="flex justify-between items-center mb-4 shrink-0">
+                    <h2 class="text-sm font-bold text-gray-500 uppercase tracking-wider">Device Context (HDC) Bounding
+                        Boxes</h2>
+                    <span class="text-xs bg-gray-800 text-gray-300 px-2 py-1 rounded border border-gray-700"
+                        id="current-font-label">Font: Arial 48px</span>
+                </div>
+
+                <!-- The Canvas -->
+                <div
+                    class="flex-1 bg-[#0a0a0f] rounded-lg border border-gray-800 relative overflow-hidden flex items-center justify-center p-8">
+                    <!-- Background Grid -->
+                    <div class="absolute inset-0 opacity-20 pointer-events-none"
+                        style="background-image: linear-gradient(#333 1px, transparent 1px), linear-gradient(90deg, #333 1px, transparent 1px); background-size: 20px 20px;">
+                    </div>
+
+                    <canvas id="textCanvas" class="relative z-10 max-w-full"></canvas>
+                </div>
+
+                <!-- Explanation -->
+                <div class="mt-4 p-4 bg-blue-900/20 border border-blue-900/50 rounded-lg shrink-0">
+                    <p class="text-sm text-blue-200" id="behavior-explanation">
+                        <strong>Behavior:</strong> Notice how every bounding box is exactly the same width. The UI
+                        layout logic is simple: advance the X coordinate by a fixed constant for every letter.
+                    </p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        // Setup Canvas with High DPI support for crisp text rendering
+        const canvas = document.getElementById('textCanvas');
+        const ctx = canvas.getContext('2d');
+        const textInput = document.getElementById('textInput');
+        const toggle = document.getElementById('fontToggle');
+
+        // Font Configurations
+        const FONT_SIZE = 64;
+        const FONT_FIXED = `${FONT_SIZE}px 'Courier New', monospace`;
+        const FONT_VARIABLE = `${FONT_SIZE}px Arial, Helvetica, sans-serif`;
+
+        function setupCanvas() {
+            // Give canvas a massive logical width to allow drawing, we'll scale it visually
+            canvas.width = 4000;
+            canvas.height = 150;
+
+            // Adjust for High DPI displays
+            const dpr = window.devicePixelRatio || 1;
+            const rect = canvas.getBoundingClientRect();
+
+            // Just use the internal resolution, CSS will handle responsive downscaling
+            ctx.scale(1, 1);
+        }
+
+        function setText(str) {
+            textInput.value = str;
+            render();
+        }
+
+        function render() {
+            const text = textInput.value;
+            const isVariable = toggle.checked;
+            const currentFont = isVariable ? FONT_VARIABLE : FONT_FIXED;
+
+            // Update UI Labels
+            document.getElementById('current-font-label').textContent = isVariable ? `Font: Arial ${FONT_SIZE}px` : `Font: Courier New ${FONT_SIZE}px`;
+            document.getElementById('demo-w').style.fontFamily = isVariable ? "Arial, sans-serif" : "'Courier New', monospace";
+            document.getElementById('demo-i').style.fontFamily = isVariable ? "Arial, sans-serif" : "'Courier New', monospace";
+
+            const explanation = document.getElementById('behavior-explanation');
+            if (isVariable) {
+                explanation.innerHTML = `<strong>Behavior (Windows 3.0+):</strong> Variable pitch. You must call <code>GetTextExtentPoint32</code> (or <code>measureText</code>) for every single letter before advancing the X coordinate. The eye groups words better, but the math is much harder.`;
+                document.getElementById('proof-text').innerHTML = `In <span class="text-blue-300 font-bold">Variable Pitch</span>, the <strong class="text-white">W</strong> is mathematically wider. Old C code that calculated <code class="bg-gray-900 text-red-300 px-1 border border-red-900/50 rounded">X = column * fixed_width</code> caused letters to instantly collide and overlap.`;
+            } else {
+                explanation.innerHTML = `<strong>Behavior (Windows 1.0 - 2.0):</strong> Fixed pitch. Every bounding box is perfectly identical. A <code>W</code> takes the exact same memory and screen space as an <code>i</code>. Math is simple: <code>X = index * charWidth</code>.`;
+                document.getElementById('proof-text').innerHTML = `In <span class="text-gray-400 font-bold">Fixed Pitch</span>, the <strong class="text-white">W</strong> and <strong class="text-white">i</strong> are forced into the exact same pixel width, leaving awkward white space around thin letters.`;
+            }
+
+            // Clear Canvas
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.font = currentFont;
+            ctx.textBaseline = 'top';
+
+            // Calculate "W" vs "i" widths for the side panel
+            const widthW = ctx.measureText('W').width.toFixed(1);
+            const widthI = ctx.measureText('i').width.toFixed(1);
+            document.getElementById('width-w').textContent = `${widthW}px wide`;
+            document.getElementById('width-i').textContent = `${widthI}px wide`;
+
+            // Visual highlights for the panel
+            if (isVariable) {
+                document.getElementById('width-w').className = "text-xs font-bold text-blue-400 font-mono";
+                document.getElementById('width-i').className = "text-xs font-bold text-yellow-400 font-mono";
+            } else {
+                document.getElementById('width-w').className = "text-xs font-bold text-gray-400 font-mono";
+                document.getElementById('width-i').className = "text-xs font-bold text-gray-400 font-mono";
+            }
+
+            // Draw the string on canvas
+            let currentX = 10;
+            const startY = 40;
+            let totalWidth = 0;
+
+            for (let i = 0; i < text.length; i++) {
+                const char = text[i];
+                const metrics = ctx.measureText(char);
+                const charWidth = metrics.width;
+
+                // Draw Bounding Box (The GDI 'dirty' rect equivalent)
+                ctx.beginPath();
+                ctx.rect(currentX, startY, charWidth, FONT_SIZE);
+
+                // Alternate box colors slightly for visibility
+                if (i % 2 === 0) {
+                    ctx.fillStyle = isVariable ? 'rgba(59, 130, 246, 0.15)' : 'rgba(156, 163, 175, 0.15)';
+                    ctx.strokeStyle = isVariable ? 'rgba(59, 130, 246, 0.6)' : 'rgba(156, 163, 175, 0.6)';
+                } else {
+                    ctx.fillStyle = isVariable ? 'rgba(59, 130, 246, 0.05)' : 'rgba(156, 163, 175, 0.05)';
+                    ctx.strokeStyle = isVariable ? 'rgba(59, 130, 246, 0.4)' : 'rgba(156, 163, 175, 0.4)';
+                }
+
+                ctx.fill();
+                ctx.lineWidth = 1;
+                ctx.stroke();
+
+                // Draw specific character width below the box
+                ctx.fillStyle = '#6b7280'; // gray-500
+                ctx.font = '12px "JetBrains Mono", monospace';
+
+                // Only draw width number if it fits roughly, or draw vertically
+                if (charWidth > 15) {
+                    ctx.fillText(Math.round(charWidth), currentX + (charWidth / 2) - 8, startY + FONT_SIZE + 15);
+                }
+
+                // Draw Text Character
+                ctx.fillStyle = '#ffffff';
+                ctx.font = currentFont;
+                ctx.fillText(char, currentX, startY);
+
+                // Advance the 'cursor'
+                currentX += charWidth;
+                totalWidth += charWidth;
+            }
+
+            // Update Metrics Panel
+            document.getElementById('stat-count').textContent = text.length;
+            document.getElementById('stat-total').textContent = `${totalWidth.toFixed(1)} px`;
+
+            const avgWidth = text.length > 0 ? (totalWidth / text.length) : 0;
+            document.getElementById('stat-avg').textContent = `${avgWidth.toFixed(1)} px`;
+
+            // Adjust canvas visual scale via CSS based on total width so it fits on screen
+            const requiredWidth = totalWidth + 50;
+            if (requiredWidth > window.innerWidth * 0.6) {
+                // Too big, let CSS max-width scale it down, but keep it sharp
+            }
+        }
+
+        // Event Listeners
+        textInput.addEventListener('input', render);
+        toggle.addEventListener('change', render);
+
+        // Initial Render
+        setupCanvas();
+        render();
+
+        // Handle window resize cleanly
+        window.addEventListener('resize', () => {
+            setupCanvas();
+            render();
+        });
+
+    </script>
+</body>
+
+</html>

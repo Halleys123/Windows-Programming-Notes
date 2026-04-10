@@ -1,51 +1,352 @@
-
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="index-heading" content="Near and Far Pointers on 8086">
+<meta name="index-description"
+  content="Explains segmented addressing and how near and far pointers map to physical memory in 16-bit systems.">
+<meta name="index-tags" content="x86, 8086, Segmentation, Pointers">
+<meta name="index-tag-colors" content="#a78bfa, #60a5fa, #34d399, #f59e0b">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=JetBrains+Mono:wght@400;700&display=swap"
+  rel="stylesheet">
 
 <style>
-* { box-sizing: border-box; margin: 0; padding: 0; }
-.root { font-family: 'Inter', sans-serif; background: #12141a; color: #e5e7eb; min-height: 100vh; padding-bottom: 28px; }
-.mono { font-family: 'JetBrains Mono', monospace; }
-.header { padding: 24px 28px 0; }
-.header h1 { font-size: 20px; font-weight: 500; color: #f3f4f6; font-family: 'Inter', sans-serif; }
-.header p { font-size: 13px; color: #6b7280; margin-top: 4px; font-family: 'Inter', sans-serif; }
-.tabs { display: flex; gap: 8px; padding: 16px 28px 0; }
-.tab { padding: 8px 18px; border-radius: 8px; font-size: 13px; font-weight: 500; cursor: pointer; border: 1.5px solid transparent; background: transparent; color: #6b7280; font-family: 'Inter', sans-serif; }
-.tab.active { background: #1e3a5f; color: #93c5fd; border-color: #3b82f6; }
-.tab:hover:not(.active) { color: #d1d5db; }
-.main { display: flex; gap: 0; padding: 20px 28px 0; }
-.left { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 16px; }
-.concept-card { background: #1a1d27; border: 1px solid #2a2d3a; border-radius: 12px; padding: 18px; }
-.concept-card h2 { font-size: 12px; font-weight: 500; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 10px; font-family: 'Inter', sans-serif; }
-.definition { font-size: 14px; color: #d1d5db; line-height: 1.7; font-family: 'Inter', sans-serif; }
-.math-box { background: #111318; border: 1px solid #2a2d3a; border-radius: 10px; padding: 14px 16px; }
-.math-box h3 { font-size: 11px; color: #6b7280; text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 10px; font-family: 'Inter', sans-serif; }
-.math-row { display: flex; justify-content: space-between; align-items: center; font-family: 'JetBrains Mono', monospace; font-size: 13px; padding: 3px 0; }
-.math-row.total { border-top: 1px solid #374151; margin-top: 6px; padding-top: 8px; font-size: 14px; }
-.note-box { background: #1a1d27; border: 1px solid #2a2d3a; border-radius: 8px; padding: 12px 14px; font-size: 13px; color: #9ca3af; line-height: 1.65; font-family: 'Inter', sans-serif; }
-.reg-group { margin-bottom: 10px; }
-.reg-group label { display: block; font-size: 11px; color: #6b7280; text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 5px; font-family: 'Inter', sans-serif; }
-.reg-row { display: flex; align-items: center; gap: 10px; }
-.reg-row input[type=range] { flex: 1; accent-color: #3b82f6; }
-.reg-row input[type=range]:disabled { accent-color: #374151; opacity: 0.4; }
-.reg-val { font-family: 'JetBrains Mono', monospace; font-size: 13px; min-width: 62px; text-align: right; }
-.locked-badge { font-size: 10px; color: #f87171; text-transform: uppercase; letter-spacing: 0.07em; font-weight: 500; font-family: 'Inter', sans-serif; }
-.right { width: 210px; flex-shrink: 0; margin-left: 24px; }
-.ram-label { font-size: 11px; color: #4b5563; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 8px; text-align: center; font-family: 'Inter', sans-serif; }
-.ram-wrap { position: relative; height: 460px; }
-.addr-labels { position: absolute; left: -50px; top: 0; height: 100%; display: flex; flex-direction: column; justify-content: space-between; padding: 2px 0; }
-.addr-labels span { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: #4b5563; }
-.ram-stick { width: 100%; height: 100%; background: #1a1d27; border: 1.5px solid #374151; border-radius: 6px; overflow: hidden; position: relative; }
-.ram-lines { position: absolute; inset: 0; background-image: repeating-linear-gradient(0deg, transparent, transparent 5px, rgba(255,255,255,0.025) 5px, rgba(255,255,255,0.025) 6px); }
-.seg-box { position: absolute; left: 0; right: 0; background: rgba(59,130,246,0.12); border: 1.5px dashed #3b82f6; transition: top 0.12s; }
-.seg-box-label { font-size: 9px; color: #93c5fd; text-align: center; padding-top: 3px; font-weight: 500; letter-spacing: 0.05em; font-family: 'Inter', sans-serif; }
-.ptr-line { position: absolute; left: 0; right: 0; height: 2px; background: #ef4444; transition: top 0.12s; z-index: 10; }
-.ptr-dot { position: absolute; right: -1px; top: -4px; width: 10px; height: 10px; border-radius: 50%; background: #ef4444; }
-.ptr-label { position: absolute; left: 0; top: -16px; font-family: 'JetBrains Mono', monospace; font-size: 10px; color: #fbbf24; background: #12141a; padding: 1px 4px; border-radius: 3px; white-space: nowrap; }
-.code-block { background: #111318; border: 1px solid #2a2d3a; border-radius: 8px; padding: 12px 14px; font-family: 'JetBrains Mono', monospace; font-size: 12px; line-height: 1.85; color: #d1d5db; white-space: pre; overflow-x: auto; }
-.cmp-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 4px; }
-.cmp-cell { background: #111318; border: 1px solid #1e3a5f; border-radius: 8px; padding: 12px; }
-.cmp-cell-title { font-size: 12px; font-weight: 500; color: #93c5fd; margin-bottom: 8px; font-family: 'Inter', sans-serif; }
-.cmp-row { font-size: 12px; color: #9ca3af; line-height: 1.8; font-family: 'Inter', sans-serif; }
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  .root {
+    font-family: 'Inter', sans-serif;
+    background: #12141a;
+    color: #e5e7eb;
+    min-height: 100vh;
+    padding-bottom: 28px;
+  }
+
+  .mono {
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .header {
+    padding: 24px 28px 0;
+  }
+
+  .header h1 {
+    font-size: 20px;
+    font-weight: 500;
+    color: #f3f4f6;
+    font-family: 'Inter', sans-serif;
+  }
+
+  .header p {
+    font-size: 13px;
+    color: #6b7280;
+    margin-top: 4px;
+    font-family: 'Inter', sans-serif;
+  }
+
+  .tabs {
+    display: flex;
+    gap: 8px;
+    padding: 16px 28px 0;
+  }
+
+  .tab {
+    padding: 8px 18px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    border: 1.5px solid transparent;
+    background: transparent;
+    color: #6b7280;
+    font-family: 'Inter', sans-serif;
+  }
+
+  .tab.active {
+    background: #1e3a5f;
+    color: #93c5fd;
+    border-color: #3b82f6;
+  }
+
+  .tab:hover:not(.active) {
+    color: #d1d5db;
+  }
+
+  .main {
+    display: flex;
+    gap: 0;
+    padding: 20px 28px 0;
+  }
+
+  .left {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .concept-card {
+    background: #1a1d27;
+    border: 1px solid #2a2d3a;
+    border-radius: 12px;
+    padding: 18px;
+  }
+
+  .concept-card h2 {
+    font-size: 12px;
+    font-weight: 500;
+    color: #9ca3af;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 10px;
+    font-family: 'Inter', sans-serif;
+  }
+
+  .definition {
+    font-size: 14px;
+    color: #d1d5db;
+    line-height: 1.7;
+    font-family: 'Inter', sans-serif;
+  }
+
+  .math-box {
+    background: #111318;
+    border: 1px solid #2a2d3a;
+    border-radius: 10px;
+    padding: 14px 16px;
+  }
+
+  .math-box h3 {
+    font-size: 11px;
+    color: #6b7280;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    margin-bottom: 10px;
+    font-family: 'Inter', sans-serif;
+  }
+
+  .math-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    padding: 3px 0;
+  }
+
+  .math-row.total {
+    border-top: 1px solid #374151;
+    margin-top: 6px;
+    padding-top: 8px;
+    font-size: 14px;
+  }
+
+  .note-box {
+    background: #1a1d27;
+    border: 1px solid #2a2d3a;
+    border-radius: 8px;
+    padding: 12px 14px;
+    font-size: 13px;
+    color: #9ca3af;
+    line-height: 1.65;
+    font-family: 'Inter', sans-serif;
+  }
+
+  .reg-group {
+    margin-bottom: 10px;
+  }
+
+  .reg-group label {
+    display: block;
+    font-size: 11px;
+    color: #6b7280;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    margin-bottom: 5px;
+    font-family: 'Inter', sans-serif;
+  }
+
+  .reg-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .reg-row input[type=range] {
+    flex: 1;
+    accent-color: #3b82f6;
+  }
+
+  .reg-row input[type=range]:disabled {
+    accent-color: #374151;
+    opacity: 0.4;
+  }
+
+  .reg-val {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    min-width: 62px;
+    text-align: right;
+  }
+
+  .locked-badge {
+    font-size: 10px;
+    color: #f87171;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    font-weight: 500;
+    font-family: 'Inter', sans-serif;
+  }
+
+  .right {
+    width: 210px;
+    flex-shrink: 0;
+    margin-left: 24px;
+  }
+
+  .ram-label {
+    font-size: 11px;
+    color: #4b5563;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 8px;
+    text-align: center;
+    font-family: 'Inter', sans-serif;
+  }
+
+  .ram-wrap {
+    position: relative;
+    height: 460px;
+  }
+
+  .addr-labels {
+    position: absolute;
+    left: -50px;
+    top: 0;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 2px 0;
+  }
+
+  .addr-labels span {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: #4b5563;
+  }
+
+  .ram-stick {
+    width: 100%;
+    height: 100%;
+    background: #1a1d27;
+    border: 1.5px solid #374151;
+    border-radius: 6px;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .ram-lines {
+    position: absolute;
+    inset: 0;
+    background-image: repeating-linear-gradient(0deg, transparent, transparent 5px, rgba(255, 255, 255, 0.025) 5px, rgba(255, 255, 255, 0.025) 6px);
+  }
+
+  .seg-box {
+    position: absolute;
+    left: 0;
+    right: 0;
+    background: rgba(59, 130, 246, 0.12);
+    border: 1.5px dashed #3b82f6;
+    transition: top 0.12s;
+  }
+
+  .seg-box-label {
+    font-size: 9px;
+    color: #93c5fd;
+    text-align: center;
+    padding-top: 3px;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    font-family: 'Inter', sans-serif;
+  }
+
+  .ptr-line {
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: #ef4444;
+    transition: top 0.12s;
+    z-index: 10;
+  }
+
+  .ptr-dot {
+    position: absolute;
+    right: -1px;
+    top: -4px;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #ef4444;
+  }
+
+  .ptr-label {
+    position: absolute;
+    left: 0;
+    top: -16px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: #fbbf24;
+    background: #12141a;
+    padding: 1px 4px;
+    border-radius: 3px;
+    white-space: nowrap;
+  }
+
+  .code-block {
+    background: #111318;
+    border: 1px solid #2a2d3a;
+    border-radius: 8px;
+    padding: 12px 14px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    line-height: 1.85;
+    color: #d1d5db;
+    white-space: pre;
+    overflow-x: auto;
+  }
+
+  .cmp-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-top: 4px;
+  }
+
+  .cmp-cell {
+    background: #111318;
+    border: 1px solid #1e3a5f;
+    border-radius: 8px;
+    padding: 12px;
+  }
+
+  .cmp-cell-title {
+    font-size: 12px;
+    font-weight: 500;
+    color: #93c5fd;
+    margin-bottom: 8px;
+    font-family: 'Inter', sans-serif;
+  }
+
+  .cmp-row {
+    font-size: 12px;
+    color: #9ca3af;
+    line-height: 1.8;
+    font-family: 'Inter', sans-serif;
+  }
 </style>
 
 <div class="root">
@@ -86,15 +387,15 @@
 </div>
 
 <script>
-let mode = 'near';
-let segVal = 0x4000;
-let offVal = 0x0000;
-const TOTAL = 1048576;
+  let mode = 'near';
+  let segVal = 0x4000;
+  let offVal = 0x0000;
+  const TOTAL = 1048576;
 
-function hex(n, pad) { return '0x' + n.toString(16).toUpperCase().padStart(pad, '0'); }
+  function hex(n, pad) { return '0x' + n.toString(16).toUpperCase().padStart(pad, '0'); }
 
-function nearHTML() {
-  return `
+  function nearHTML() {
+    return `
     <div class="concept-card">
       <h2>What is a near pointer?</h2>
       <div class="definition">
@@ -109,30 +410,30 @@ function nearHTML() {
         <label>Segment register DS <span class="locked-badge">— near pointer cannot change this</span></label>
         <div class="reg-row">
           <input type="range" id="sl-seg" min="0" max="61440" step="4096" value="${segVal}" disabled>
-          <span class="reg-val" style="color:#3b82f6">${hex(segVal,4)}</span>
+          <span class="reg-val" style="color:#3b82f6">${hex(segVal, 4)}</span>
         </div>
       </div>
       <div class="reg-group">
         <label>Offset — this IS the near pointer's value</label>
         <div class="reg-row">
           <input type="range" id="sl-off" min="0" max="65535" step="256" value="${offVal}">
-          <span class="reg-val" id="disp-off" style="color:#6ee7b7">${hex(offVal,4)}</span>
+          <span class="reg-val" id="disp-off" style="color:#6ee7b7">${hex(offVal, 4)}</span>
         </div>
       </div>
     </div>
     <div class="math-box">
       <h3>CPU physical address calculation</h3>
-      <div class="math-row"><span style="color:#9ca3af">DS &lt;&lt; 4 (segment × 16)</span><span style="color:#93c5fd" id="m-seg">${hex(segVal*16,5)}</span></div>
-      <div class="math-row"><span style="color:#9ca3af">+ offset (near pointer)</span><span style="color:#6ee7b7" id="m-off">${hex(offVal,4)}</span></div>
-      <div class="math-row total"><span style="color:#e5e7eb">Physical address</span><span style="color:#fbbf24" id="m-phys">${hex(segVal*16+offVal,5)}</span></div>
+      <div class="math-row"><span style="color:#9ca3af">DS &lt;&lt; 4 (segment × 16)</span><span style="color:#93c5fd" id="m-seg">${hex(segVal * 16, 5)}</span></div>
+      <div class="math-row"><span style="color:#9ca3af">+ offset (near pointer)</span><span style="color:#6ee7b7" id="m-off">${hex(offVal, 4)}</span></div>
+      <div class="math-row total"><span style="color:#e5e7eb">Physical address</span><span style="color:#fbbf24" id="m-phys">${hex(segVal * 16 + offVal, 5)}</span></div>
     </div>
     <div class="note-box">
       <span style="color:#fbbf24">Key limit:</span> No matter what offset you set, the pointer stays inside the one blue 64 KB box. To reach another area of RAM you'd have to change the DS register in assembly — the near pointer itself is powerless to do that.
     </div>`;
-}
+  }
 
-function farHTML() {
-  return `
+  function farHTML() {
+    return `
     <div class="concept-card">
       <h2>What is a far pointer?</h2>
       <div class="definition">
@@ -147,30 +448,30 @@ function farHTML() {
         <label>Segment (upper 16 bits of the 32-bit far pointer)</label>
         <div class="reg-row">
           <input type="range" id="sl-seg" min="0" max="61440" step="4096" value="${segVal}">
-          <span class="reg-val" id="disp-seg" style="color:#93c5fd">${hex(segVal,4)}</span>
+          <span class="reg-val" id="disp-seg" style="color:#93c5fd">${hex(segVal, 4)}</span>
         </div>
       </div>
       <div class="reg-group">
         <label>Offset (lower 16 bits of the 32-bit far pointer)</label>
         <div class="reg-row">
           <input type="range" id="sl-off" min="0" max="65535" step="256" value="${offVal}">
-          <span class="reg-val" id="disp-off" style="color:#6ee7b7">${hex(offVal,4)}</span>
+          <span class="reg-val" id="disp-off" style="color:#6ee7b7">${hex(offVal, 4)}</span>
         </div>
       </div>
     </div>
     <div class="math-box">
       <h3>CPU physical address calculation</h3>
-      <div class="math-row"><span style="color:#9ca3af">Segment &lt;&lt; 4</span><span style="color:#93c5fd" id="m-seg">${hex(segVal*16,5)}</span></div>
-      <div class="math-row"><span style="color:#9ca3af">+ offset</span><span style="color:#6ee7b7" id="m-off">${hex(offVal,4)}</span></div>
-      <div class="math-row total"><span style="color:#e5e7eb">Physical address</span><span style="color:#fbbf24" id="m-phys">${hex(segVal*16+offVal,5)}</span></div>
+      <div class="math-row"><span style="color:#9ca3af">Segment &lt;&lt; 4</span><span style="color:#93c5fd" id="m-seg">${hex(segVal * 16, 5)}</span></div>
+      <div class="math-row"><span style="color:#9ca3af">+ offset</span><span style="color:#6ee7b7" id="m-off">${hex(offVal, 4)}</span></div>
+      <div class="math-row total"><span style="color:#e5e7eb">Physical address</span><span style="color:#fbbf24" id="m-phys">${hex(segVal * 16 + offVal, 5)}</span></div>
     </div>
     <div class="note-box">
       <span style="color:#fbbf24">The overlap quirk:</span> Two different segment:offset pairs can point to the <em>same</em> physical byte. <span style="font-family:'JetBrains Mono',monospace;font-size:12px">1000:0010</span> and <span style="font-family:'JetBrains Mono',monospace;font-size:12px">1001:0000</span> both equal physical <span style="font-family:'JetBrains Mono',monospace;font-size:12px">0x10010</span>. This caused many subtle aliasing bugs in DOS-era code.
     </div>`;
-}
+  }
 
-function compareHTML() {
-  return `
+  function compareHTML() {
+    return `
     <div class="concept-card">
       <h2>Side-by-side comparison</h2>
       <div class="cmp-grid">
@@ -203,53 +504,53 @@ fp = (<span style="color:#34d399">int</span> <span style="color:#93c5fd">far</sp
     <div class="note-box">
       <span style="color:#fbbf24">Why does this matter today?</span> 32-bit protected mode (386+) and 64-bit x86-64 use a flat address space — one continuous range, no segment juggling. Far pointers are history. But you'll still encounter them in BIOS firmware, DOS emulators, and bootloader code.
     </div>`;
-}
+  }
 
-function setTab(t) {
-  mode = t;
-  document.querySelectorAll('.tab').forEach((el, i) => {
-    el.classList.toggle('active', ['near','far','compare'][i] === t);
-  });
-  const rp = document.getElementById('ram-panel');
-  rp.style.display = t === 'compare' ? 'none' : '';
+  function setTab(t) {
+    mode = t;
+    document.querySelectorAll('.tab').forEach((el, i) => {
+      el.classList.toggle('active', ['near', 'far', 'compare'][i] === t);
+    });
+    const rp = document.getElementById('ram-panel');
+    rp.style.display = t === 'compare' ? 'none' : '';
+    render();
+  }
+
+  function render() {
+    const pane = document.getElementById('left-pane');
+    if (mode === 'near') pane.innerHTML = nearHTML();
+    else if (mode === 'far') pane.innerHTML = farHTML();
+    else pane.innerHTML = compareHTML();
+    bindSliders();
+    updateVis();
+  }
+
+  function bindSliders() {
+    const ss = document.getElementById('sl-seg');
+    const so = document.getElementById('sl-off');
+    if (ss) ss.addEventListener('input', e => { segVal = +e.target.value; updateCalc(); updateVis(); });
+    if (so) so.addEventListener('input', e => { offVal = +e.target.value; updateCalc(); updateVis(); });
+  }
+
+  function updateCalc() {
+    const ds = document.getElementById('disp-seg');
+    const dof = document.getElementById('disp-off');
+    if (ds) ds.textContent = hex(segVal, 4);
+    if (dof) dof.textContent = hex(offVal, 4);
+    const ms = document.getElementById('m-seg');
+    const mo = document.getElementById('m-off');
+    const mp = document.getElementById('m-phys');
+    if (ms) ms.textContent = hex(segVal * 16, 5);
+    if (mo) mo.textContent = hex(offVal, 4);
+    if (mp) mp.textContent = hex(segVal * 16 + offVal, 5);
+  }
+
+  function updateVis() {
+    const phys = segVal * 16 + offVal;
+    document.getElementById('vis-seg').style.top = ((segVal * 16) / TOTAL * 100) + '%';
+    document.getElementById('vis-ptr').style.top = (phys / TOTAL * 100) + '%';
+    document.getElementById('vis-addr').textContent = hex(phys, 5);
+  }
+
   render();
-}
-
-function render() {
-  const pane = document.getElementById('left-pane');
-  if (mode === 'near') pane.innerHTML = nearHTML();
-  else if (mode === 'far') pane.innerHTML = farHTML();
-  else pane.innerHTML = compareHTML();
-  bindSliders();
-  updateVis();
-}
-
-function bindSliders() {
-  const ss = document.getElementById('sl-seg');
-  const so = document.getElementById('sl-off');
-  if (ss) ss.addEventListener('input', e => { segVal = +e.target.value; updateCalc(); updateVis(); });
-  if (so) so.addEventListener('input', e => { offVal = +e.target.value; updateCalc(); updateVis(); });
-}
-
-function updateCalc() {
-  const ds = document.getElementById('disp-seg');
-  const dof = document.getElementById('disp-off');
-  if (ds) ds.textContent = hex(segVal, 4);
-  if (dof) dof.textContent = hex(offVal, 4);
-  const ms = document.getElementById('m-seg');
-  const mo = document.getElementById('m-off');
-  const mp = document.getElementById('m-phys');
-  if (ms) ms.textContent = hex(segVal * 16, 5);
-  if (mo) mo.textContent = hex(offVal, 4);
-  if (mp) mp.textContent = hex(segVal * 16 + offVal, 5);
-}
-
-function updateVis() {
-  const phys = segVal * 16 + offVal;
-  document.getElementById('vis-seg').style.top = ((segVal * 16) / TOTAL * 100) + '%';
-  document.getElementById('vis-ptr').style.top = (phys / TOTAL * 100) + '%';
-  document.getElementById('vis-addr').textContent = hex(phys, 5);
-}
-
-render();
 </script>

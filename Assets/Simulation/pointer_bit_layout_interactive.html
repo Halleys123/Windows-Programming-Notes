@@ -1,84 +1,411 @@
-
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="index-heading" content="Pointer Bit Layout Interactive">
+<meta name="index-description"
+  content="Bit-level interactive breakdown showing segment, offset, shifts, and resulting physical address calculations.">
+<meta name="index-tags" content="x86, Bit Layout, Segmentation, Pointers">
+<meta name="index-tag-colors" content="#a78bfa, #f472b6, #34d399, #f59e0b">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=JetBrains+Mono:wght@400;700&display=swap"
+  rel="stylesheet">
 
 <style>
-* { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: 'Inter', sans-serif; }
-.wrap { background: #12141a; color: #e5e7eb; padding: 24px 24px 32px; }
-.section { margin-bottom: 32px; }
-.sec-title { font-size: 11px; color: #6b7280; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 14px; font-weight: 500; }
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
 
-/* Bit register */
-.reg-wrap { position: relative; }
-.reg-row { display: flex; align-items: stretch; height: 48px; border-radius: 8px; overflow: hidden; border: 1.5px solid #374151; }
-.bit-group { display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: default; transition: filter 0.15s; }
-.bit-group:hover { filter: brightness(1.15); }
-.bit-inner { font-family: 'JetBrains Mono', monospace; font-size: 13px; font-weight: 700; line-height: 1; }
-.bit-sub { font-size: 9px; color: rgba(255,255,255,0.45); margin-top: 3px; letter-spacing: 0.05em; text-transform: uppercase; }
+  body {
+    font-family: 'Inter', sans-serif;
+  }
 
-.seg-group  { background: #1e3a5f; border-right: 1.5px solid #374151; }
-.off-group  { background: #14402e; }
-.near-group { background: #14402e; }
+  .wrap {
+    background: #12141a;
+    color: #e5e7eb;
+    padding: 24px 24px 32px;
+  }
 
-.seg-color  { color: #93c5fd; }
-.off-color  { color: #6ee7b7; }
-.near-color { color: #6ee7b7; }
+  .section {
+    margin-bottom: 32px;
+  }
 
-/* Bit index labels */
-.bit-indices { display: flex; justify-content: space-between; padding: 4px 0 0; }
-.bit-index { font-family: 'JetBrains Mono', monospace; font-size: 9px; color: #4b5563; text-align: center; }
+  .sec-title {
+    font-size: 11px;
+    color: #6b7280;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 14px;
+    font-weight: 500;
+  }
 
-/* Legend row */
-.legend { display: flex; gap: 16px; margin-top: 10px; }
-.legend-item { display: flex; align-items: center; gap: 6px; font-size: 12px; color: #9ca3af; }
-.legend-dot { width: 10px; height: 10px; border-radius: 3px; }
+  /* Bit register */
+  .reg-wrap {
+    position: relative;
+  }
 
-/* Arrow + shift diagram */
-.shift-diagram { background: #1a1d27; border: 1px solid #2a2d3a; border-radius: 10px; padding: 18px 20px; }
-.shift-row { display: flex; align-items: center; gap: 0; margin-bottom: 8px; }
-.shift-label { font-size: 12px; color: #6b7280; width: 130px; flex-shrink: 0; font-family: 'Inter', sans-serif; }
-.bits-vis { display: flex; gap: 2px; flex: 1; }
-.b { width: 18px; height: 28px; border-radius: 4px; display: flex; align-items: center; justify-content: center; font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700; flex-shrink: 0; }
-.b.seg { background: #1e3a5f; color: #93c5fd; }
-.b.off { background: #14402e; color: #6ee7b7; }
-.b.zer { background: #1f2228; color: #4b5563; }
-.b.res { background: #2a1f0a; color: #fbbf24; }
-.b.plus { background: transparent; color: #6b7280; font-size: 16px; width: 20px; }
-.b.eq  { background: transparent; color: #6b7280; font-size: 16px; width: 20px; }
-.bit-count-label { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #4b5563; margin-left: 8px; }
+  .reg-row {
+    display: flex;
+    align-items: stretch;
+    height: 48px;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1.5px solid #374151;
+  }
 
-.divider { border: none; border-top: 1px solid #2a2d3a; margin: 14px 0; }
+  .bit-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: default;
+    transition: filter 0.15s;
+  }
 
-/* Interactive sim */
-.sim-card { background: #1a1d27; border: 1px solid #2a2d3a; border-radius: 10px; padding: 18px 20px; }
-.slider-row { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
-.slider-row label { font-size: 12px; color: #6b7280; width: 160px; flex-shrink: 0; font-family: 'Inter', sans-serif; text-transform: uppercase; letter-spacing: 0.06em; }
-.slider-row input[type=range] { flex: 1; accent-color: #3b82f6; }
-.slider-row input[type=range].green { accent-color: #10b981; }
-.slider-row .val { font-family: 'JetBrains Mono', monospace; font-size: 13px; min-width: 58px; text-align: right; }
-.slider-row input:disabled { opacity: 0.35; }
+  .bit-group:hover {
+    filter: brightness(1.15);
+  }
 
-.result-row { display: flex; align-items: baseline; gap: 10px; margin-top: 14px; border-top: 1px solid #2a2d3a; padding-top: 14px; }
-.result-eq { font-family: 'JetBrains Mono', monospace; font-size: 13px; color: #9ca3af; flex: 1; line-height: 2; }
-.result-phys { font-family: 'JetBrains Mono', monospace; font-size: 20px; color: #fbbf24; font-weight: 700; }
+  .bit-inner {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 1;
+  }
 
-/* Live bit display in sim */
-.live-reg { display: flex; height: 36px; border-radius: 6px; overflow: hidden; border: 1px solid #374151; margin-bottom: 12px; }
-.live-seg { background: #1e3a5f; flex: 1; display: flex; align-items: center; justify-content: center; font-family: 'JetBrains Mono', monospace; font-size: 13px; color: #93c5fd; font-weight: 700; }
-.live-off { background: #14402e; flex: 1; display: flex; align-items: center; justify-content: center; font-family: 'JetBrains Mono', monospace; font-size: 13px; color: #6ee7b7; font-weight: 700; }
-.live-near { background: #14402e; width: 100%; display: flex; align-items: center; justify-content: center; font-family: 'JetBrains Mono', monospace; font-size: 13px; color: #6ee7b7; font-weight: 700; }
-.live-label { font-size: 10px; color: #4b5563; text-align: center; margin-bottom: 3px; display: flex; gap: 2px; }
-.live-label span { flex: 1; }
+  .bit-sub {
+    font-size: 9px;
+    color: rgba(255, 255, 255, 0.45);
+    margin-top: 3px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
 
-.tabs { display: flex; gap: 8px; margin-bottom: 20px; }
-.tab { padding: 7px 16px; border-radius: 8px; font-size: 13px; font-weight: 500; cursor: pointer; border: 1.5px solid transparent; background: transparent; color: #6b7280; font-family: 'Inter', sans-serif; }
-.tab.active { background: #1e3a5f; color: #93c5fd; border-color: #3b82f6; }
-.tab:hover:not(.active) { color: #d1d5db; }
+  .seg-group {
+    background: #1e3a5f;
+    border-right: 1.5px solid #374151;
+  }
 
-.note { background: #1a1d27; border: 1px solid #2a2d3a; border-radius: 8px; padding: 12px 14px; font-size: 13px; color: #9ca3af; line-height: 1.65; }
-.note .hl { color: #fbbf24; }
-.note .blue { color: #93c5fd; }
-.note .green { color: #6ee7b7; }
+  .off-group {
+    background: #14402e;
+  }
+
+  .near-group {
+    background: #14402e;
+  }
+
+  .seg-color {
+    color: #93c5fd;
+  }
+
+  .off-color {
+    color: #6ee7b7;
+  }
+
+  .near-color {
+    color: #6ee7b7;
+  }
+
+  /* Bit index labels */
+  .bit-indices {
+    display: flex;
+    justify-content: space-between;
+    padding: 4px 0 0;
+  }
+
+  .bit-index {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    color: #4b5563;
+    text-align: center;
+  }
+
+  /* Legend row */
+  .legend {
+    display: flex;
+    gap: 16px;
+    margin-top: 10px;
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: #9ca3af;
+  }
+
+  .legend-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 3px;
+  }
+
+  /* Arrow + shift diagram */
+  .shift-diagram {
+    background: #1a1d27;
+    border: 1px solid #2a2d3a;
+    border-radius: 10px;
+    padding: 18px 20px;
+  }
+
+  .shift-row {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    margin-bottom: 8px;
+  }
+
+  .shift-label {
+    font-size: 12px;
+    color: #6b7280;
+    width: 130px;
+    flex-shrink: 0;
+    font-family: 'Inter', sans-serif;
+  }
+
+  .bits-vis {
+    display: flex;
+    gap: 2px;
+    flex: 1;
+  }
+
+  .b {
+    width: 18px;
+    height: 28px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+
+  .b.seg {
+    background: #1e3a5f;
+    color: #93c5fd;
+  }
+
+  .b.off {
+    background: #14402e;
+    color: #6ee7b7;
+  }
+
+  .b.zer {
+    background: #1f2228;
+    color: #4b5563;
+  }
+
+  .b.res {
+    background: #2a1f0a;
+    color: #fbbf24;
+  }
+
+  .b.plus {
+    background: transparent;
+    color: #6b7280;
+    font-size: 16px;
+    width: 20px;
+  }
+
+  .b.eq {
+    background: transparent;
+    color: #6b7280;
+    font-size: 16px;
+    width: 20px;
+  }
+
+  .bit-count-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: #4b5563;
+    margin-left: 8px;
+  }
+
+  .divider {
+    border: none;
+    border-top: 1px solid #2a2d3a;
+    margin: 14px 0;
+  }
+
+  /* Interactive sim */
+  .sim-card {
+    background: #1a1d27;
+    border: 1px solid #2a2d3a;
+    border-radius: 10px;
+    padding: 18px 20px;
+  }
+
+  .slider-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+
+  .slider-row label {
+    font-size: 12px;
+    color: #6b7280;
+    width: 160px;
+    flex-shrink: 0;
+    font-family: 'Inter', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  .slider-row input[type=range] {
+    flex: 1;
+    accent-color: #3b82f6;
+  }
+
+  .slider-row input[type=range].green {
+    accent-color: #10b981;
+  }
+
+  .slider-row .val {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    min-width: 58px;
+    text-align: right;
+  }
+
+  .slider-row input:disabled {
+    opacity: 0.35;
+  }
+
+  .result-row {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    margin-top: 14px;
+    border-top: 1px solid #2a2d3a;
+    padding-top: 14px;
+  }
+
+  .result-eq {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: #9ca3af;
+    flex: 1;
+    line-height: 2;
+  }
+
+  .result-phys {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 20px;
+    color: #fbbf24;
+    font-weight: 700;
+  }
+
+  /* Live bit display in sim */
+  .live-reg {
+    display: flex;
+    height: 36px;
+    border-radius: 6px;
+    overflow: hidden;
+    border: 1px solid #374151;
+    margin-bottom: 12px;
+  }
+
+  .live-seg {
+    background: #1e3a5f;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: #93c5fd;
+    font-weight: 700;
+  }
+
+  .live-off {
+    background: #14402e;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: #6ee7b7;
+    font-weight: 700;
+  }
+
+  .live-near {
+    background: #14402e;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: #6ee7b7;
+    font-weight: 700;
+  }
+
+  .live-label {
+    font-size: 10px;
+    color: #4b5563;
+    text-align: center;
+    margin-bottom: 3px;
+    display: flex;
+    gap: 2px;
+  }
+
+  .live-label span {
+    flex: 1;
+  }
+
+  .tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 20px;
+  }
+
+  .tab {
+    padding: 7px 16px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    border: 1.5px solid transparent;
+    background: transparent;
+    color: #6b7280;
+    font-family: 'Inter', sans-serif;
+  }
+
+  .tab.active {
+    background: #1e3a5f;
+    color: #93c5fd;
+    border-color: #3b82f6;
+  }
+
+  .tab:hover:not(.active) {
+    color: #d1d5db;
+  }
+
+  .note {
+    background: #1a1d27;
+    border: 1px solid #2a2d3a;
+    border-radius: 8px;
+    padding: 12px 14px;
+    font-size: 13px;
+    color: #9ca3af;
+    line-height: 1.65;
+  }
+
+  .note .hl {
+    color: #fbbf24;
+  }
+
+  .note .blue {
+    color: #93c5fd;
+  }
+
+  .note .green {
+    color: #6ee7b7;
+  }
 </style>
 
 <div class="wrap">
@@ -117,7 +444,8 @@ body { font-family: 'Inter', sans-serif; }
       <div class="result-row">
         <div class="result-eq" id="result-eq"></div>
         <div>
-          <div style="font-size:11px;color:#6b7280;text-align:right;margin-bottom:2px;font-family:'Inter',sans-serif">Physical address</div>
+          <div style="font-size:11px;color:#6b7280;text-align:right;margin-bottom:2px;font-family:'Inter',sans-serif">
+            Physical address</div>
           <div class="result-phys" id="result-phys">0x40000</div>
         </div>
       </div>
@@ -128,52 +456,52 @@ body { font-family: 'Inter', sans-serif; }
 </div>
 
 <script>
-let mode = 'near';
-let segVal = 0x4000;
-let offVal = 0x0000;
+  let mode = 'near';
+  let segVal = 0x4000;
+  let offVal = 0x0000;
 
-function hex(n, pad) { return '0x' + n.toString(16).toUpperCase().padStart(pad, '0'); }
-function bin16(n) { return n.toString(2).padStart(16, '0'); }
+  function hex(n, pad) { return '0x' + n.toString(16).toUpperCase().padStart(pad, '0'); }
+  function bin16(n) { return n.toString(2).padStart(16, '0'); }
 
-const nearBits = () => {
-  const b = bin16(offVal);
-  let html = '<div class="reg-wrap"><div class="reg-row">';
-  html += `<div class="bit-group near-group" style="flex:1;padding:0 12px"><div class="bit-inner near-color">${b.slice(0,8)}&nbsp;${b.slice(8)}</div><div class="bit-sub">offset [15..0]</div></div>`;
-  html += '</div>';
-  html += '<div class="bit-indices"><span class="bit-index">15</span><span class="bit-index">8</span><span class="bit-index">7</span><span class="bit-index">0</span></div>';
-  html += '</div>';
-  html += '<div class="legend"><div class="legend-item"><div class="legend-dot" style="background:#14402e;border:1px solid #10b981"></div>Offset — the entire 16-bit near pointer</div></div>';
-  return html;
-};
+  const nearBits = () => {
+    const b = bin16(offVal);
+    let html = '<div class="reg-wrap"><div class="reg-row">';
+    html += `<div class="bit-group near-group" style="flex:1;padding:0 12px"><div class="bit-inner near-color">${b.slice(0, 8)}&nbsp;${b.slice(8)}</div><div class="bit-sub">offset [15..0]</div></div>`;
+    html += '</div>';
+    html += '<div class="bit-indices"><span class="bit-index">15</span><span class="bit-index">8</span><span class="bit-index">7</span><span class="bit-index">0</span></div>';
+    html += '</div>';
+    html += '<div class="legend"><div class="legend-item"><div class="legend-dot" style="background:#14402e;border:1px solid #10b981"></div>Offset — the entire 16-bit near pointer</div></div>';
+    return html;
+  };
 
-const farBits = () => {
-  const sb = bin16(segVal);
-  const ob = bin16(offVal);
-  let html = '<div class="reg-wrap"><div class="reg-row">';
-  html += `<div class="bit-group seg-group" style="flex:1;padding:0 8px"><div class="bit-inner seg-color">${sb.slice(0,8)}&nbsp;${sb.slice(8)}</div><div class="bit-sub">segment [31..16]</div></div>`;
-  html += `<div class="bit-group off-group" style="flex:1;padding:0 8px"><div class="bit-inner off-color">${ob.slice(0,8)}&nbsp;${ob.slice(8)}</div><div class="bit-sub">offset [15..0]</div></div>`;
-  html += '</div>';
-  html += '<div class="bit-indices"><span class="bit-index">31</span><span class="bit-index">24</span><span class="bit-index">16</span><span class="bit-index">15</span><span class="bit-index">8</span><span class="bit-index">0</span></div>';
-  html += '</div>';
-  html += '<div class="legend"><div class="legend-item"><div class="legend-dot" style="background:#1e3a5f;border:1px solid #3b82f6"></div>Segment (upper 16 bits)</div><div class="legend-item"><div class="legend-dot" style="background:#14402e;border:1px solid #10b981"></div>Offset (lower 16 bits)</div></div>';
-  return html;
-};
+  const farBits = () => {
+    const sb = bin16(segVal);
+    const ob = bin16(offVal);
+    let html = '<div class="reg-wrap"><div class="reg-row">';
+    html += `<div class="bit-group seg-group" style="flex:1;padding:0 8px"><div class="bit-inner seg-color">${sb.slice(0, 8)}&nbsp;${sb.slice(8)}</div><div class="bit-sub">segment [31..16]</div></div>`;
+    html += `<div class="bit-group off-group" style="flex:1;padding:0 8px"><div class="bit-inner off-color">${ob.slice(0, 8)}&nbsp;${ob.slice(8)}</div><div class="bit-sub">offset [15..0]</div></div>`;
+    html += '</div>';
+    html += '<div class="bit-indices"><span class="bit-index">31</span><span class="bit-index">24</span><span class="bit-index">16</span><span class="bit-index">15</span><span class="bit-index">8</span><span class="bit-index">0</span></div>';
+    html += '</div>';
+    html += '<div class="legend"><div class="legend-item"><div class="legend-dot" style="background:#1e3a5f;border:1px solid #3b82f6"></div>Segment (upper 16 bits)</div><div class="legend-item"><div class="legend-dot" style="background:#14402e;border:1px solid #10b981"></div>Offset (lower 16 bits)</div></div>';
+    return html;
+  };
 
-const shiftNear = () => {
-  const ob = bin16(offVal).split('').map(d => `<div class="b off">${d}</div>`).join('');
-  return `
+  const shiftNear = () => {
+    const ob = bin16(offVal).split('').map(d => `<div class="b off">${d}</div>`).join('');
+    return `
     <div class="shift-diagram">
       <div style="font-size:12px;color:#9ca3af;margin-bottom:14px;font-family:'Inter',sans-serif">
         The CPU implicitly uses DS. The 16-bit offset is zero-extended to 20 bits and added to <span style="color:#93c5fd">(DS &lt;&lt; 4)</span>.
       </div>
       <div class="shift-row">
         <div class="shift-label" style="color:#6b7280">DS register (implicit)</div>
-        <div class="bits-vis">${bin16(segVal).split('').map(d=>`<div class="b seg">${d}</div>`).join('')}</div>
+        <div class="bits-vis">${bin16(segVal).split('').map(d => `<div class="b seg">${d}</div>`).join('')}</div>
         <span class="bit-count-label">16 bits</span>
       </div>
       <div class="shift-row" style="margin-top:6px">
         <div class="shift-label" style="color:#6b7280">After DS &lt;&lt; 4 (×16)</div>
-        <div class="bits-vis">${bin16(segVal).split('').map(d=>`<div class="b seg">${d}</div>`).join('')}${'<div class="b zer">0</div>'.repeat(4)}</div>
+        <div class="bits-vis">${bin16(segVal).split('').map(d => `<div class="b seg">${d}</div>`).join('')}${'<div class="b zer">0</div>'.repeat(4)}</div>
         <span class="bit-count-label">20 bits</span>
       </div>
       <div style="display:flex;align-items:center;gap:8px;margin:8px 0 8px 130px">
@@ -188,12 +516,12 @@ const shiftNear = () => {
         <span class="bit-count-label" style="color:#fbbf24">20 bits = 1 MB</span>
       </div>
     </div>`;
-};
+  };
 
-const shiftFar = () => {
-  const sb = bin16(segVal).split('').map(d=>`<div class="b seg">${d}</div>`).join('');
-  const ob = bin16(offVal).split('').map(d=>`<div class="b off">${d}</div>`).join('');
-  return `
+  const shiftFar = () => {
+    const sb = bin16(segVal).split('').map(d => `<div class="b seg">${d}</div>`).join('');
+    const ob = bin16(offVal).split('').map(d => `<div class="b off">${d}</div>`).join('');
+    return `
     <div class="shift-diagram">
       <div style="font-size:12px;color:#9ca3af;margin-bottom:14px;font-family:'Inter',sans-serif">
         The 32-bit far pointer is stored as <span style="color:#93c5fd">segment:offset</span>. The CPU shifts the segment left 4 bits then adds the offset to get a 20-bit physical address.
@@ -220,115 +548,115 @@ const shiftFar = () => {
         <span class="bit-count-label" style="color:#fbbf24">20 bits = 1 MB</span>
       </div>
     </div>`;
-};
+  };
 
-function updatePhysBits() {
-  const phys = segVal * 16 + offVal;
-  const physBin = phys.toString(2).padStart(20, '0').split('');
-  const html = physBin.map(d => `<div class="b res">${d}</div>`).join('');
-  const el = document.getElementById('phys-bits-near') || document.getElementById('phys-bits-far');
-  if (el) el.innerHTML = html;
-}
-
-function updateLiveReg() {
-  const sb = bin16(segVal);
-  const ob = bin16(offVal);
-  const lr = document.getElementById('live-reg');
-  const ll = document.getElementById('live-label');
-  if (mode === 'near') {
-    ll.innerHTML = '<span style="flex:1;text-align:center">offset [15..0]</span>';
-    lr.innerHTML = `<div class="live-near">${ob.slice(0,8)}&nbsp;${ob.slice(8)}</div>`;
-  } else {
-    ll.innerHTML = '<span>segment [31..16]</span><span>offset [15..0]</span>';
-    lr.innerHTML = `<div class="live-seg">${sb.slice(0,8)}&nbsp;${sb.slice(8)}</div><div class="live-off">${ob.slice(0,8)}&nbsp;${ob.slice(8)}</div>`;
-  }
-}
-
-function updateResult() {
-  const phys = segVal * 16 + offVal;
-  const re = document.getElementById('result-eq');
-  const rp = document.getElementById('result-phys');
-  if (mode === 'near') {
-    re.innerHTML = `<span style="color:#93c5fd">${hex(segVal,4)}</span> × 16 &nbsp;<span style="color:#4b5563">(DS implicit)</span><br>+ <span style="color:#6ee7b7">${hex(offVal,4)}</span> &nbsp;<span style="color:#4b5563">(near pointer)</span>`;
-  } else {
-    re.innerHTML = `<span style="color:#93c5fd">${hex(segVal,4)}</span> × 16 &nbsp;<span style="color:#4b5563">(upper 16 bits)</span><br>+ <span style="color:#6ee7b7">${hex(offVal,4)}</span> &nbsp;<span style="color:#4b5563">(lower 16 bits)</span>`;
-  }
-  rp.textContent = hex(phys, 5);
-}
-
-function updateDisp() {
-  document.getElementById('disp-seg').textContent = hex(segVal, 4);
-  document.getElementById('disp-off').textContent = hex(offVal, 4);
-}
-
-function renderAll() {
-  document.getElementById('layout-section').innerHTML =
-    '<div class="sec-title">Bit layout — ' + (mode === 'near' ? '16-bit near pointer' : '32-bit far pointer') + '</div>' +
-    (mode === 'near' ? nearBits() : farBits());
-
-  document.getElementById('shift-section').innerHTML =
-    '<div class="sec-title">How the 20-bit physical address is computed</div>' +
-    (mode === 'near' ? shiftNear() : shiftFar());
-
-  updatePhysBits();
-  updateLiveReg();
-  updateResult();
-  updateDisp();
-
-  const segRow = document.getElementById('slider-seg-row');
-  const slSeg = document.getElementById('sl-seg');
-  const segLabel = document.getElementById('seg-label');
-  const offLabel = document.getElementById('off-label');
-  if (mode === 'near') {
-    slSeg.disabled = true;
-    segLabel.textContent = 'DS register (implicit, locked)';
-    offLabel.textContent = 'Offset — the near pointer value';
-    segRow.style.opacity = '0.4';
-    document.getElementById('bottom-note').innerHTML =
-      '<span class="hl">Key insight:</span> A near pointer stores <span class="green">only 16 bits</span>. It has no segment field. The CPU silently prepends whatever the <span class="blue">DS register</span> currently holds. The pointer itself cannot change segments — it is trapped in a 64 KB window.';
-  } else {
-    slSeg.disabled = false;
-    segLabel.textContent = 'Segment (bits 31–16)';
-    offLabel.textContent = 'Offset (bits 15–0)';
-    segRow.style.opacity = '1';
-    document.getElementById('bottom-note').innerHTML =
-      '<span class="hl">Key insight:</span> A far pointer packs <span class="blue">segment</span> into its upper 16 bits and <span class="green">offset</span> into its lower 16. It carries its own map. The CPU reads both, shifts the segment left by 4 bits (×16), and adds the offset — yielding a 20-bit address that can reach any byte in 1 MB of RAM.';
+  function updatePhysBits() {
+    const phys = segVal * 16 + offVal;
+    const physBin = phys.toString(2).padStart(20, '0').split('');
+    const html = physBin.map(d => `<div class="b res">${d}</div>`).join('');
+    const el = document.getElementById('phys-bits-near') || document.getElementById('phys-bits-far');
+    if (el) el.innerHTML = html;
   }
 
-  document.getElementById('sl-seg').value = segVal;
-  document.getElementById('sl-off').value = offVal;
-  bindSliders();
-}
+  function updateLiveReg() {
+    const sb = bin16(segVal);
+    const ob = bin16(offVal);
+    const lr = document.getElementById('live-reg');
+    const ll = document.getElementById('live-label');
+    if (mode === 'near') {
+      ll.innerHTML = '<span style="flex:1;text-align:center">offset [15..0]</span>';
+      lr.innerHTML = `<div class="live-near">${ob.slice(0, 8)}&nbsp;${ob.slice(8)}</div>`;
+    } else {
+      ll.innerHTML = '<span>segment [31..16]</span><span>offset [15..0]</span>';
+      lr.innerHTML = `<div class="live-seg">${sb.slice(0, 8)}&nbsp;${sb.slice(8)}</div><div class="live-off">${ob.slice(0, 8)}&nbsp;${ob.slice(8)}</div>`;
+    }
+  }
 
-function bindSliders() {
-  document.getElementById('sl-seg').addEventListener('input', e => {
-    segVal = +e.target.value;
-    updateDisp(); updateLiveReg(); updateResult();
-    document.getElementById('shift-section').innerHTML =
-      '<div class="sec-title">How the 20-bit physical address is computed</div>' +
-      (mode === 'near' ? shiftNear() : shiftFar());
-    updatePhysBits();
-  });
-  document.getElementById('sl-off').addEventListener('input', e => {
-    offVal = +e.target.value;
-    updateDisp(); updateLiveReg(); updateResult();
-    document.getElementById('shift-section').innerHTML =
-      '<div class="sec-title">How the 20-bit physical address is computed</div>' +
-      (mode === 'near' ? shiftNear() : shiftFar());
-    updatePhysBits();
+  function updateResult() {
+    const phys = segVal * 16 + offVal;
+    const re = document.getElementById('result-eq');
+    const rp = document.getElementById('result-phys');
+    if (mode === 'near') {
+      re.innerHTML = `<span style="color:#93c5fd">${hex(segVal, 4)}</span> × 16 &nbsp;<span style="color:#4b5563">(DS implicit)</span><br>+ <span style="color:#6ee7b7">${hex(offVal, 4)}</span> &nbsp;<span style="color:#4b5563">(near pointer)</span>`;
+    } else {
+      re.innerHTML = `<span style="color:#93c5fd">${hex(segVal, 4)}</span> × 16 &nbsp;<span style="color:#4b5563">(upper 16 bits)</span><br>+ <span style="color:#6ee7b7">${hex(offVal, 4)}</span> &nbsp;<span style="color:#4b5563">(lower 16 bits)</span>`;
+    }
+    rp.textContent = hex(phys, 5);
+  }
+
+  function updateDisp() {
+    document.getElementById('disp-seg').textContent = hex(segVal, 4);
+    document.getElementById('disp-off').textContent = hex(offVal, 4);
+  }
+
+  function renderAll() {
     document.getElementById('layout-section').innerHTML =
       '<div class="sec-title">Bit layout — ' + (mode === 'near' ? '16-bit near pointer' : '32-bit far pointer') + '</div>' +
       (mode === 'near' ? nearBits() : farBits());
-  });
-}
 
-function setTab(t) {
-  mode = t;
-  document.querySelectorAll('.tab').forEach((el, i) => {
-    el.classList.toggle('active', ['near','far'][i] === t);
-  });
+    document.getElementById('shift-section').innerHTML =
+      '<div class="sec-title">How the 20-bit physical address is computed</div>' +
+      (mode === 'near' ? shiftNear() : shiftFar());
+
+    updatePhysBits();
+    updateLiveReg();
+    updateResult();
+    updateDisp();
+
+    const segRow = document.getElementById('slider-seg-row');
+    const slSeg = document.getElementById('sl-seg');
+    const segLabel = document.getElementById('seg-label');
+    const offLabel = document.getElementById('off-label');
+    if (mode === 'near') {
+      slSeg.disabled = true;
+      segLabel.textContent = 'DS register (implicit, locked)';
+      offLabel.textContent = 'Offset — the near pointer value';
+      segRow.style.opacity = '0.4';
+      document.getElementById('bottom-note').innerHTML =
+        '<span class="hl">Key insight:</span> A near pointer stores <span class="green">only 16 bits</span>. It has no segment field. The CPU silently prepends whatever the <span class="blue">DS register</span> currently holds. The pointer itself cannot change segments — it is trapped in a 64 KB window.';
+    } else {
+      slSeg.disabled = false;
+      segLabel.textContent = 'Segment (bits 31–16)';
+      offLabel.textContent = 'Offset (bits 15–0)';
+      segRow.style.opacity = '1';
+      document.getElementById('bottom-note').innerHTML =
+        '<span class="hl">Key insight:</span> A far pointer packs <span class="blue">segment</span> into its upper 16 bits and <span class="green">offset</span> into its lower 16. It carries its own map. The CPU reads both, shifts the segment left by 4 bits (×16), and adds the offset — yielding a 20-bit address that can reach any byte in 1 MB of RAM.';
+    }
+
+    document.getElementById('sl-seg').value = segVal;
+    document.getElementById('sl-off').value = offVal;
+    bindSliders();
+  }
+
+  function bindSliders() {
+    document.getElementById('sl-seg').addEventListener('input', e => {
+      segVal = +e.target.value;
+      updateDisp(); updateLiveReg(); updateResult();
+      document.getElementById('shift-section').innerHTML =
+        '<div class="sec-title">How the 20-bit physical address is computed</div>' +
+        (mode === 'near' ? shiftNear() : shiftFar());
+      updatePhysBits();
+    });
+    document.getElementById('sl-off').addEventListener('input', e => {
+      offVal = +e.target.value;
+      updateDisp(); updateLiveReg(); updateResult();
+      document.getElementById('shift-section').innerHTML =
+        '<div class="sec-title">How the 20-bit physical address is computed</div>' +
+        (mode === 'near' ? shiftNear() : shiftFar());
+      updatePhysBits();
+      document.getElementById('layout-section').innerHTML =
+        '<div class="sec-title">Bit layout — ' + (mode === 'near' ? '16-bit near pointer' : '32-bit far pointer') + '</div>' +
+        (mode === 'near' ? nearBits() : farBits());
+    });
+  }
+
+  function setTab(t) {
+    mode = t;
+    document.querySelectorAll('.tab').forEach((el, i) => {
+      el.classList.toggle('active', ['near', 'far'][i] === t);
+    });
+    renderAll();
+  }
+
   renderAll();
-}
-
-renderAll();
 </script>

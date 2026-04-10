@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="index-heading" content="Win32 Paint Architecture State Machine">
+    <meta name="index-description"
+        content="Step-through simulation of WM_PAINT lifecycle, invalidation, and rendering behavior in Win32 applications.">
+    <meta name="index-tags" content="Win32, Rendering, WM_PAINT, State Machine">
+    <meta name="index-tag-colors" content="#60a5fa, #34d399, #f59e0b, #f472b6">
+    <title>Win32 Paint Architecture Simulation</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@400;700&display=swap');
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0f111a;
+            color: #e2e8f0;
+            overflow: hidden;
+        }
+
+        .font-mono {
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .pulse-red {
+            animation: pulseRed 1s infinite;
+        }
+
+        @keyframes pulseRed {
+            0% {
+                box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7);
+            }
+
+            70% {
+                box-shadow: 0 0 0 10px rgba(239, 68, 68, 0);
+            }
+
+            100% {
+                box-shadow: 0 0 0 0 rgba(239, 68, 68, 0);
+            }
+        }
+
+        .log-entry {
+            border-left: 3px solid transparent;
+        }
+
+        .log-sys {
+            border-left-color: #3b82f6;
+            color: #93c5fd;
+        }
+
+        .log-app {
+            border-left-color: #10b981;
+            color: #6ee7b7;
+        }
+
+        .log-err {
+            border-left-color: #ef4444;
+            color: #fca5a5;
+        }
+
+        .cpu-bar {
+            transition: width 0.2s ease-in-out, background-color 0.2s;
+        }
+
+        input[type=range] {
+            -webkit-appearance: none;
+            width: 120px;
+            background: transparent;
+        }
+
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            height: 14px;
+            width: 14px;
+            border-radius: 50%;
+            background: #3b82f6;
+            cursor: pointer;
+            margin-top: -5px;
+        }
+
+        input[type=range]::-webkit-slider-runnable-track {
+            width: 100%;
+            height: 4px;
+            cursor: pointer;
+            background: #374151;
+            border-radius: 2px;
+        }
+    </style>
+</head>
+
+<body class="h-screen flex flex-col p-4 gap-4">
+
+    <!-- Header & Controls -->
+    <header
+        class="flex justify-between items-center bg-[#1a1d27] p-4 rounded-xl border border-gray-800 shadow-lg shrink-0">
+        <div>
+            <h1 class="text-xl font-bold text-white">Win32 Architecture State Machine</h1>
+            <p class="text-xs text-gray-400 font-mono mt-1">Timeline Step Execution Engine</p>
+        </div>
+
+        <div class="flex items-center gap-6">
+            <!-- Mode Toggle -->
+            <div class="flex items-center bg-[#0f111a] p-1 rounded-lg border border-gray-700">
+                <button id="btn-mode-auto" onclick="setMode('auto')"
+                    class="px-4 py-1.5 text-sm rounded bg-blue-600 text-white font-bold transition-colors">Auto
+                    Play</button>
+                <button id="btn-mode-manual" onclick="setMode('manual')"
+                    class="px-4 py-1.5 text-sm rounded text-gray-400 hover:text-white font-bold transition-colors">Manual
+                    Step</button>
+            </div>
+
+            <!-- Auto Controls (Speed) -->
+            <div id="controls-auto" class="flex flex-col gap-1 min-w-[150px]">
+                <div class="flex justify-between text-[10px] font-bold text-gray-400 uppercase tracking-wider">
+                    <span>Speed</span>
+                    <span id="ui-speed-label">Normal</span>
+                </div>
+                <input type="range" id="slider-speed" min="0.5" max="2.0" step="0.5" value="1.0"
+                    oninput="updateSpeed(this.value)">
+            </div>
+
+            <!-- Manual Controls (Prev/Next) -->
+            <div id="controls-manual" class="hidden flex items-center gap-2">
+                <button onclick="stepPrev()"
+                    class="bg-gray-800 hover:bg-gray-700 text-white px-4 py-2 rounded border border-gray-600 transition-colors font-bold flex items-center gap-2">
+                    <span>◄</span> Prev Step
+                </button>
+                <div class="bg-black/50 px-4 py-2 rounded border border-gray-700 font-mono text-sm text-yellow-400 font-bold min-w-[100px] text-center"
+                    id="ui-step-counter">
+                    0 / 0
+                </div>
+                <button onclick="stepNext()"
+                    class="bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded border border-blue-500 transition-colors font-bold flex items-center gap-2 shadow-[0_0_15px_rgba(37,99,235,0.4)]">
+                    Next Step <span>►</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="flex flex-1 gap-4 min-h-0">
+
+        <!-- Scenarios Sidebar -->
+        <div
+            class="w-72 bg-[#1a1d27] p-4 rounded-xl border border-gray-800 flex flex-col gap-3 overflow-y-auto shrink-0">
+            <h2 class="text-sm font-bold text-gray-500 uppercase tracking-wider mb-2">Load Timeline</h2>
+
+            <button onclick="loadScenario(1)" id="btn-scen-1"
+                class="text-left bg-[#0f111a] p-3 rounded border border-gray-700 transition-colors group">
+                <div class="font-bold text-green-400">1. The Correct Way</div>
+                <div class="text-xs text-gray-400 mt-1 font-mono">BeginPaint in WM_PAINT</div>
+            </button>
+
+            <button onclick="loadScenario(2)" id="btn-scen-2"
+                class="text-left bg-[#0f111a] p-3 rounded border border-gray-700 transition-colors group">
+                <div class="font-bold text-red-400">2. The Infinite Loop</div>
+                <div class="text-xs text-gray-400 mt-1 font-mono">GetDC in WM_PAINT</div>
+            </button>
+
+            <button onclick="loadScenario(3)" id="btn-scen-3"
+                class="text-left bg-[#0f111a] p-3 rounded border border-gray-700 transition-colors group">
+                <div class="font-bold text-blue-400">3. Instant Feedback</div>
+                <div class="text-xs text-gray-400 mt-1 font-mono">GetDC in WM_MOUSEMOVE</div>
+            </button>
+
+            <button onclick="loadScenario(4)" id="btn-scen-4"
+                class="text-left bg-[#0f111a] p-3 rounded border border-gray-700 transition-colors group">
+                <div class="font-bold text-yellow-400">4. The Crash</div>
+                <div class="text-xs text-gray-400 mt-1 font-mono">BeginPaint outside WM_PAINT</div>
+            </button>
+        </div>
+
+        <!-- Architecture Visualization -->
+        <div class="flex-1 flex flex-col gap-4 min-w-0">
+
+            <!-- OS Layer -->
+            <div class="flex gap-4 shrink-0">
+                <div
+                    class="flex-1 bg-[#1a1d27] p-4 rounded-xl border border-gray-800 flex items-center justify-between">
+                    <div>
+                        <div class="text-xs font-bold text-gray-500 uppercase tracking-wider">Update Region Status</div>
+                        <div class="text-lg font-bold mt-1" id="ui-dirty-text">Clean</div>
+                    </div>
+                    <div id="ui-dirty-indicator"
+                        class="w-4 h-4 rounded-full bg-green-500 shadow-[0_0_10px_rgba(34,197,94,0.5)]"></div>
+                </div>
+
+                <div class="flex-1 bg-[#1a1d27] p-4 rounded-xl border border-gray-800 relative overflow-hidden">
+                    <div
+                        class="flex justify-between text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 relative z-10">
+                        <span>CPU Thread Load</span>
+                        <span id="ui-cpu-text">0%</span>
+                    </div>
+                    <div class="h-3 bg-[#0f111a] rounded-full overflow-hidden border border-gray-700 relative z-10">
+                        <div id="ui-cpu-bar"
+                            class="h-full bg-green-500 cpu-bar w-0 shadow-[0_0_10px_rgba(34,197,94,0.5)]"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Message Queue -->
+            <div class="bg-[#1a1d27] p-4 rounded-xl border border-gray-800 shrink-0 shadow-inner">
+                <div class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-3">Application Message Queue
+                    (GetMessage)</div>
+                <div id="ui-queue"
+                    class="flex gap-2 min-h-[44px] items-center overflow-x-auto pb-2 px-2 bg-[#0f111a] rounded-lg border border-gray-800/50">
+                    <div class="text-gray-600 text-sm italic">Queue Empty</div>
+                </div>
+            </div>
+
+            <!-- Code & Monitor -->
+            <div class="flex flex-1 gap-4 min-h-0">
+                <div
+                    class="flex-1 bg-[#0d0f16] p-4 rounded-xl border border-gray-800 font-mono text-sm overflow-y-auto relative shadow-inner">
+                    <div
+                        class="text-[10px] font-bold text-gray-600 uppercase tracking-wider mb-3 font-sans absolute top-3 right-3 bg-gray-900 px-2 py-1 rounded">
+                        WndProc</div>
+                    <pre id="ui-code" class="text-gray-400 whitespace-pre-wrap mt-4 transition-all duration-300">LRESULT WndProc(HWND hwnd, UINT msg...) {
+    // Select a scenario to begin...
+}</pre>
+                </div>
+
+                <div class="flex-1 bg-[#1a1d27] p-4 rounded-xl border border-gray-800 flex flex-col">
+                    <div
+                        class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 shrink-0 flex items-center gap-2">
+                        Physical Monitor
+                    </div>
+                    <div class="flex-1 bg-[#050505] border-4 border-gray-700 rounded-lg relative overflow-hidden">
+                        <div id="canvas-permanent"
+                            class="absolute inset-0 opacity-0 transition-opacity duration-300 bg-blue-900/30 flex items-center justify-center border-4 border-blue-500/50 m-4 rounded shadow-[inset_0_0_50px_rgba(59,130,246,0.2)]">
+                            <span class="text-blue-400 font-bold uppercase tracking-widest opacity-70">Permanent Paint
+                                Data</span>
+                        </div>
+                        <div id="canvas-temp"
+                            class="absolute top-10 left-10 w-40 h-32 border-2 border-dashed border-yellow-500 opacity-0 transition-opacity duration-300 bg-yellow-900/20 flex flex-col items-center justify-center shadow-[0_0_15px_rgba(234,179,8,0.2)]">
+                            <span class="text-yellow-500 text-xs font-bold text-center">Temp Canvas</span>
+                            <span class="text-yellow-500/50 text-[10px] text-center mt-1">(GetDC)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Logs -->
+        <div class="w-80 bg-[#1a1d27] rounded-xl border border-gray-800 flex flex-col overflow-hidden shrink-0">
+            <div
+                class="p-3 bg-[#0f111a] border-b border-gray-800 text-xs font-bold text-gray-400 uppercase tracking-wider flex justify-between items-center">
+                <span>System Logs</span>
+                <span class="text-[10px] text-gray-600">Event Trace</span>
+            </div>
+            <div id="ui-logs"
+                class="flex-1 overflow-y-auto p-2 font-mono text-[11px] flex flex-col gap-1 scroll-smooth">
+                <!-- Logs injected here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- Core State Machine ---
+        let timeline = [];
+        let currentStepIndex = 0;
+        let mode = 'auto'; // 'auto' | 'manual'
+        let playInterval = null;
+        let playSpeed = 1000; // ms per step
+
+        const emptyCode = `LRESULT WndProc(HWND hwnd, UINT msg...) {\n    // Waiting for messages...\n}`;
+
+        function getBaseState() {
+            return {
+                dirty: false,
+                queue: [],
+                cpu: 0,
+                code: emptyCode,
+                permVisible: false,
+                tempVisible: false,
+                logs: []
+            };
+        }
+
+        // Deep copy state utility
+        function clone(obj) { return JSON.parse(JSON.stringify(obj)); }
+
+        // --- Scenario Generators (The Timeline Math) ---
+
+        function buildScenario1() {
+            let steps = [];
+            let s = getBaseState();
+
+            s.logs.push({ msg: "Scenario 1: Correct BeginPaint usage.", type: "sys" });
+            steps.push(clone(s));
+
+            s.dirty = true;
+            s.logs.push({ msg: "OS Event: Window invalidated (Dirty flag set to TRUE).", type: "sys" });
+            steps.push(clone(s));
+
+            s.queue = ["WM_PAINT"];
+            s.logs.push({ msg: "OS automatically synthesized WM_PAINT message into queue.", type: "sys" });
+            steps.push(clone(s));
+
+            s.queue = [];
+            s.cpu = 30;
+            s.code = `LRESULT WndProc(...) {\n  case WM_PAINT:\n    PAINTSTRUCT ps;\n    // Preparing to paint...\n`;
+            s.logs.push({ msg: "Application pulls WM_PAINT from queue. Executing WndProc.", type: "app" });
+            steps.push(clone(s));
+
+            s.code = `LRESULT WndProc(...) {\n  case WM_PAINT:\n    PAINTSTRUCT ps;\n    HDC hdc = BeginPaint(hwnd, &ps);\n    // Dirty flag cleared!\n`;
+            s.dirty = false; // The magic moment
+            s.logs.push({ msg: "BeginPaint() called. OS hands over HDC and CLEARS dirty flag.", type: "app" });
+            steps.push(clone(s));
+
+            s.code = `LRESULT WndProc(...) {\n  case WM_PAINT:\n    PAINTSTRUCT ps;\n    HDC hdc = BeginPaint(hwnd, &ps);\n    DrawRectangle(hdc, ...);\n`;
+            s.permVisible = true;
+            s.logs.push({ msg: "Drawing to screen via GPU/GDI.", type: "app" });
+            steps.push(clone(s));
+
+            s.code = `LRESULT WndProc(...) {\n  case WM_PAINT:\n    // ...\n    EndPaint(hwnd, &ps);\n    return 0;\n}`;
+            s.logs.push({ msg: "EndPaint() called. HDC returned to OS. Repaint complete.", type: "app" });
+            steps.push(clone(s));
+
+            s.cpu = 0;
+            s.code = emptyCode;
+            s.logs.push({ msg: "Thread goes back to sleep waiting for next message.", type: "sys" });
+            steps.push(clone(s));
+
+            return steps;
+        }
+
+        function buildScenario2() {
+            let steps = [];
+            let s = getBaseState();
+
+            s.logs.push({ msg: "Scenario 2: The Infinite Loop Warning.", type: "err" });
+            steps.push(clone(s));
+
+            s.dirty = true;
+            s.logs.push({ msg: "OS Event: Window invalidated.", type: "sys" });
+            steps.push(clone(s));
+
+            s.queue = ["WM_PAINT"];
+            s.logs.push({ msg: "OS automatically synthesized WM_PAINT.", type: "sys" });
+            steps.push(clone(s));
+
+            s.queue = [];
+            s.cpu = 50;
+            s.code = `LRESULT WndProc(...) {\n  case WM_PAINT:\n    // FATAL ARCHITECTURE ERROR\n    HDC hdc = GetDC(hwnd);\n`;
+            s.logs.push({ msg: "Application pulls WM_PAINT. Calls GetDC().", type: "err" });
+            s.logs.push({ msg: "Notice the Dirty Flag is NOT cleared!", type: "err" });
+            steps.push(clone(s));
+
+            s.code += `    DrawRectangle(hdc, ...);\n`;
+            s.permVisible = true;
+            s.logs.push({ msg: "Drawing to screen...", type: "app" });
+            steps.push(clone(s));
+
+            s.code += `    ReleaseDC(hwnd, hdc);\n    return 0;\n}`;
+            s.logs.push({ msg: "ReleaseDC() called. WndProc returns.", type: "app" });
+            steps.push(clone(s));
+
+            s.code = emptyCode;
+            s.cpu = 100;
+            s.queue = ["WM_PAINT"];
+            s.logs.push({ msg: "WndProc finished, but Window is STILL DIRTY.", type: "err" });
+            s.logs.push({ msg: "OS instantly forces ANOTHER WM_PAINT into queue.", type: "sys" });
+            steps.push(clone(s));
+
+            s.queue = [];
+            s.code = `LRESULT WndProc(...) {\n  case WM_PAINT:\n    HDC hdc = GetDC(hwnd);\n`;
+            s.logs.push({ msg: "Loop repeats. CPU spikes to 100%. Thread locked.", type: "err" });
+            steps.push(clone(s));
+
+            return steps;
+        }
+
+        function buildScenario3() {
+            let steps = [];
+            let s = getBaseState();
+
+            s.logs.push({ msg: "Scenario 3: Instant Feedback (Mouse Drag).", type: "sys" });
+            steps.push(clone(s));
+
+            s.queue = ["WM_MOUSEMOVE"];
+            s.logs.push({ msg: "Hardware Interrupt: Mouse moved. Message queued.", type: "sys" });
+            steps.push(clone(s));
+
+            s.queue = [];
+            s.cpu = 20;
+            s.code = `LRESULT WndProc(...) {\n  case WM_MOUSEMOVE:\n    // Fast Path\n    HDC hdc = GetDC(hwnd);\n`;
+            s.logs.push({ msg: "Processing WM_MOUSEMOVE. Instant GetDC() acquired.", type: "app" });
+            steps.push(clone(s));
+
+            s.code += `    DrawDashedRect(hdc, mouseX, mouseY);\n`;
+            s.tempVisible = true;
+            s.logs.push({ msg: "Selection box drawn directly to screen. Bypassed Update Region.", type: "app" });
+            steps.push(clone(s));
+
+            s.code += `    ReleaseDC(hwnd, hdc);\n    return 0;\n}`;
+            s.logs.push({ msg: "ReleaseDC() called. Temporary draw complete.", type: "app" });
+            steps.push(clone(s));
+
+            s.cpu = 0;
+            s.code = emptyCode;
+            steps.push(clone(s));
+
+            s.dirty = true;
+            s.permVisible = false;
+            s.tempVisible = false;
+            s.logs.push({ msg: "USER MINIMIZED APP: OS wipes screen and sets Dirty Flag.", type: "sys" });
+            s.logs.push({ msg: "Notice: Temporary GetDC graphics are permanently lost.", type: "err" });
+            steps.push(clone(s));
+
+            return steps;
+        }
+
+        function buildScenario4() {
+            let steps = [];
+            let s = getBaseState();
+
+            s.logs.push({ msg: "Scenario 4: Invalid BeginPaint Context.", type: "sys" });
+            steps.push(clone(s));
+
+            s.queue = ["WM_LBUTTONDOWN"];
+            s.logs.push({ msg: "Hardware Interrupt: Mouse clicked.", type: "sys" });
+            steps.push(clone(s));
+
+            s.queue = [];
+            s.cpu = 20;
+            s.code = `LRESULT WndProc(...) {\n  case WM_LBUTTONDOWN:\n    PAINTSTRUCT ps;\n    // FATAL MISTAKE\n    HDC hdc = BeginPaint(hwnd, &ps);\n`;
+            s.logs.push({ msg: "Processing Mouse Click. Calling BeginPaint...", type: "app" });
+            steps.push(clone(s));
+
+            s.logs.push({ msg: "ERROR: BeginPaint failed. Window was not in WM_PAINT context.", type: "err" });
+            s.logs.push({ msg: "HDC is NULL.", type: "err" });
+            steps.push(clone(s));
+
+            s.code += `    DrawRectangle(hdc, ...);\n`;
+            s.logs.push({ msg: "Application attempts to draw with NULL HDC. Command dropped.", type: "err" });
+            steps.push(clone(s));
+
+            s.cpu = 0;
+            s.code = emptyCode;
+            s.logs.push({ msg: "Operation failed gracefully, but nothing was drawn.", type: "app" });
+            steps.push(clone(s));
+
+            return steps;
+        }
+
+
+        // --- UI & Controller Engine ---
+
+        function setMode(newMode) {
+            mode = newMode;
+            document.getElementById('btn-mode-auto').className = mode === 'auto' ? "px-4 py-1.5 text-sm rounded bg-blue-600 text-white font-bold transition-colors" : "px-4 py-1.5 text-sm rounded text-gray-400 hover:text-white font-bold transition-colors";
+            document.getElementById('btn-mode-manual').className = mode === 'manual' ? "px-4 py-1.5 text-sm rounded bg-blue-600 text-white font-bold transition-colors" : "px-4 py-1.5 text-sm rounded text-gray-400 hover:text-white font-bold transition-colors";
+
+            document.getElementById('controls-auto').classList.toggle('hidden', mode === 'manual');
+            document.getElementById('controls-manual').classList.toggle('hidden', mode === 'auto');
+
+            if (mode === 'auto') {
+                playAuto();
+            } else {
+                clearInterval(playInterval);
+            }
+        }
+
+        function updateSpeed(val) {
+            // Slider 0.5 -> Fast (500ms) | 1.0 -> Normal (1000ms) | 2.0 -> Slow (2000ms)
+            let text = "Normal";
+            if (val < 1.0) text = "Fast";
+            if (val > 1.0) text = "Slow";
+
+            document.getElementById('ui-speed-label').textContent = text;
+            playSpeed = val * 1000;
+
+            if (mode === 'auto') {
+                clearInterval(playInterval);
+                playAuto();
+            }
+        }
+
+        function loadScenario(id) {
+            document.querySelectorAll('[id^="btn-scen-"]').forEach(btn => {
+                btn.classList.remove('bg-gray-800', 'border-gray-500');
+                btn.classList.add('bg-[#0f111a]', 'border-gray-700');
+            });
+            document.getElementById('btn-scen-' + id).classList.remove('bg-[#0f111a]', 'border-gray-700');
+            document.getElementById('btn-scen-' + id).classList.add('bg-gray-800', 'border-gray-500');
+
+            if (id === 1) timeline = buildScenario1();
+            if (id === 2) timeline = buildScenario2();
+            if (id === 3) timeline = buildScenario3();
+            if (id === 4) timeline = buildScenario4();
+
+            currentStepIndex = 0;
+            applyStep(0);
+
+            if (mode === 'auto') playAuto();
+        }
+
+        function playAuto() {
+            clearInterval(playInterval);
+            playInterval = setInterval(() => {
+                if (currentStepIndex < timeline.length - 1) {
+                    currentStepIndex++;
+                    applyStep(currentStepIndex);
+                } else {
+                    clearInterval(playInterval);
+                }
+            }, playSpeed);
+        }
+
+        function stepNext() {
+            if (currentStepIndex < timeline.length - 1) {
+                currentStepIndex++;
+                applyStep(currentStepIndex);
+            }
+        }
+
+        function stepPrev() {
+            if (currentStepIndex > 0) {
+                currentStepIndex--;
+                applyStep(currentStepIndex);
+            }
+        }
+
+        function applyStep(index) {
+            const state = timeline[index];
+            document.getElementById('ui-step-counter').textContent = `${index + 1} / ${timeline.length}`;
+
+            // Dirty Region UI
+            const elDirtyText = document.getElementById('ui-dirty-text');
+            const elDirtyInd = document.getElementById('ui-dirty-indicator');
+            if (state.dirty) {
+                elDirtyText.textContent = "Dirty (Invalidated)";
+                elDirtyText.className = "text-lg font-bold mt-1 text-red-500 transition-colors";
+                elDirtyInd.className = "w-4 h-4 rounded-full bg-red-500 pulse-red";
+            } else {
+                elDirtyText.textContent = "Clean (Validated)";
+                elDirtyText.className = "text-lg font-bold mt-1 text-green-500 transition-colors";
+                elDirtyInd.className = "w-4 h-4 rounded-full bg-green-500 shadow-[0_0_10px_rgba(34,197,94,0.5)]";
+            }
+
+            // CPU UI
+            const elCpuText = document.getElementById('ui-cpu-text');
+            const elCpuBar = document.getElementById('ui-cpu-bar');
+            elCpuText.textContent = `${state.cpu}%`;
+            elCpuBar.style.width = `${state.cpu}%`;
+            if (state.cpu > 85) elCpuBar.className = "h-full bg-red-500 cpu-bar shadow-[0_0_10px_rgba(239,68,68,0.5)]";
+            else if (state.cpu > 40) elCpuBar.className = "h-full bg-yellow-500 cpu-bar shadow-[0_0_10px_rgba(234,179,8,0.5)]";
+            else elCpuBar.className = "h-full bg-green-500 cpu-bar shadow-[0_0_10px_rgba(34,197,94,0.5)]";
+
+            // Queue UI
+            const elQueue = document.getElementById('ui-queue');
+            if (state.queue.length === 0) {
+                elQueue.innerHTML = '<div class="text-gray-600 text-sm italic">Queue Empty</div>';
+            } else {
+                elQueue.innerHTML = '';
+                state.queue.forEach(msg => {
+                    const div = document.createElement('div');
+                    div.className = `px-3 py-1.5 rounded text-xs font-bold shadow-md border ${msg === 'WM_PAINT' ? 'bg-purple-900/80 border-purple-500 text-purple-100' : 'bg-blue-900/80 border-blue-500 text-blue-100'}`;
+                    div.textContent = msg;
+                    elQueue.appendChild(div);
+                });
+            }
+
+            // Code & Canvas
+            document.getElementById('ui-code').textContent = state.code;
+            document.getElementById('canvas-permanent').style.opacity = state.permVisible ? "1" : "0";
+            document.getElementById('canvas-temp').style.opacity = state.tempVisible ? "1" : "0";
+
+            // Logs UI (Render only logs up to current state)
+            const elLogs = document.getElementById('ui-logs');
+            elLogs.innerHTML = '';
+            state.logs.forEach(logObj => {
+                const div = document.createElement('div');
+                let cssClass = 'log-app';
+                if (logObj.type === 'sys') cssClass = 'log-sys';
+                if (logObj.type === 'err') cssClass = 'log-err';
+
+                div.className = `p-1.5 px-2 bg-[#0f111a] rounded ${cssClass} log-entry shadow-sm border border-gray-800`;
+                div.innerHTML = `> ${logObj.msg}`;
+                elLogs.appendChild(div);
+            });
+            elLogs.scrollTo({ top: elLogs.scrollHeight, behavior: 'smooth' });
+        }
+
+        // Initialize empty state
+        window.onload = () => {
+            timeline = [getBaseState()];
+            timeline[0].logs.push({ msg: "System initialized. Select a scenario to begin timeline.", type: "sys" });
+            applyStep(0);
+        };
+    </script>
+</body>
+
+</html>
