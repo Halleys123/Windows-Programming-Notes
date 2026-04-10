@@ -226,6 +226,8 @@
   },
   "active": "f0288e2e405b44c7",
   "lastOpenFiles": [
+    "index.md",
+    "index.html",
     "Assets/Simulation/dashboard.html",
     "Assets/Simulation/index.html",
     "Assets/Simulation/fixed_variable_pitch_font.html",
@@ -260,8 +262,6 @@
     "Excalidraw/Drawing 2026-04-10 02.43.24.excalidraw.md",
     "Excalidraw",
     "06 - Physics of Screen",
-    "Assets/Simulation/Queued_Nonqueued.html",
-    "Assets/Simulation/pointer_bit_layout_interactive.html",
     "Assets/Images/DBCS_Memory_Parsing.gif",
     "Assets/Images/ClientArea.png",
     "Assets/Images/DBCS_Memory_Parsing.gif",
