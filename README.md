@@ -19,13 +19,11 @@ This is more than an API reference. These notes build mental models of _why_ Win
 
 ## Quick Start
 
-**New to this repository?** Start here:
-
-> **→ [00 - Meta & Reference/Linear Index.txt](00%20-%20Meta%20%26%20Reference/Linear%20Index.txt)** — The guided reading order. This is the best way in.
+**New to this repository?** Start here: [[Linear Index]]
 
 **Already exploring?** Keep this page open as a high-level map.
 
-**Looking for a specific topic?** See [00 - Meta & Reference/Glossary.md](00%20-%20Meta%20%26%20Reference/Glossary.md) or [00 - Meta & Reference/Tag List.md](00%20-%20Meta%20%26%20Reference/Tag%20List.md).
+**Looking for a specific topic?** See [[Glossary]] or [[Tag List]]
 
 ## Repository Structure at a Glance
 
@@ -35,19 +33,19 @@ This is more than an API reference. These notes build mental models of _why_ Win
 
 ### Foundation Layer
 
-**[00 - Meta & Reference](00%20-%20Meta%20%26%20Reference/)**
+**[[Linear Index|00 - Meta & Reference]]**
 
 - Glossary & terminology
 - Chapter index & navigation
 - Tags for cross-referencing
 
-**[01 - History & Fundamentals](01%20-%20History%20%26%20Fundamentals/)**
+**[[Introduction and History|01 - History & Fundamentals]]**
 
 - Windows evolution
 - NT vs. 98 architecture
 - Alternative APIs
 
-**[02 - Architecture & Mechanics](02%20-%20Architecture%20%26%20Mechanics/)**
+**[[01 - Important Windows Headers and DLL's|02 - Architecture & Mechanics]]**
 
 - Headers & DLL systems
 - Dynamic linking details
@@ -59,14 +57,14 @@ This is more than an API reference. These notes build mental models of _why_ Win
 
 ### Core Knowledge Layer
 
-**[04 - Unicode](04%20-%20Unicode/)**
+**[[0 - History of Character Sets|04 - Unicode]]**
 
 - ASCII origins
 - Code pages & DBCS
 - Wide character implementation
 - `wchar_t`, `WCHAR` deep dive
 
-**[05 - Windows, Messages & Core](05%20-%20Windows,%20Messages%20and%20Core%20Architecture/)**
+**[[01 - Core architectural overview|05 - Windows, Messages & Core]]**
 
 - Message loop mechanics
 - Window classes & procedures
@@ -80,13 +78,13 @@ This is more than an API reference. These notes build mental models of _why_ Win
 
 ### Applied & Extended Layer
 
-**[03 - API Reference](03%20-%20API%20Reference/)** — Win32 function reference (Hungarian notation, MessageBox, LoadIcon, DrawText, etc.)
+**[[1 - General Program Structure|03 - API Reference]]** — Win32 function reference (Hungarian notation, MessageBox, LoadIcon, DrawText, etc.)
 
-**[06 - Physics of Screen](06%20-%20Physics%20of%20Screen/)** — Rendering model, device contexts, invalid region tracking
+**[[01 - Introduction|06 - Physics of Screen]]** — Rendering model, device contexts, invalid region tracking
 
-**[Assets](Assets/)** — **Excalidraw visual diagrams** for message loops, coordinate systems, rendering regions + supplementary images
+**[[Message Loop.excalidraw|Assets]]** — **Excalidraw visual diagrams** for message loops, coordinate systems, rendering regions + supplementary images
 
-**[More](More/)** — Advanced topics (DPI-awareness, modern displays, etc.)
+**[[Modern 4K monitors and DPI awareness in Windows|More]]** — Advanced topics (DPI-awareness, modern displays, etc.)
 
 </td>
 </tr>
@@ -114,10 +112,10 @@ This is more than an API reference. These notes build mental models of _why_ Win
       ↓
   [06] Physics of Screen  ───────  Rendering: Device context, invalid regions
       ↓
-Use [Assets] visuals & [More] extensions throughout
+Use [[Message Loop.excalidraw|Assets]] visuals and [[Modern 4K monitors and DPI awareness in Windows|More]] extensions throughout
 ```
 
-Or jump to specific topics via the [Glossary](00%20-%20Meta%20%26%20Reference/Glossary.md) and [Tag List](00%20-%20Meta%20%26%20Reference/Tag%20List.md).
+Or jump to specific topics via the [[Glossary]] and [[Tag List]].
 
 ---
 
