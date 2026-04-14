@@ -17,7 +17,7 @@ If you compile a standard Win32 C program today and do not explicitly tell the O
 
 - When your app launches on a 4K monitor (e.g., running at 200% scale), the Desktop Window Manager (DWM) actively **lies** to your application.
     
-- If you call `GetSystemMetrics` to ask how big the screen is, Windows returns fake, smaller coordinates (the 100% scale equivalent).
+- If you call [[12 - GetSystemMetrics|GetSystemMetrics]] to ask how big the screen is, Windows returns fake, smaller coordinates (the 100% scale equivalent).
     
 - Your application happily draws its 100x100 pixel button, thinking everything is fine.
     
