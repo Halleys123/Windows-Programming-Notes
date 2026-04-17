@@ -43,13 +43,13 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "05 - Windows, Messages and Core Architecture/01.6 - WM_SIZE.md",
+                "file": "06 - Physics of Screen/05 - ScrollBars.md",
                 "mode": "source",
                 "source": false,
                 "backlinks": false
               },
               "icon": "lucide-file",
-              "title": "01.6 - WM_SIZE"
+              "title": "05 - ScrollBars"
             }
           },
           {
@@ -151,8 +151,7 @@
               "title": "Bookmarks"
             }
           }
-        ],
-        "currentTab": 1
+        ]
       }
     ],
     "direction": "horizontal",
@@ -234,13 +233,13 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "05 - Windows, Messages and Core Architecture/01.6 - WM_SIZE.md",
+                "file": "06 - Physics of Screen/05 - ScrollBars.md",
                 "followCursor": false,
                 "showSearch": true,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Outline of 01.6 - WM_SIZE"
+              "title": "Outline of 05 - ScrollBars"
             }
           }
         ],
@@ -262,14 +261,17 @@
       "obsidian-excalidraw-plugin:New drawing": false
     }
   },
-  "active": "8ed823c1e6f99b1f",
+  "active": "5883c52b793abf5c",
   "lastOpenFiles": [
-    "03 - API Reference/5 - WPARAM and LPARAM.md",
+    "Assets/Images/ScrollBar.png",
+    "06 - Physics of Screen/04 - System Font and Character Size.md",
+    "06 - Physics of Screen/05 - ScrollBars.md",
+    "ScrollWindow.md",
     "05 - Windows, Messages and Core Architecture/01.6 - WM_SIZE.md",
+    "03 - API Reference/5 - WPARAM and LPARAM.md",
     "03 - API Reference/13 - LOWORD and HIWORD.md",
     "03 - API Reference/6 - Client Area & Window Area.md",
     "05 - Windows, Messages and Core Architecture/01.2 - WM_PAINT.md",
-    "06 - Physics of Screen/04 - System Font and Character Size.md",
     "03 - API Reference/12 - GetSystemMetrics.md",
     "More/Modern 4K monitors and DPI awareness in Windows.md",
     "03 - API Reference/11 - PAINTSTRUCT - Paint Information Structure.md",
@@ -293,9 +295,6 @@
     "Assets/Excalidraw/Invalid_Region_multiple_windows.excalidraw.md",
     "Assets/Excalidraw/Invalid_Region_single.excalidraw.md",
     "03 - API Reference/8 - UpdateWindow.md",
-    "05 - Windows, Messages and Core Architecture/01.4 - WM_DESTROY.md",
-    "05 - Windows, Messages and Core Architecture/01 - Core architectural overview.md",
-    "Excalidraw/Drawing 2026-04-10 02.43.24.excalidraw.md",
     "Excalidraw",
     "06 - Physics of Screen",
     "Assets/Simulation/Queued_Nonqueued.html",
