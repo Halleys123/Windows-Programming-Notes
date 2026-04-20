@@ -88,6 +88,8 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 }
 ```
 
+^7b45ae
+
 The message loop in our program is following code
 
 ```c

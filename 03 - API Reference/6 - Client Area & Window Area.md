@@ -69,3 +69,7 @@ While both functions utilize the `RECT` structure, they operate on entirely diff
     
 
 ![[Coordinates of Window|750]]
+
+>[!fact]
+>The client area does not include the space occupied by the scroll bar.
+
