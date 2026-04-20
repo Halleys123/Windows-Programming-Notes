@@ -43,13 +43,13 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "06 - Physics of Screen/05 - ScrollBars.md",
+                "file": "Temp/04 - WM_SYSKEYDOWN vs WM_KEYDOWN.md",
                 "mode": "source",
                 "source": false,
                 "backlinks": false
               },
               "icon": "lucide-file",
-              "title": "05 - ScrollBars"
+              "title": "04 - WM_SYSKEYDOWN vs WM_KEYDOWN"
             }
           },
           {
@@ -130,7 +130,7 @@
             "state": {
               "type": "search",
               "state": {
-                "query": "WM_SIZE",
+                "query": "virtual key",
                 "matchingCase": false,
                 "explainSearch": false,
                 "collapseAll": false,
@@ -233,13 +233,13 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "06 - Physics of Screen/05 - ScrollBars.md",
+                "file": "Temp/04 - WM_SYSKEYDOWN vs WM_KEYDOWN.md",
                 "followCursor": false,
                 "showSearch": true,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Outline of 05 - ScrollBars"
+              "title": "Outline of 04 - WM_SYSKEYDOWN vs WM_KEYDOWN"
             }
           }
         ],
@@ -261,11 +261,19 @@
       "obsidian-excalidraw-plugin:New drawing": false
     }
   },
-  "active": "5883c52b793abf5c",
+  "active": "8ed823c1e6f99b1f",
   "lastOpenFiles": [
+    "Temp/03 - Keystrokes vs Characters.md",
+    "Temp/04 - WM_SYSKEYDOWN vs WM_KEYDOWN.md",
+    "05 - Windows, Messages and Core Architecture/01.1 - Some Message and Processing Messages.md",
+    "00 - Meta & Reference/Study Later ToDo.md",
+    "05 - Windows, Messages and Core Architecture/01 - Core architectural overview.md",
+    "Temp/02 - System vs App Message queues.md",
+    "05 - Windows, Messages and Core Architecture/01.2 - Queued and Nonqueued messages.md",
+    "06 - Physics of Screen/05 - ScrollBars.md",
+    "Temp",
     "Assets/Images/ScrollBar.png",
     "06 - Physics of Screen/04 - System Font and Character Size.md",
-    "06 - Physics of Screen/05 - ScrollBars.md",
     "ScrollWindow.md",
     "05 - Windows, Messages and Core Architecture/01.6 - WM_SIZE.md",
     "03 - API Reference/5 - WPARAM and LPARAM.md",
@@ -283,22 +291,15 @@
     "03 - API Reference/GDI and Legacy Functions/01 - TextOut.md",
     "03 - API Reference/GDI and Legacy Functions",
     "00 - Meta & Reference/Linear Index.txt",
-    "00 - Meta & Reference/Study Later ToDo.md",
     "06 - Physics of Screen/02 - Valid and Invalid Rectangles.md",
     "More",
     "03 - API Reference/7 - DrawText.md",
     "05 - Windows, Messages and Core Architecture/02.1 - WNDCLASS Styles.md",
     "02 - Architecture & Mechanics/01 - Important Windows Headers and DLL's.md",
     "03 - API Reference/10 - InvalidateRect.md",
-    "06 - Physics of Screen/01 - Introduction.md",
-    "03 - API Reference/9 - ValidateRect.md",
-    "Assets/Excalidraw/Invalid_Region_multiple_windows.excalidraw.md",
-    "Assets/Excalidraw/Invalid_Region_single.excalidraw.md",
-    "03 - API Reference/8 - UpdateWindow.md",
     "Excalidraw",
     "06 - Physics of Screen",
     "Assets/Simulation/Queued_Nonqueued.html",
-    "Assets/Simulation/pointer_bit_layout_interactive.html",
     "Assets/Images/DBCS_Memory_Parsing.gif",
     "Assets/Images/ClientArea.png",
     "Assets/Images/DBCS_Memory_Parsing.gif",
