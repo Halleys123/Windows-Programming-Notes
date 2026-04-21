@@ -37,7 +37,7 @@ To process these, a Windows application utilizes a continuous loop of code calle
 
 ![[Message Loop.excalidraw|600]]
 
-Before dispatching, the loop typically calls `TranslateMessage`. This function intercepts virtual-key messages (raw keyboard hardware inputs) and translates them into readable character messages.
+Before dispatching, the loop typically calls `TranslateMessage`. This function intercepts [[05 - Virtual Key Codes - wParam|virtual-key messages]] (raw keyboard hardware inputs) and translates them into readable character messages.
 
 Finally, `DispatchMessage` instructs the OS to send the retrieved message to the specific [[03 - Window Procedure]] associated with the target window. The destination is already present in the [[#Structure of a message|message struct]] itself that is sent by the OS to our program, our program will just relay it to the correct window.
 

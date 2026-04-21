@@ -24,4 +24,5 @@ tags:
 - [ ] In [[01.2 - WM_PAINT#^58e7bb|this section]] add the proper links to InvalidateReigon and InvalidateRect function whenever pages are ready 
 - [ ] In [[03 - Device Context]] create files and create links to functions like `GetWindowDC` and other similar functions
 - [ ] Search for broken links for begin paint, end paint, and device context as I have moved the files (10 May 2026 - 3:30 PM)
-- [ ] There are empty links in `WM_CHAR` and `WM_KEYDOWN` in [[01.1 - Some Message and Processing Messages#^fbd0b0]], make files and fill those links properly
+- [x] There are empty links in `WM_CHAR` and `WM_KEYDOWN` in [[01.1 - Some Message and Processing Messages#^fbd0b0]], make files and fill those links properly
+- [ ] There are empty links in `WM_KILLFOCUS` and `WM_SETFOCUS` in [[01.1 - Some Message and Processing Messages]], make files and fill those links properly
