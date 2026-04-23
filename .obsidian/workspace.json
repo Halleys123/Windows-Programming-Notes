@@ -13,13 +13,13 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "07 - Keyboard/06 - lParam.md",
+                "file": "03 - API Reference/17 - GetKeyState.md",
                 "mode": "source",
                 "source": false,
                 "backlinks": false
               },
               "icon": "lucide-file",
-              "title": "06 - lParam"
+              "title": "17 - GetKeyState"
             }
           },
           {
@@ -196,13 +196,13 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "07 - Keyboard/06 - lParam.md",
+                "file": "03 - API Reference/17 - GetKeyState.md",
                 "followCursor": false,
                 "showSearch": true,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Outline of 06 - lParam"
+              "title": "Outline of 17 - GetKeyState"
             }
           }
         ],
@@ -224,10 +224,11 @@
       "obsidian-excalidraw-plugin:New drawing": false
     }
   },
-  "active": "8ecb5f8964995ca3",
+  "active": "7533a6b5472e1bb4",
   "lastOpenFiles": [
-    "Assets/Images/lParam details WM_KEYDOWN.png",
     "07 - Keyboard/06 - lParam.md",
+    "03 - API Reference/17 - GetKeyState.md",
+    "Assets/Images/lParam details WM_KEYDOWN.png",
     "git",
     "07 - Keyboard/05 - Virtual Key Codes - wParam.md",
     "05 - Windows, Messages and Core Architecture/03 - Window Procedure.md",

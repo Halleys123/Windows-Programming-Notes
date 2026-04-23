@@ -1,4 +1,4 @@
- lParam message parameter contains other information useful in understanding the keystroke. The 32 bits of lParam are divided into six fields as shown in Figure 
+lParam message parameter contains other information useful in understanding the keystroke. The 32 bits of lParam are divided into six fields as shown in Figure 
  
 ![[lParam details WM_KEYDOWN.png]]
 
@@ -69,3 +69,7 @@ be *1 for the WM_SYSKEYUP and WM_SYSKEYDOWN* messages and *0 for the WM_KEYUP*
 
 ## Transition State
 The Transition State is 0 if the key is being pressed and 1 if the key is being released. The field is set to 0 for a `WM_KEYDOWN` or `WM_SYSKEYDOWN` message and to 1 for a `WM_KEYUP` or `WM_SYSKEYUP` message
+
+---
+
+Read about [[17 - GetKeyState]]
